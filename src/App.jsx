@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import './App.css';
+import { AuthProvider, useAuth } from './context/AuthContext';
 
 // Components
 import { Sidebar } from './components/Sidebar';
@@ -10,7 +11,12 @@ import { Setup } from './components/Setup';
 import { Session } from './components/Session';
 import { Results } from './components/Results';
 
-function App() {
+// Pages
+import { Login } from './pages/Login';
+import { Signup } from './pages/Signup';
+
+function AuthenticatedApp() {
+  const { user, logout } = useAuth();
   const [view, setView] = useState('dashboard'); // dashboard, setup, session, results, experts, profile
   const [category, setCategory] = useState(null);
   const [results, setResults] = useState([]);
@@ -19,13 +25,11 @@ function App() {
   const startSetup = () => setView('setup');
 
   const startSession = (selectedCategory) => {
-    console.log('Starting session with category:', selectedCategory);
     setCategory(selectedCategory);
     setView('session');
   };
 
   const finishSession = (sessionResults) => {
-    console.log('Finishing session with results:', sessionResults);
     setResults(sessionResults);
     setView('results');
   };
@@ -36,13 +40,14 @@ function App() {
     setResults([]);
   };
 
-  // Views that should hide the Sidebar (e.g. active session for focus)
   const isImmersive = view === 'session';
+
+  if (!user) return null;
 
   return (
     <div className="app-container" style={{ display: 'flex' }}>
       {!isImmersive && (
-        <Sidebar currentView={view} setView={setView} />
+        <Sidebar currentView={view} setView={setView} onLogout={logout} />
       )}
 
       <main style={{
@@ -52,7 +57,7 @@ function App() {
         backgroundColor: 'var(--bg-app)'
       }}>
         {view === 'dashboard' && (
-          <Dashboard onStartPractice={startSetup} />
+          <Dashboard onStartPractice={startSetup} user={user} />
         )}
 
         {view === 'experts' && (
@@ -60,10 +65,9 @@ function App() {
         )}
 
         {view === 'profile' && (
-          <Profile />
+          <Profile user={user} />
         )}
 
-        {/* Existing Flows */}
         {view === 'setup' && (
           <div className="container" style={{ marginTop: '4rem' }}>
             <div className="glass-panel" style={{ padding: '3rem', maxWidth: '800px', margin: '0 auto' }}>
@@ -83,6 +87,30 @@ function App() {
       </main>
     </div>
   );
+}
+
+function App() {
+  const [authView, setAuthView] = useState('login');
+
+  return (
+    <AuthProvider>
+      <AuthWrapper authView={authView} setAuthView={setAuthView} />
+    </AuthProvider>
+  );
+}
+
+function AuthWrapper({ authView, setAuthView }) {
+  const { user, loading } = useAuth();
+
+  if (loading) return <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh', background: 'var(--bg-app)' }}>Loading...</div>;
+
+  if (!user) {
+    return authView === 'login'
+      ? <Login setView={setAuthView} />
+      : <Signup setView={setAuthView} />;
+  }
+
+  return <AuthenticatedApp />;
 }
 
 export default App;

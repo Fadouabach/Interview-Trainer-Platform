@@ -1,21 +1,27 @@
 import React from 'react';
 import { Play, TrendingUp, Clock, Calendar } from 'lucide-react';
 
-export function Dashboard({ onStartPractice }) {
+export function Dashboard({ onStartPractice, user }) {
+    const firstName = user?.name ? user.name.split(' ')[0] : 'User';
+
     return (
         <div style={{ padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
             <header style={{ marginBottom: '2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>
-                    <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Welcome Back, Sarah!</h1>
+                    <h1 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>Welcome Back, {firstName}!</h1>
                     <p style={{ color: 'var(--text-muted)' }}>Ready to ace your next interview?</p>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                     <div style={{ textAlign: 'right' }}>
-                        <div style={{ fontWeight: '600' }}>Sarah Williams</div>
+                        <div style={{ fontWeight: '600' }}>{user?.name}</div>
                         <div style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>Pro Plan</div>
                     </div>
                     <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#ddd', overflow: 'hidden' }}>
-                        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Sarah" alt="Profile" style={{ width: '100%', height: '100%' }} />
+                        <img
+                            src={user?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`}
+                            alt="Profile"
+                            style={{ width: '100%', height: '100%' }}
+                        />
                     </div>
                 </div>
             </header>

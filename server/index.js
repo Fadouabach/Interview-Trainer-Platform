@@ -1,7 +1,11 @@
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
+import express from 'express';
+import mongoose from 'mongoose';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import authRouter from './routes/auth.js';
+import usersRouter from './routes/users.js';
+
+dotenv.config();
 
 const app = express();
 
@@ -11,14 +15,16 @@ app.use(express.json());
 
 // Database Connection
 const uri = process.env.MONGO_URI;
-mongoose.connect(uri)
-    .then(() => console.log("MongoDB database connection established successfully"))
-    .catch(err => console.error("MongoDB connection error:", err));
+
+if (uri && !uri.includes('<your-cluster>') && !uri.includes('cluster0.mongodb.net')) {
+    mongoose.connect(uri)
+        .then(() => console.log("MongoDB database connection established successfully"))
+        .catch(err => console.error("MongoDB connection error:", err));
+} else {
+    console.log("⚠️ MongoDB URI is missing or invalid. Server running in FALLBACK mode (Local JSON).");
+}
 
 // Routes
-const authRouter = require('./routes/auth');
-const usersRouter = require('./routes/users');
-
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
 

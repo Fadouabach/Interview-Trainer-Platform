@@ -74,12 +74,14 @@ export function Sidebar({ currentView, setView }) {
             </nav>
 
             <div style={{ padding: '1.5rem', borderTop: '1px solid var(--border-subtle)' }}>
-                <button style={{
-                    display: 'flex', alignItems: 'center', gap: '0.75rem',
-                    background: 'transparent', border: 'none',
-                    color: 'var(--text-muted)', cursor: 'pointer',
-                    padding: '0.5rem', fontWeight: '500'
-                }}>
+                <button
+                    onClick={onLogout}
+                    style={{
+                        display: 'flex', alignItems: 'center', gap: '0.75rem',
+                        background: 'transparent', border: 'none',
+                        color: 'var(--text-muted)', cursor: 'pointer',
+                        padding: '0.5rem', fontWeight: '500'
+                    }}>
                     <LogOut size={20} />
                     Sign Out
                 </button>
