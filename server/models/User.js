@@ -5,7 +5,7 @@ let User;
 
 // Check if we have a valid Mongo URI (not a placeholder)
 const uri = process.env.MONGO_URI;
-const isPlaceholder = !uri || uri.includes('<your-cluster>') || uri.includes('cluster0.mongodb.net');
+const isPlaceholder = !uri || uri.includes('<your-cluster>');
 
 if (isPlaceholder) {
     console.log("⚠️ Using Local JSON Database (fallback mode)");

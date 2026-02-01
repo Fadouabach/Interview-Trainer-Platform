@@ -8,7 +8,7 @@ const dbPath = path.join(__dirname, '../data/users.json');
 
 // Ensure data directory exists
 if (!fs.existsSync(path.join(__dirname, '../data'))) {
-    fs.mkdirSync(path.join(__dirname, '../data'));
+    fs.mkdirSync(path.join(__dirname, '../data'), { recursive: true });
 }
 
 class UserMock {
@@ -47,8 +47,6 @@ class UserMock {
     }
 
     select(fields) {
-        // Mock select doesn't really remove fields in this simple implementation, 
-        // but we return this to chain.
         return this;
     }
 

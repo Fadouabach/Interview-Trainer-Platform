@@ -1,7 +1,7 @@
 import React from 'react';
 import { LayoutDashboard, PlayCircle, Users, BarChart2, User, LogOut } from 'lucide-react';
 
-export function Sidebar({ currentView, setView }) {
+export function Sidebar({ currentView, setView, onLogout }) {
     const menuItems = [
         { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard },
         { id: 'home', label: 'Practice Interview', icon: PlayCircle }, // 'home' was the original view for starting setup

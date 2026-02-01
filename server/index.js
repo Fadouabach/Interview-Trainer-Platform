@@ -4,7 +4,7 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import authRouter from './routes/auth.js';
 import usersRouter from './routes/users.js';
-
+    
 dotenv.config();
 
 const app = express();
@@ -16,7 +16,7 @@ app.use(express.json());
 // Database Connection
 const uri = process.env.MONGO_URI;
 
-if (uri && !uri.includes('<your-cluster>') && !uri.includes('cluster0.mongodb.net')) {
+if (uri && !uri.includes('<your-cluster>')) {
     mongoose.connect(uri)
         .then(() => console.log("MongoDB database connection established successfully"))
         .catch(err => console.error("MongoDB connection error:", err));
@@ -37,3 +37,8 @@ const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);
 });
+
+
+
+console.log("MONGO_URI =", process.env.MONGO_URI);
+
