@@ -6,7 +6,7 @@ export function Profile({ user }) {
     const [formData, setFormData] = useState({
         name: user?.name || '',
         bio: user?.bio || '',
-        field: user?.field || '',
+        field: user?.field || ''
     });
     const [saving, setSaving] = useState(false);
     const [msg, setMsg] = useState('');
@@ -20,11 +20,11 @@ export function Profile({ user }) {
         setMsg('');
         try {
             const token = localStorage.getItem('auth-token');
-            await axios.put('http://localhost:5000/api/users/profile', formData, {
+            const res = await axios.put('http://localhost:5001/api/users/profile', formData, {
                 headers: { 'x-auth-token': token }
             });
             setMsg('Profile updated successfully!');
-            // In a real app, update the context user here
+            if (window.updateUser) window.updateUser(res.data);
         } catch (err) {
             setMsg('Failed to update profile.');
             console.error(err);
@@ -32,23 +32,30 @@ export function Profile({ user }) {
         setSaving(false);
     };
 
+    const handleImageChange = (e) => {
+        // Removed avatar upload logic
+    };
+
     return (
         <div style={{ padding: '2rem', maxWidth: '800px', margin: '0 auto' }}>
             <h1 className="section-title">My Profile</h1>
 
-            <div className="card" style={{ display: 'flex', alignItems: 'center', gap: '2rem', marginBottom: '2rem' }}>
-                <img
-                    src={user?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${formData.name}`}
-                    alt="Profile"
-                    style={{ width: '100px', height: '100px', borderRadius: '50%', background: '#f1f5f9' }}
-                />
-                <div style={{ flex: 1 }}>
-                    <h2 style={{ marginBottom: '0.5rem' }}>{user?.name}</h2>
-                    <p style={{ color: 'var(--text-muted)', marginBottom: '1rem' }}>{user?.role === 'expert' ? 'Expert Coach' : 'Aspiring Developer'}</p>
-                    <div style={{ display: 'flex', gap: '1rem' }}>
-                        <span style={{ background: '#dcfce7', color: '#166534', padding: '4px 12px', borderRadius: '20px', fontSize: '0.875rem', fontWeight: '600' }}>Pro Member</span>
-                        <span style={{ background: '#f1f5f9', color: '#64748b', padding: '4px 12px', borderRadius: '20px', fontSize: '0.875rem' }}>{formData.field || 'General'}</span>
-                    </div>
+            <div className="card" style={{ padding: '2.5rem', marginBottom: '2rem', textAlign: 'center' }}>
+                <div style={{
+                    fontSize: '3rem',
+                    fontWeight: '700',
+                    color: 'var(--primary)',
+                    marginBottom: '1rem'
+                }}>
+                    {user?.name?.split(' ').map(n => n[0]).join('') || 'U'}
+                </div>
+                <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{user?.name}</h2>
+                <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '1.1rem' }}>
+                    {user?.role === 'expert' ? 'Expert Coach' : 'Aspiring Developer'}
+                </p>
+                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
+                    <span style={{ background: '#dcfce7', color: '#166534', padding: '6px 16px', borderRadius: '20px', fontSize: '0.875rem', fontWeight: '600' }}>Pro Member</span>
+                    <span style={{ background: '#f1f5f9', color: '#64748b', padding: '6px 16px', borderRadius: '20px', fontSize: '0.875rem' }}>{formData.field || 'General'}</span>
                 </div>
             </div>
 

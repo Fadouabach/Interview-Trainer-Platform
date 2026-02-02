@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../context/AuthContext';
-import { Terminal, Lock, Mail, User } from 'lucide-react';
+import { Lock, Mail, User } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import logo from '../assets/logo.png';
 
 export function Signup({ setView }) {
     const [name, setName] = useState('');
@@ -8,14 +10,25 @@ export function Signup({ setView }) {
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const { register } = useAuth();
+    const navigate = useNavigate();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setError('');
+        // Minimal validataion for name
+        if (!name) return setError("Name is required");
+
         const res = await register({ name, email, password });
         if (!res.success) {
             setError(res.message);
+        } else {
+            if (navigate) navigate('/dashboard');
         }
+    };
+
+    const handleLoginClick = () => {
+        if (setView) setView('login');
+        if (navigate) navigate('/login');
     };
 
     return (
@@ -28,18 +41,9 @@ export function Signup({ setView }) {
         }}>
             <div className="card" style={{ width: '100%', maxWidth: '400px', padding: '2rem' }}>
                 <div style={{ textAlign: 'center', marginBottom: '2rem' }}>
-                    <div style={{
-                        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
-                        width: '48px', height: '48px',
-                        background: 'var(--primary)',
-                        borderRadius: '12px',
-                        color: 'white',
-                        marginBottom: '1rem'
-                    }}>
-                        <Terminal size={24} />
-                    </div>
+                    <img src={logo} alt="Confido" style={{ height: '60px', marginBottom: '1rem' }} />
                     <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Create Account</h2>
-                    <p style={{ color: 'var(--text-muted)' }}>Join the interview success platform</p>
+                    <p style={{ color: 'var(--text-muted)' }}>Join thousands of developers practicing daily</p>
                 </div>
 
                 {error && (
@@ -103,25 +107,29 @@ export function Signup({ setView }) {
                                     outline: 'none', fontFamily: 'inherit'
                                 }}
                                 required
+                                minLength={6}
                             />
                         </div>
                     </div>
 
                     <button type="submit" className="btn" style={{ width: '100%' }}>
-                        Register
+                        Sign Up
+                    </button>
+                    <button type="button" onClick={() => navigate && navigate('/')} style={{ width: '100%', background: 'transparent', border: 'none', marginTop: '1rem', color: 'var(--text-muted)', cursor: 'pointer' }}>
+                        Back to Home
                     </button>
                 </form>
 
                 <div style={{ marginTop: '1.5rem', textAlign: 'center', fontSize: '0.9rem', color: 'var(--text-muted)' }}>
                     Already have an account?
                     <button
-                        onClick={() => setView('login')}
+                        onClick={handleLoginClick}
                         style={{
                             background: 'none', border: 'none', color: 'var(--primary)',
                             fontWeight: '600', cursor: 'pointer', marginLeft: '0.25rem'
                         }}
                     >
-                        Sign in
+                        Sign In
                     </button>
                 </div>
             </div>

@@ -9,6 +9,13 @@ const userSchema = new mongoose.Schema({
     bio: { type: String, default: '' },
     field: { type: String, default: '' },
     skills: [{ type: String }],
+    // Expert fields
+    title: { type: String, default: '' },
+    company: { type: String, default: '' },
+    price: { type: Number, default: 0 },
+    rating: { type: Number, default: 0 },
+    reviewsCount: { type: Number, default: 0 },
+    sessionTypes: [{ type: String }],
     createdAt: { type: Date, default: Date.now }
 });
 

@@ -22,12 +22,12 @@ export const AuthProvider = ({ children }) => {
             }
 
             try {
-                const tokenRes = await axios.post('http://localhost:5000/api/auth/tokenIsValid', null, {
+                const tokenRes = await axios.post('http://localhost:5001/api/auth/tokenIsValid', null, {
                     headers: { 'x-auth-token': currentToken }
                 });
 
                 if (tokenRes.data) {
-                    const userRes = await axios.get('http://localhost:5000/api/auth/', {
+                    const userRes = await axios.get('http://localhost:5001/api/auth/', {
                         headers: { 'x-auth-token': currentToken }
                     });
                     setUser(userRes.data);
@@ -50,7 +50,7 @@ export const AuthProvider = ({ children }) => {
 
     const login = async (email, password) => {
         try {
-            const loginRes = await axios.post('http://localhost:5000/api/auth/login', { email, password });
+            const loginRes = await axios.post('http://localhost:5001/api/auth/login', { email, password });
 
             setUser(loginRes.data.user);
             setToken(loginRes.data.token);
@@ -66,7 +66,7 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (userData) => {
         try {
-            await axios.post('http://localhost:5000/api/auth/register', userData);
+            await axios.post('http://localhost:5001/api/auth/register', userData);
             // Auto login after register
             return await login(userData.email, userData.password);
         } catch (err) {
