@@ -2,10 +2,12 @@ import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import dotenv from 'dotenv';
+dotenv.config();
+
 import authRouter from './routes/auth.js';
 import usersRouter from './routes/users.js';
-    
-dotenv.config();
+import interviewsRouter from './routes/interviews.js';
+import dashboardRouter from './routes/dashboard.js';
 
 const app = express();
 
@@ -27,6 +29,8 @@ if (uri && !uri.includes('<your-cluster>')) {
 // Routes
 app.use('/api/auth', authRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/interviews', interviewsRouter);
+app.use('/api/dashboard', dashboardRouter);
 
 // Basic Route
 app.get('/', (req, res) => {

@@ -10,5 +10,16 @@
     "bio": "hgfddh",
     "skills": [],
     "field": "bbbb"
+  },
+  {
+    "name": "gggg",
+    "email": "fadgvg@gmail.com",
+    "password": "$2b$10$S5XBoKGZO.EPMQwaBJK31eqv/3cej8q8oxurz3Kmn36NF4nUMWeD6",
+    "role": "user",
+    "_id": "6537qkqq7",
+    "createdAt": "2026-02-01T15:35:44.209Z",
+    "avatar": "",
+    "bio": "",
+    "skills": []
   }
 ]

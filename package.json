@@ -1,0 +1,10 @@
+{
+    "name": "confido-root",
+    "private": true,
+    "version": "1.0.0",
+    "type": "module",
+    "scripts": {
+        "dev": "node start-dev.js",
+        "install-all": "npm install && cd client && npm install && cd ../server && npm install"
+    }
+}
