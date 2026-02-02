@@ -41,14 +41,7 @@ export function Profile({ user }) {
             <h1 className="section-title">My Profile</h1>
 
             <div className="card" style={{ padding: '2.5rem', marginBottom: '2rem', textAlign: 'center' }}>
-                <div style={{
-                    fontSize: '3rem',
-                    fontWeight: '700',
-                    color: 'var(--primary)',
-                    marginBottom: '1rem'
-                }}>
-                    {user?.name?.split(' ').map(n => n[0]).join('') || 'U'}
-                </div>
+
                 <h2 style={{ fontSize: '2rem', marginBottom: '0.5rem' }}>{user?.name}</h2>
                 <p style={{ color: 'var(--text-muted)', marginBottom: '1.5rem', fontSize: '1.1rem' }}>
                     {user?.role === 'expert' ? 'Expert Coach' : 'Aspiring Developer'}

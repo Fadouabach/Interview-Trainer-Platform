@@ -66,19 +66,27 @@ export const generateQuestionFeedback = async (question, answer) => {
     }
     try {
         const prompt = `
-        You are an expert interview coach. Analyze the following interview question and candidate's answer.
+        You are a professional technical interviewer and career coach. Analyze the following interview question and candidate's answer with extreme strictness and realism. Do NOT inflate scores or give generic encouragement.
+
+        Domain context: ${question}
         
+        Evaluation Criteria:
+        1. Technical Correctness: Is the answer factually accurate?
+        2. Clarity & Structure: Is the explanation logical and easy to follow?
+        3. Depth: Does it show a senior level of understanding or just surface-level knowledge?
+        4. Relevance: Does it directly address the question without fluff?
+
         Question: "${question}"
         Answer: "${answer}"
         
         Provide structured feedback in JSON format with the following fields:
-        - summary: A brief summary of the answer (max 2 sentences).
-        - strengths: An array of strings (key strengths).
-        - weaknesses: An array of strings (areas for improvement).
-        - tips: An array of specific, actionable tips to improve.
-        - score: An integer from 0 to 100 representing the quality of the answer.
+        - summary: A brutal and honest summary of the quality of this specific answer.
+        - strengths: Array of strings. Only include genuine strong points. If none, leave empty.
+        - weaknesses: Array of strings. Be specific about technical gaps, logical errors, or vague phrasing.
+        - tips: Array of strings. Concrete, technical, or structural advice on how to improve this specific answer.
+        - score: An integer from 0 to 10. 10 is perfect (Senior), 7 is solid (Mid), 4 is struggling (Junior), 0-2 is a fail.
         
-        Ensure the feedback is constructive, professional, and encouraging but honest.
+        Important: If the user gives a vague, incomplete, or "I don't know" answer, give a score between 0-3.
         `;
 
         const completion = await client.chat.completions.create({
@@ -132,21 +140,48 @@ export const generateOverallFeedback = async (sessionData) => {
     }
     try {
         const sessionSummary = sessionData.map((item, index) =>
-            `Q${index + 1}: ${item.question}\nA: ${item.answer}\nScore: ${item.feedback.score}`
+            `--- Question ${index + 1} ---
+            Domain: ${item.category || 'General'}
+            Q: ${item.question}
+            A: ${item.answer}
+            Individual Score: ${item.feedback.score}/10`
         ).join('\n\n');
 
         const prompt = `
-        Based on the following interview session summary, provide an overall assessment.
+        As a professional interview evaluator, perform a final assessment of this candidate's full interview session.
         
+        Candidate Session Data:
         ${sessionSummary}
         
-        Provide output in JSON format:
-        - overallScore: Average of question scores (integer).
-        - communicationScore: 0-100 rating of communication clarity.
-        - technicalScore: 0-100 rating of technical content (if applicable, otherwise estimate based on logic).
-        - confidenceScore: 0-100 rating of implied confidence/tone.
-        - readinessScore: 0-100 rating of job readiness.
-        - personalizedAdvice: A paragraph of personalized advice (max 3-4 sentences).
+        Your evaluation must be realistic and professional. Judge the candidate's readiness for a real-world role (Junior, Mid, or Senior).
+
+        Provide the output in STRICT JSON format with these exact fields:
+        
+        - result: {
+            "finalScore": integer (0-100),
+            "levelAssessment": string ("Below Junior" | "Junior" | "Mid" | "Senior")
+          }
+        - strengths: Array of strings (based on demonstrated knowledge).
+        - weaknesses: Array of strings (real mistakes, missing concepts, poor logic).
+        - questionReview: Array of objects, one for each question: {
+            "question": string,
+            "score": integer (0-10),
+            "good": string (what was correct),
+            "wrong": string (what was missing/incorrect),
+            "advice": string (concrete technical/logical fix)
+          }
+        - communication: {
+            "clarity": string,
+            "structure": string,
+            "confidence": string,
+            "language": string,
+            "paceAnalysis": string (analyze hesitation, filler words, or rushes based on the text structure)
+          }
+        - improvementPlan: {
+            "mustStudy": Array of strings (topics to master),
+            "suggestedExercises": Array of strings (specific tasks/projects),
+            "nextFix": string (the single most important thing to fix before next interview)
+          }
         `;
 
         const completion = await client.chat.completions.create({

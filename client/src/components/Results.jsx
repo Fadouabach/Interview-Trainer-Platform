@@ -1,124 +1,225 @@
 import React from 'react';
-import { Trophy, RefreshCw, Home } from 'lucide-react';
+import { Trophy, RefreshCw, Home, CheckCircle, XCircle, Lightbulb, TrendingUp, MessageSquare, Target, Zap, Clock } from 'lucide-react';
 
 export function Results({ results, onReset }) {
-    // Checking if we have valid feedback data
-    // If results is the session object (from App.jsx setResults(response.data))
-    // then results.aiFeedback should exist.
-    // If results is just the array (fallback), we might miss overall data.
+    // If no results or feedback, show fallback
+    if (!results || !results.aiFeedback) {
+        return (
+            <div className="container" style={{ textAlign: 'center', marginTop: '4rem' }}>
+                <div className="card" style={{ padding: '3rem' }}>
+                    <h2>No interview analysis found.</h2>
+                    <button className="btn" onClick={onReset} style={{ marginTop: '1rem' }}>Back to Dashboard</button>
+                </div>
+            </div>
+        );
+    }
 
-    // We expect 'results' to be the full session object now.
+    const { aiFeedback, answers } = results;
+    const { result, strengths, weaknesses, questionReview, communication, improvementPlan } = aiFeedback;
 
     return (
-        <div className="container" style={{ textAlign: 'center', marginTop: '4rem' }}>
-            <div className="glass-panel" style={{ padding: '4rem 2rem', maxWidth: '1000px', margin: '0 auto' }}>
+        <div style={{ width: '100%', maxWidth: '1000px', margin: '2rem auto', padding: '0 1.5rem' }}>
 
-                {/* Overall Score Section */}
-                <div style={{ marginBottom: '3rem' }}>
+            {/* 1. Overall Result Header */}
+            <div className="card" style={{
+                padding: '3rem',
+                textAlign: 'center',
+                marginBottom: '2rem',
+                background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)',
+                color: 'white',
+                borderRadius: '32px',
+                boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.1)'
+            }}>
+                <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1rem' }}>
                     <div style={{
-                        background: 'linear-gradient(135deg, #fbbf24, #d97706)',
-                        width: '100px',
-                        height: '100px',
-                        borderRadius: '50%',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        margin: '0 auto 1.5rem auto',
-                        boxShadow: '0 10px 25px rgba(251, 191, 36, 0.4)',
-                        fontSize: '2.5rem',
-                        fontWeight: 'bold',
-                        color: 'white'
+                        width: '120px', height: '120px', borderRadius: '50%',
+                        background: 'rgba(255,255,255,0.1)', border: '4px solid #3b82f6',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        fontSize: '2.5rem', fontWeight: '800'
                     }}>
-                        {results.aiFeedback ? results.aiFeedback.overallScore : 0}%
+                        {result?.finalScore || 0}
                     </div>
-                    <h2 style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>Interview Analysis</h2>
-                    <p style={{ color: 'var(--text-muted)' }}>Here represents your detailed performance review.</p>
+                    <div>
+                        <h2 style={{ fontSize: '2rem', fontWeight: '800', marginBottom: '0.25rem' }}>Final Score</h2>
+                        <div style={{
+                            padding: '0.5rem 1.5rem', background: '#3b82f6',
+                            borderRadius: '20px', fontSize: '1rem', fontWeight: '700',
+                            display: 'inline-block'
+                        }}>
+                            {result?.levelAssessment?.toUpperCase() || 'ASSESSING'} READINESS
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {/* 2. Key Insights (Strengths & Weaknesses) */}
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem', marginBottom: '2rem' }}>
+                <div className="card" style={{ padding: '2rem', borderTop: '6px solid #10b981' }}>
+                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', color: '#10b981' }}>
+                        <CheckCircle size={22} /> Key Strengths
+                    </h3>
+                    <ul style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: 0 }}>
+                        {strengths?.map((s, i) => (
+                            <li key={i} style={{ display: 'flex', gap: '0.75rem', fontSize: '1.05rem', lineHeight: '1.5' }}>
+                                <div style={{ minWidth: '8px', height: '8px', borderRadius: '50%', background: '#10b981', marginTop: '0.5rem' }} />
+                                {s}
+                            </li>
+                        ))}
+                        {(!strengths || strengths.length === 0) && <p style={{ color: '#64748b' }}>No specific strengths highlighted yet.</p>}
+                    </ul>
                 </div>
 
-                {/* Detailed Scores Grid */}
-                {results.aiFeedback && (
-                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>
-                        <ScoreCard icon={<Trophy size={24} />} title="Communication" score={results.aiFeedback.communicationScore} color="#3b82f6" />
-                        <ScoreCard icon={<Trophy size={24} />} title="Technical" score={results.aiFeedback.technicalScore} color="#8b5cf6" />
-                        <ScoreCard icon={<Trophy size={24} />} title="Confidence" score={results.aiFeedback.confidenceScore} color="#10b981" />
-                        <ScoreCard icon={<Trophy size={24} />} title="Readiness" score={results.aiFeedback.readinessScore} color="#ec4899" />
-                    </div>
-                )}
+                <div className="card" style={{ padding: '2rem', borderTop: '6px solid #ef4444' }}>
+                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', color: '#ef4444' }}>
+                        <XCircle size={22} /> Critical Weaknesses
+                    </h3>
+                    <ul style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: 0 }}>
+                        {weaknesses?.map((w, i) => (
+                            <li key={i} style={{ display: 'flex', gap: '0.75rem', fontSize: '1.05rem', lineHeight: '1.5' }}>
+                                <div style={{ minWidth: '8px', height: '8px', borderRadius: '50%', background: '#ef4444', marginTop: '0.5rem' }} />
+                                {w}
+                            </li>
+                        ))}
+                        {(!weaknesses || weaknesses.length === 0) && <p style={{ color: '#64748b' }}>No critical weaknesses found. Great work!</p>}
+                    </ul>
+                </div>
+            </div>
 
-                {/* Personalized Advice */}
-                {results.aiFeedback && (
-                    <div style={{ background: 'rgba(59, 130, 246, 0.1)', padding: '1.5rem', borderRadius: '12px', marginBottom: '3rem', textAlign: 'left', borderLeft: '4px solid #3b82f6' }}>
-                        <h4 style={{ color: '#3b82f6', marginBottom: '0.5rem', fontWeight: 'bold' }}>💡 Personalized Coach Advice</h4>
-                        <p style={{ lineHeight: '1.6' }}>{results.aiFeedback.personalizedAdvice}</p>
-                    </div>
-                )}
+            {/* 3. Communication Review Dashboard */}
+            <div className="card" style={{ padding: '2.5rem', marginBottom: '2rem' }}>
+                <h3 style={{ marginBottom: '2rem', fontSize: '1.5rem', fontWeight: '700', borderBottom: '1px solid #f1f5f9', paddingBottom: '0.75rem' }}>
+                    Communication Assessment
+                </h3>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '1.5rem' }}>
+                    <CommStat label="Clarity" value={communication?.clarity} />
+                    <CommStat label="Structure" value={communication?.structure} />
+                    <CommStat label="Confidence" value={communication?.confidence} />
+                    <CommStat label="Language" value={communication?.language} />
+                </div>
+                <div style={{
+                    marginTop: '2rem', padding: '1.5rem', background: '#f8fafc',
+                    borderRadius: '16px', border: '1px solid #e2e8f0'
+                }}>
+                    <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', color: '#334155' }}>
+                        <Zap size={18} /> Pace & Hesitation Analysis
+                    </h4>
+                    <p style={{ color: '#64748b', fontSize: '1rem', lineHeight: '1.6' }}>{communication?.paceAnalysis}</p>
+                </div>
+            </div>
 
-                {/* Question Breakdown */}
-                <div style={{ textAlign: 'left' }}>
-                    <h3 style={{ marginBottom: '1.5rem', borderBottom: '1px solid var(--glass-border)', paddingBottom: '0.5rem' }}>Question Breakdown</h3>
-
-                    {results.answers && results.answers.map((ans, idx) => (
-                        <div key={idx} style={{ background: 'var(--bg-app)', padding: '1.5rem', borderRadius: '12px', marginBottom: '1.5rem' }}>
-                            <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '1rem' }}>
-                                <h4 style={{ fontWeight: '600' }}>Q{idx + 1}: {ans.questionText || "Question"}</h4>
-                                <span style={{ fontWeight: 'bold', color: ans.feedback?.score >= 70 ? '#10b981' : '#ef4444' }}>
-                                    Score: {ans.feedback?.score || 0}/100
-                                </span>
-                            </div>
-
-                            {/* Audio & Transcript */}
-                            <div style={{ marginBottom: '1rem' }}>
-                                {ans.audioUrl && <audio controls src={ans.audioUrl} style={{ width: '100%', marginBottom: '0.5rem' }} />}
-                                <p style={{ fontSize: '0.9rem', color: 'var(--text-muted)', fontStyle: 'italic', background: 'rgba(0,0,0,0.03)', padding: '0.5rem', borderRadius: '4px' }}>
-                                    "{ans.transcribedText || "No transcript available."}"
-                                </p>
-                            </div>
-
-                            {/* Feedback Details */}
-                            {ans.feedback && (
-                                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
-                                    <div>
-                                        <h5 style={{ color: '#10b981', fontSize: '0.9rem', marginBottom: '0.5rem', fontWeight: 'bold' }}>✅ Strengths</h5>
-                                        <ul style={{ fontSize: '0.9rem', paddingLeft: '1.2rem', margin: 0 }}>
-                                            {ans.feedback.strengths?.map((s, i) => <li key={i}>{s}</li>) || <li>No specific strengths noted.</li>}
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <h5 style={{ color: '#ef4444', fontSize: '0.9rem', marginBottom: '0.5rem', fontWeight: 'bold' }}>❌ Improvements</h5>
-                                        <ul style={{ fontSize: '0.9rem', paddingLeft: '1.2rem', margin: 0 }}>
-                                            {ans.feedback.weaknesses?.map((w, i) => <li key={i}>{w}</li>) || <li>No specific weaknesses noted.</li>}
-                                        </ul>
-                                    </div>
-                                    <div style={{ gridColumn: '1 / -1', marginTop: '0.5rem' }}>
-                                        <h5 style={{ color: '#f59e0b', fontSize: '0.9rem', marginBottom: '0.5rem', fontWeight: 'bold' }}>💫 Tips</h5>
-                                        <p style={{ fontSize: '0.9rem' }}>{ans.feedback.tips?.join(' ') || "Keep practicing!"}</p>
-                                    </div>
+            {/* 4. Question-by-Question Review */}
+            <div style={{ marginBottom: '3rem' }}>
+                <h3 style={{ marginBottom: '1.5rem', fontSize: '1.5rem', fontWeight: '700' }}>Detailed Question Review</h3>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    {questionReview?.map((qReview, idx) => (
+                        <div key={idx} className="card" style={{ padding: '2rem' }}>
+                            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem', gap: '2rem' }}>
+                                <h4 style={{ fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>{qReview.question}</h4>
+                                <div style={{
+                                    minWidth: '60px', height: '60px', borderRadius: '16px',
+                                    background: qReview.score >= 7 ? '#dcfce7' : qReview.score >= 4 ? '#fffbeb' : '#fee2e2',
+                                    display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                    color: qReview.score >= 7 ? '#166534' : qReview.score >= 4 ? '#92400e' : '#991b1b',
+                                    fontWeight: '800', fontSize: '1.2rem'
+                                }}>
+                                    {qReview.score}/10
                                 </div>
-                            )}
+                            </div>
+
+                            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))', gap: '1.5rem' }}>
+                                <ReviewSnippet icon={<CheckCircle size={18} color="#10b981" />} title="What was good" content={qReview.good} />
+                                <ReviewSnippet icon={<XCircle size={18} color="#ef4444" />} title="What was missing" content={qReview.wrong} />
+                            </div>
+
+                            <div style={{
+                                marginTop: '1.5rem', padding: '1.25rem', background: '#eff6ff',
+                                borderRadius: '12px', border: '1px solid #dbeafe'
+                            }}>
+                                <h5 style={{ color: '#1e40af', fontSize: '0.9rem', marginBottom: '0.4rem', fontWeight: '800', textTransform: 'uppercase' }}>Expert Advice</h5>
+                                <p style={{ color: '#1e3a8a', fontSize: '1rem' }}>{qReview.advice}</p>
+                            </div>
                         </div>
                     ))}
                 </div>
+            </div>
 
-                <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '3rem' }}>
-                    <button className="btn" onClick={onReset}>
-                        <Home size={20} style={{ marginRight: '0.5rem', verticalAlign: 'middle' }} />
-                        Back to Dashboard
-                    </button>
-                    <button className="btn btn-secondary" onClick={() => window.print()}>
-                        Save Results
-                    </button>
+            {/* 5. Actionable Improvement Plan */}
+            <div className="card" style={{ padding: '3rem', background: '#f0f9ff', border: '2px solid #bae6fd', marginBottom: '4rem' }}>
+                <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
+                    <div style={{
+                        width: '64px', height: '64px', borderRadius: '50%',
+                        background: '#bae6fd', color: '#0369a1',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center',
+                        margin: '0 auto 1rem auto'
+                    }}>
+                        <Target size={32} />
+                    </div>
+                    <h3 style={{ fontSize: '2rem', fontWeight: '800', color: '#0c4a6e' }}>The Road Ahead</h3>
+                    <p style={{ color: '#0369a1' }}>Concrete steps to take before your next real interview.</p>
                 </div>
+
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2.5rem' }}>
+                    <div>
+                        <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', color: '#0c4a6e' }}>
+                            <Zap size={20} /> MUST STUDY
+                        </h4>
+                        <ul style={{ padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                            {improvementPlan?.mustStudy?.map((item, i) => (
+                                <li key={i} style={{ background: 'white', padding: '0.8rem 1.25rem', borderRadius: '12px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>{item}</li>
+                            ))}
+                        </ul>
+                    </div>
+                    <div>
+                        <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1rem', color: '#0c4a6e' }}>
+                            <TrendingUp size={20} /> EXERCISES
+                        </h4>
+                        <ul style={{ padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
+                            {improvementPlan?.suggestedExercises?.map((item, i) => (
+                                <li key={i} style={{ background: 'white', padding: '0.8rem 1.25rem', borderRadius: '12px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>{item}</li>
+                            ))}
+                        </ul>
+                    </div>
+                </div>
+
+                <div style={{
+                    marginTop: '3rem', padding: '2rem', background: '#0369a1',
+                    borderRadius: '20px', color: 'white', textAlign: 'center'
+                }}>
+                    <h4 style={{ fontSize: '0.9rem', opacity: 0.8, textTransform: 'uppercase', letterSpacing: '2px', marginBottom: '0.5rem' }}>The #1 Priority</h4>
+                    <p style={{ fontSize: '1.4rem', fontWeight: '700' }}>"{improvementPlan?.nextFix}"</p>
+                </div>
+            </div>
+
+            {/* Footer Buttons */}
+            <div style={{ display: 'flex', gap: '1.5rem', justifyContent: 'center', marginBottom: '4rem' }}>
+                <button className="btn" onClick={onReset} style={{ padding: '1.25rem 2.5rem', display: 'flex', alignItems: 'center', gap: '0.75rem', borderRadius: '16px' }}>
+                    <Home size={22} /> Back to Dashboard
+                </button>
+                <button className="btn btn-secondary" onClick={() => window.print()} style={{ padding: '1.25rem 2.5rem', borderRadius: '16px' }}>
+                    Save Evaluation (PDF)
+                </button>
             </div>
         </div>
     );
 }
 
-function ScoreCard({ icon, title, score, color }) {
+function CommStat({ label, value }) {
     return (
-        <div style={{ background: 'var(--bg-app)', padding: '1rem', borderRadius: '12px', borderTop: `4px solid ${color}` }}>
-            <div style={{ color: color, marginBottom: '0.5rem' }}>{icon}</div>
-            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{title}</div>
-            <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>{score}%</div>
+        <div style={{ padding: '1.25rem', background: '#f8fafc', borderRadius: '16px', border: '1px solid #f1f5f9' }}>
+            <div style={{ color: '#64748b', fontSize: '0.85rem', fontWeight: '600', textTransform: 'uppercase', marginBottom: '0.5rem' }}>{label}</div>
+            <div style={{ fontSize: '1.1rem', fontWeight: '700', color: '#0f172a' }}>{value || 'Assessing...'}</div>
         </div>
     );
 }
+
+function ReviewSnippet({ icon, title, content }) {
+    return (
+        <div>
+            <h5 style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#475569', fontSize: '0.95rem', fontWeight: '700', marginBottom: '0.75rem' }}>
+                {icon} {title.toUpperCase()}
+            </h5>
+            <p style={{ color: '#64748b', fontSize: '1rem', lineHeight: '1.5' }}>{content || "No specific comments."}</p>
+        </div>
+    );
+}
+

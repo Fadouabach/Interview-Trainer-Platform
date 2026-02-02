@@ -49,13 +49,7 @@ export function Dashboard({ onStartPractice, user }) {
                         <div style={{ fontWeight: '600' }}>{user?.name}</div>
                         <div style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>Pro Plan</div>
                     </div>
-                    <div style={{ width: '48px', height: '48px', borderRadius: '50%', background: '#ddd', overflow: 'hidden' }}>
-                        <img
-                            src={user?.avatar || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.name}`}
-                            alt="Profile"
-                            style={{ width: '100%', height: '100%' }}
-                        />
-                    </div>
+
                 </div>
             </header>
 

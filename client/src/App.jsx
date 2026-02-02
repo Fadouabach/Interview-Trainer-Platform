@@ -95,7 +95,16 @@ function AuthenticatedLayout() {
   return (
     <div className="app-container" style={{ display: 'flex' }}>
       {!isImmersive && <Sidebar onLogout={logout} />}
-      <main style={{ flex: 1, marginLeft: isImmersive ? 0 : '260px', minHeight: '100vh', backgroundColor: 'var(--bg-app)' }}>
+      <main style={{
+        flex: 1,
+        marginLeft: isImmersive ? 0 : '260px',
+        minHeight: '100vh',
+        backgroundColor: isImmersive ? '#f8fafc' : 'var(--bg-app)',
+        display: isImmersive ? 'flex' : 'block',
+        alignItems: isImmersive ? 'center' : 'initial',
+        justifyContent: isImmersive ? 'center' : 'initial',
+        padding: isImmersive ? '2rem' : '0'
+      }}>
         <Routes>
           <Route path="dashboard" element={<Dashboard onStartPractice={() => navigate('/setup')} user={user} />} />
           <Route path="setup" element={
@@ -114,7 +123,6 @@ function AuthenticatedLayout() {
           <Route path="profile" element={<ProtectedRoute><Profile user={user} /></ProtectedRoute>} />
           <Route path="*" element={<Navigate to="dashboard" replace />} />
         </Routes>
-        {!isImmersive && <Footer />}
       </main>
       {processing && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', zIndex: 1000, color: 'white' }}>
@@ -130,18 +138,25 @@ function App() {
   return (
     <Router>
       <AuthProvider>
-        <Routes>
-          {/* Public Routes */}
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/login" element={<LoginPageWrapper />} />
-          <Route path="/signup" element={<SignupPageWrapper />} />
+        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+          <div style={{ flex: 1 }}>
+            <Routes>
+              {/* Public Routes */}
+              <Route path="/" element={<LandingPage />} />
+              <Route path="/login" element={<LoginPageWrapper />} />
+              <Route path="/signup" element={<SignupPageWrapper />} />
+              <Route path="/privacy" element={<div className="container" style={{ padding: '8rem 2rem' }}><h1>Privacy Policy</h1><p>Placeholder for Privacy Policy content.</p></div>} />
+              <Route path="/terms" element={<div className="container" style={{ padding: '8rem 2rem' }}><h1>Terms of Service</h1><p>Placeholder for Terms of Service content.</p></div>} />
 
-          {/* Main Application with Sidebar */}
-          <Route path="/*" element={<AuthenticatedLayout />} />
+              {/* Main Application with Sidebar */}
+              <Route path="/*" element={<AuthenticatedLayout />} />
 
-          {/* Fallback */}
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
+              {/* Fallback */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </div>
+          <Footer />
+        </div>
       </AuthProvider>
     </Router>
   );

@@ -1,9 +1,12 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import { CheckCircle, Play, Mic, FileText, ArrowRight, Star } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { CheckCircle, Play, Mic, FileText, ArrowRight, Star, X, Layout, MessageSquare, Zap, BarChart } from 'lucide-react';
 import logo from '../assets/logo.png';
 
 export function LandingPage() {
+    const [showDemo, setShowDemo] = useState(false);
+    const navigate = useNavigate();
+
     return (
         <div style={{ fontFamily: '"Inter", sans-serif', background: '#ffffff', color: '#1e293b' }}>
             {/* Navbar */}
@@ -44,14 +47,18 @@ export function LandingPage() {
                     }}>
                         Start Practicing Now <ArrowRight size={20} />
                     </Link>
-                    <a href="#demo" style={{
-                        display: 'flex', alignItems: 'center', gap: '0.5rem',
-                        background: 'white', color: '#0f172a', padding: '1rem 2rem',
-                        borderRadius: '12px', fontWeight: '600', textDecoration: 'none', fontSize: '1.1rem',
-                        border: '1px solid #e2e8f0'
-                    }}>
+                    <button
+                        onClick={() => setShowDemo(true)}
+                        style={{
+                            display: 'flex', alignItems: 'center', gap: '0.5rem',
+                            background: 'white', color: '#0f172a', padding: '1rem 2rem',
+                            borderRadius: '12px', fontWeight: '600', textDecoration: 'none', fontSize: '1.1rem',
+                            border: '1px solid #e2e8f0', cursor: 'pointer'
+                        }}
+                    >
                         <Play size={20} /> Watch Demo
-                    </a>
+                    </button>
+
                 </div>
             </header>
 
@@ -95,11 +102,7 @@ export function LandingPage() {
                 </div>
             </section>
 
-            {/* Footer */}
-            <footer style={{ background: '#0f172a', color: 'white', padding: '4rem 2rem', textAlign: 'center' }}>
-                <img src={logo} alt="Confido" style={{ height: '50px', marginBottom: '2rem', filter: 'brightness(0) invert(1)' }} />
-                <div style={{ color: '#94a3b8', marginBottom: '2rem' }}>© 2026 Confido Inc. All rights reserved.</div>
-            </footer>
+            {showDemo && <DemoModal onClose={() => setShowDemo(false)} onTryNow={() => navigate('/dashboard')} />}
         </div>
     );
 }
@@ -129,3 +132,112 @@ function ExpertCard({ name, company, role }) {
         </div>
     );
 }
+
+function DemoModal({ onClose, onTryNow }) {
+    const [step, setStep] = useState(0);
+    const steps = [
+        {
+            title: "1. Choose Your Path",
+            desc: "Select from Frontend, Backend, or Behavioral categories tailored to industry standards.",
+            icon: <Layout size={48} color="#3b82f6" />,
+            color: "#eff6ff"
+        },
+        {
+            title: "2. Real-Time Interaction",
+            desc: "Respond to AI-generated questions using your microphone. We transcribe every word.",
+            icon: <MessageSquare size={48} color="#8b5cf6" />,
+            color: "#f5f3ff"
+        },
+        {
+            title: "3. Deep AI Analysis",
+            desc: "Our AI evaluates your content, tone, and pace to give you granular feedback.",
+            icon: <Zap size={48} color="#f59e0b" />,
+            color: "#fffbeb"
+        },
+        {
+            title: "4. Track Your Growth",
+            desc: "View your readiness score and detailed performance reports on your dashboard.",
+            icon: <BarChart size={48} color="#10b981" />,
+            color: "#ecfdf5"
+        }
+    ];
+
+    useEffect(() => {
+        const timer = setInterval(() => {
+            setStep((s) => (s + 1) % steps.length);
+        }, 4000);
+        return () => clearInterval(timer);
+    }, [steps.length]);
+
+    return (
+        <div style={{
+            position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.9)',
+            backdropFilter: 'blur(8px)', zIndex: 2000, display: 'flex',
+            alignItems: 'center', justifyContent: 'center', padding: '2rem'
+        }} onClick={onClose}>
+            <div style={{
+                background: 'white', width: '100%', maxWidth: '700px',
+                borderRadius: '24px', overflow: 'hidden', position: 'relative',
+                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+            }} onClick={e => e.stopPropagation()}>
+
+                {/* Header */}
+                <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>Platform Demo</h3>
+                    <button onClick={onClose} style={{ background: '#f8fafc', border: 'none', padding: '0.5rem', borderRadius: '50%', cursor: 'pointer', color: '#64748b' }}>
+                        <X size={20} />
+                    </button>
+                </div>
+
+                {/* Animation Area */}
+                <div style={{ padding: '3rem 2rem', textAlign: 'center', minHeight: '350px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
+                    <div style={{
+                        width: '100px', height: '100px', borderRadius: '24px',
+                        background: steps[step].color, display: 'flex',
+                        alignItems: 'center', justifyContent: 'center', marginBottom: '2rem',
+                        transition: 'all 0.5s ease', transform: 'scale(1.1)'
+                    }}>
+                        {steps[step].icon}
+                    </div>
+                    <h2 style={{ fontSize: '1.75rem', fontWeight: '800', marginBottom: '1rem', color: '#0f172a', transition: 'all 0.5s ease' }}>
+                        {steps[step].title}
+                    </h2>
+                    <p style={{ fontSize: '1.1rem', color: '#64748b', lineHeight: '1.6', maxWidth: '450px', margin: '0 auto', transition: 'all 0.5s ease' }}>
+                        {steps[step].desc}
+                    </p>
+
+                    {/* Progress Dots */}
+                    <div style={{ display: 'flex', gap: '0.75rem', marginTop: '2.5rem' }}>
+                        {steps.map((_, i) => (
+                            <div key={i} onClick={() => setStep(i)} style={{
+                                width: i === step ? '24px' : '8px', height: '8px',
+                                borderRadius: '4px', background: i === step ? '#3b82f6' : '#cbd5e1',
+                                transition: 'all 0.3s ease', cursor: 'pointer'
+                            }} />
+                        ))}
+                    </div>
+                </div>
+
+                {/* Footer Actions */}
+                <div style={{ padding: '1.5rem 2rem', background: '#f8fafc', borderTop: '1px solid #f1f5f9', display: 'flex', gap: '1rem' }}>
+                    <button onClick={onTryNow} style={{
+                        flex: 1, background: '#0f172a', color: 'white',
+                        padding: '1rem', borderRadius: '12px', fontWeight: '700',
+                        border: 'none', cursor: 'pointer', fontSize: '1rem',
+                        display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem'
+                    }}>
+                        Try it now <ArrowRight size={18} />
+                    </button>
+                    <button onClick={onClose} style={{
+                        flex: 1, background: 'white', color: '#0f172a',
+                        padding: '1rem', borderRadius: '12px', fontWeight: '700',
+                        border: '1px solid #e2e8f0', cursor: 'pointer', fontSize: '1rem'
+                    }}>
+                        Close Preview
+                    </button>
+                </div>
+            </div>
+        </div>
+    );
+}
+

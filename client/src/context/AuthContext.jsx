@@ -78,9 +78,17 @@ export const AuthProvider = ({ children }) => {
     };
 
     const logout = () => {
+        // Clear all storage
+        localStorage.clear();
+        sessionStorage.clear();
+
+        // Reset state
         setToken(null);
         setUser(null);
-        localStorage.setItem('auth-token', '');
+
+        // SECURE REDIRECT: Hard reload to the landing page
+        // This clears all React memory state and prevents back-button data leaks
+        window.location.href = '/';
     };
 
     return (
