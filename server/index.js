@@ -6,6 +6,7 @@ dotenv.config();
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import { setDbConnected } from './db.js';
 
 import authRouter from './routes/auth.js';
 import usersRouter from './routes/users.js';
@@ -28,10 +29,14 @@ if (uri && !uri.includes('<your-cluster>')) {
         serverSelectionTimeoutMS: 5000, // Timeout after 5s instead of 30s
         socketTimeoutMS: 45000,
     })
-        .then(() => console.log("✅ MongoDB database connection established successfully"))
+        .then(() => {
+            console.log("✅ MongoDB database connection established successfully");
+            setDbConnected(true);
+        })
         .catch(err => {
             console.error("❌ MongoDB connection error:", err.message);
             console.log("⚠️  Server will continue in limited mode. Some features may not work.");
+            setDbConnected(false);
         });
 } else {
     console.log("⚠️ MongoDB URI is missing or invalid. Server running in FALLBACK mode (Local JSON).");
@@ -50,7 +55,7 @@ app.get('/', (req, res) => {
     res.send('Interview Trainer API is running');
 });
 
-const PORT = process.env.PORT || 5001;
+const PORT = process.env.PORT || 5002;
 app.listen(PORT, () => {
     console.log(`Server is running on port: ${PORT}`);
 });

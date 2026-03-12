@@ -1,8 +1,10 @@
 import express from 'express';
-import User from '../models/User.js';
+import { getModels } from '../db.js';
 import jwt from 'jsonwebtoken';
 
 const router = express.Router();
+
+const getUserModel = () => getModels().User;
 
 // Middleware to verify token
 const auth = (req, res, next) => {
@@ -25,8 +27,10 @@ const auth = (req, res, next) => {
 // Get User Profile
 router.get('/profile', auth, async (req, res) => {
     try {
-        const user = await User.findById(req.user).select('-password');
-        res.json(user);
+        const user = await getUserModel().findById(req.user);
+        if (!user) return res.status(404).json({ msg: "User not found" });
+        const { password, ...sanitizedUser } = user;
+        res.json(sanitizedUser);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -37,7 +41,7 @@ router.put('/profile', auth, async (req, res) => {
     try {
         const { name, bio, field, skills, avatar } = req.body;
 
-        const user = await User.findById(req.user);
+        const user = await getUserModel().findById(req.user);
         if (!user) return res.status(404).json({ msg: "User not found" });
 
         if (name) user.name = name;

@@ -10,7 +10,7 @@ export function Dashboard({ onStartPractice, user }) {
     React.useEffect(() => {
         const fetchStats = async () => {
             try {
-                const res = await axios.get(`http://localhost:5001/api/dashboard/${user.id}`);
+                const res = await axios.get(`http://localhost:5002/api/dashboard/${user.id}`);
                 setStats(res.data);
             } catch (err) {
                 console.error("Error fetching dashboard stats", err);
@@ -45,9 +45,8 @@ export function Dashboard({ onStartPractice, user }) {
                     <p style={{ color: 'var(--text-muted)' }}>Ready to ace your next interview?</p>
                 </div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
-                    <div style={{ textAlign: 'right' }}>
+                    <div style={{ textAlign: 'right', display: 'flex', alignItems: 'center' }}>
                         <div style={{ fontWeight: '600' }}>{user?.name}</div>
-                        <div style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>Pro Plan</div>
                     </div>
 
                 </div>

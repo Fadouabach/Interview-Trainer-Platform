@@ -1,10 +1,12 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import User from '../models/User.js';
 import mongoose from 'mongoose';
+import { getModels } from '../db.js';
 
 const router = express.Router();
+
+const getUserModel = () => getModels().User;
 
 // Register
 router.post('/register', async (req, res) => {
@@ -18,7 +20,7 @@ router.post('/register', async (req, res) => {
         if (password.length < 6)
             return res.status(400).json({ msg: "Password must be at least 6 characters." });
 
-        const existingUser = await User.findOne({ email });
+        const existingUser = await getUserModel().findOne({ email });
         if (existingUser)
             return res.status(400).json({ msg: "An account with this email already exists." });
 
@@ -26,7 +28,7 @@ router.post('/register', async (req, res) => {
         const salt = await bcrypt.genSalt();
         const passwordHash = await bcrypt.hash(password, salt);
 
-        const newUser = new User({
+        const newUser = new (getUserModel())({
             name,
             email,
             password: passwordHash,
@@ -50,7 +52,7 @@ router.post('/login', async (req, res) => {
         if (!email || !password)
             return res.status(400).json({ msg: "Not all fields have been entered." });
 
-        const user = await User.findOne({ email });
+        const user = await getUserModel().findOne({ email });
         if (!user)
             return res.status(400).json({ msg: "No account with this email has been registered." });
 
@@ -83,7 +85,7 @@ router.post('/tokenIsValid', async (req, res) => {
         const verified = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret');
         if (!verified) return res.json(false);
 
-        const user = await User.findById(verified.id);
+        const user = await getUserModel().findById(verified.id);
         if (!user) return res.json(false);
 
         return res.json(true);
@@ -99,7 +101,7 @@ router.get('/', async (req, res) => {
 
     try {
         const verified = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret');
-        const user = await User.findById(verified.id);
+        const user = await getUserModel().findById(verified.id);
         res.json({
             id: user._id,
             name: user.name,

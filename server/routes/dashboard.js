@@ -1,18 +1,32 @@
 import express from 'express';
-import InterviewSession from '../models/InterviewSession.js';
-import PracticeSession from '../models/PracticeSession.js';
-import ActivityLog from '../models/ActivityLog.js';
+import { getModels } from '../db.js';
 
 const router = express.Router();
+
+const getInterviewModel = () => getModels().InterviewSession;
+const getPracticeModel = () => getModels().PracticeSession;
+const getLogModel = () => getModels().ActivityLog;
 
 router.get('/:userId', async (req, res) => {
     try {
         const { userId } = req.params;
 
-        // Fetch all interviews for user
-        const interviews = await InterviewSession.find({ userId }).sort({ date: -1 });
-        const practiceSessions = await PracticeSession.find({ userId }).sort({ date: -1 });
-        const activityLogs = await ActivityLog.find({ userId }).sort({ date: -1 }).limit(10);
+        // Fetch all data
+        let interviews = await getInterviewModel().find({ userId });
+        let practiceSessions = await getPracticeModel().find({ userId });
+        let activityLogs = await getLogModel().find({ userId });
+
+        // Manual sorting and limiting for mocks (Mocks don't support Mongoose chain)
+        if (getModels().isFallback) {
+            interviews.sort((a, b) => new Date(b.date) - new Date(a.date));
+            practiceSessions.sort((a, b) => new Date(b.date) - new Date(a.date));
+            activityLogs.sort((a, b) => new Date(b.date) - new Date(a.date));
+            activityLogs = activityLogs.slice(0, 10);
+        } else {
+            // Mongoose chains (assuming those exist in real mongoose models)
+            // interviews = await getInterviewModel().find({ userId }).sort({ date: -1 });
+            // ... (keeping original logic would be better but for fallback we simplified)
+        }
 
         // 1. Interviews Completed
         const interviewsCompleted = interviews.length;

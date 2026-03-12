@@ -21,7 +21,7 @@ export function ExpertSessions() {
     useEffect(() => {
         const fetchExperts = async () => {
             try {
-                const res = await axios.get('http://localhost:5001/api/experts');
+                const res = await axios.get('http://localhost:5002/api/experts');
                 setExperts(res.data);
             } catch (err) {
                 console.error("Failed to fetch experts", err);
@@ -37,7 +37,7 @@ export function ExpertSessions() {
         setMsg('');
         try {
             const token = localStorage.getItem('auth-token');
-            await axios.post('http://localhost:5001/api/bookings', {
+            await axios.post('http://localhost:5002/api/bookings', {
                 expertId: selectedExpert._id,
                 ...bookingData
             }, {

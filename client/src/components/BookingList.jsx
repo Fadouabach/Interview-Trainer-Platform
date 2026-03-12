@@ -14,7 +14,7 @@ export function BookingList({ role }) {
             try {
                 const token = localStorage.getItem('auth-token');
                 const endpoint = role === 'expert' ? '/api/bookings/expert-bookings' : '/api/bookings/my-bookings';
-                const res = await axios.get(`http://localhost:5001${endpoint}`, {
+                const res = await axios.get(`http://localhost:5002${endpoint}`, {
                     headers: { 'x-auth-token': token }
                 });
                 setBookings(res.data);
@@ -30,7 +30,7 @@ export function BookingList({ role }) {
     const handleFeedback = async () => {
         try {
             const token = localStorage.getItem('auth-token');
-            await axios.put(`http://localhost:5001/api/bookings/${feedbackData.id}/feedback`,
+            await axios.put(`http://localhost:5002/api/bookings/${feedbackData.id}/feedback`,
                 { feedback: feedbackData.text },
                 { headers: { 'x-auth-token': token } }
             );
@@ -45,7 +45,7 @@ export function BookingList({ role }) {
     const handleRate = async () => {
         try {
             const token = localStorage.getItem('auth-token');
-            await axios.put(`http://localhost:5001/api/bookings/${ratingData.id}/rate`,
+            await axios.put(`http://localhost:5002/api/bookings/${ratingData.id}/rate`,
                 { rating: ratingData.rating, review: ratingData.review },
                 { headers: { 'x-auth-token': token } }
             );

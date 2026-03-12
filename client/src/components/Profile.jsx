@@ -20,7 +20,7 @@ export function Profile({ user }) {
         setMsg('');
         try {
             const token = localStorage.getItem('auth-token');
-            const res = await axios.put('http://localhost:5001/api/users/profile', formData, {
+            const res = await axios.put('http://localhost:5002/api/users/profile', formData, {
                 headers: { 'x-auth-token': token }
             });
             setMsg('Profile updated successfully!');

@@ -22,6 +22,16 @@ class UserMock {
         this.skills = this.skills || [];
     }
 
+    static async find(query = {}) {
+        const users = this._getAll();
+        return users.filter(u => {
+            for (let key in query) {
+                if (u[key] !== query[key]) return false;
+            }
+            return true;
+        });
+    }
+
     static async findOne(query) {
         const users = this._getAll();
         return users.find(u => u.email === query.email) || null;

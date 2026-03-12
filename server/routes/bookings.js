@@ -1,9 +1,11 @@
 import express from 'express';
-import Booking from '../models/Booking.js';
-import User from '../models/User.js';
+import { getModels } from '../db.js';
 import jwt from 'jsonwebtoken';
 
 const router = express.Router();
+
+const getBookingModel = () => getModels().Booking;
+const getUserModel = () => getModels().User;
 
 // Middleware to verify token
 const auth = (req, res, next) => {
@@ -22,7 +24,7 @@ const auth = (req, res, next) => {
 router.post('/', auth, async (req, res) => {
     try {
         const { expertId, sessionType, date, time, goal } = req.body;
-        const newBooking = new Booking({
+        const newBooking = new (getBookingModel())({
             userId: req.user,
             expertId,
             sessionType,
@@ -40,7 +42,20 @@ router.post('/', auth, async (req, res) => {
 // Get user's bookings
 router.get('/my-bookings', auth, async (req, res) => {
     try {
-        const bookings = await Booking.find({ userId: req.user }).populate('expertId', 'name title company avatar');
+        let query = getBookingModel().find({ userId: req.user });
+
+        // Mocks don't support .populate()
+        if (getModels().isFallback) {
+            const bookings = await query;
+            // Manual "populate" for fallback
+            const populatedBookings = await Promise.all(bookings.map(async b => {
+                const expert = await getUserModel().findById(b.expertId);
+                return { ...b, expertId: expert };
+            }));
+            return res.json(populatedBookings);
+        }
+
+        const bookings = await query.populate('expertId', 'name title company avatar');
         res.json(bookings);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -50,7 +65,18 @@ router.get('/my-bookings', auth, async (req, res) => {
 // Get expert's bookings
 router.get('/expert-bookings', auth, async (req, res) => {
     try {
-        const bookings = await Booking.find({ expertId: req.user }).populate('userId', 'name email avatar');
+        let query = getBookingModel().find({ expertId: req.user });
+
+        if (getModels().isFallback) {
+            const bookings = await query;
+            const populatedBookings = await Promise.all(bookings.map(async b => {
+                const user = await getUserModel().findById(b.userId);
+                return { ...b, userId: user };
+            }));
+            return res.json(populatedBookings);
+        }
+
+        const bookings = await query.populate('userId', 'name email avatar');
         res.json(bookings);
     } catch (err) {
         res.status(500).json({ error: err.message });
@@ -61,7 +87,7 @@ router.get('/expert-bookings', auth, async (req, res) => {
 router.put('/:id/feedback', auth, async (req, res) => {
     try {
         const { feedback } = req.body;
-        const booking = await Booking.findById(req.params.id);
+        const booking = await getBookingModel().findById(req.params.id);
         if (!booking) return res.status(404).json({ msg: "Booking not found" });
         if (booking.expertId.toString() !== req.user) return res.status(401).json({ msg: "Unauthorized" });
 
@@ -78,7 +104,7 @@ router.put('/:id/feedback', auth, async (req, res) => {
 router.put('/:id/rate', auth, async (req, res) => {
     try {
         const { rating, review } = req.body;
-        const booking = await Booking.findById(req.params.id);
+        const booking = await getBookingModel().findById(req.params.id);
         if (!booking) return res.status(404).json({ msg: "Booking not found" });
         if (booking.userId.toString() !== req.user) return res.status(401).json({ msg: "Unauthorized" });
 
@@ -87,9 +113,11 @@ router.put('/:id/rate', auth, async (req, res) => {
         await booking.save();
 
         // Update expert's average rating
-        const expert = await User.findById(booking.expertId);
-        const allRatings = await Booking.find({ expertId: booking.expertId, userRating: { $exists: true } });
-        const avg = allRatings.reduce((acc, curr) => acc + curr.userRating, 0) / allRatings.length;
+        const expert = await getUserModel().findById(booking.expertId);
+        const allRatings = await getBookingModel().find({ expertId: booking.expertId });
+        // Simple filter for mocks if needed, but here we just take all that have ratings
+        const ratedBookings = allRatings.filter(b => b.userRating);
+        const avg = ratedBookings.length > 0 ? ratedBookings.reduce((acc, curr) => acc + curr.userRating, 0) / ratedBookings.length : 0;
 
         expert.rating = parseFloat(avg.toFixed(1));
         expert.reviewsCount = allRatings.length;
