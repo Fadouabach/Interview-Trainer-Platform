@@ -32,14 +32,20 @@ export const AuthProvider = ({ children }) => {
                     });
                     setUser(userRes.data);
                     setToken(currentToken);
+                    localStorage.setItem('user-role', userRes.data.role || 'user');
+                    localStorage.setItem('user-data', JSON.stringify(userRes.data));
                 } else {
                     localStorage.setItem('auth-token', '');
+                    localStorage.setItem('user-role', '');
+                    localStorage.setItem('user-data', '');
                     setToken(null);
                     setUser(null);
                 }
             } catch (err) {
                 console.error("Auth Check Error", err);
                 localStorage.setItem('auth-token', '');
+                localStorage.setItem('user-role', '');
+                localStorage.setItem('user-data', '');
             }
 
             setLoading(false);
@@ -55,7 +61,9 @@ export const AuthProvider = ({ children }) => {
             setUser(loginRes.data.user);
             setToken(loginRes.data.token);
             localStorage.setItem('auth-token', loginRes.data.token);
-            return { success: true };
+            localStorage.setItem('user-role', loginRes.data.user.role || 'user');
+            localStorage.setItem('user-data', JSON.stringify(loginRes.data.user));
+            return { success: true, user: loginRes.data.user };
         } catch (err) {
             return {
                 success: false,

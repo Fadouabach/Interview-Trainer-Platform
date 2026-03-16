@@ -9,6 +9,8 @@ import PracticeSession from './models/PracticeSession.js';
 import PracticeSessionMock from './models/PracticeSessionMock.js';
 import ActivityLog from './models/ActivityLog.js';
 import ActivityLogMock from './models/ActivityLogMock.js';
+import ExpertRequest from './models/ExpertRequest.js';
+import ExpertRequestMock from './models/ExpertRequestMock.js';
 
 let isConnected = false;
 
@@ -28,6 +30,7 @@ export const getModels = () => {
             Booking: BookingMock,
             PracticeSession: PracticeSessionMock,
             ActivityLog: ActivityLogMock,
+            ExpertRequest: ExpertRequestMock,
             isFallback: true
         };
     }
@@ -38,6 +41,7 @@ export const getModels = () => {
         Booking,
         PracticeSession,
         ActivityLog,
+        ExpertRequest,
         isFallback: false
     };
 };

@@ -1,23 +1,44 @@
 [
   {
-    "name": "fadoua",
-    "email": "fadouaba.97@gmail.com",
-    "password": "$2b$10$KKkuCadBOKZSHD4H9SEooe4NX32qqBgyHYS1dwdlhezlx8WI1VD2W",
-    "role": "user",
-    "_id": "a39hgtlqk",
-    "createdAt": "2026-02-01T14:02:48.339Z",
+    "_id": "admin123",
+    "name": "Admin User",
+    "email": "admin@test.com",
+    "password": "$2a$10$lxqIFmP/ZyyTssym6tqwG.A7nJj.6WWmeW9MkfqhRrFQnbpnE4Vr2",
+    "role": "admin",
+    "createdAt": "2026-03-16T10:21:39.741Z",
     "avatar": "",
-    "bio": "hgfddh",
-    "skills": [],
-    "field": "bbbb"
+    "bio": "",
+    "skills": []
   },
   {
-    "name": "gggg",
-    "email": "fadgvg@gmail.com",
-    "password": "$2b$10$S5XBoKGZO.EPMQwaBJK31eqv/3cej8q8oxurz3Kmn36NF4nUMWeD6",
+    "_id": "expert123",
+    "name": "Expert User",
+    "email": "expert@test.com",
+    "password": "$2a$10$lxqIFmP/ZyyTssym6tqwG.A7nJj.6WWmeW9MkfqhRrFQnbpnE4Vr2",
+    "role": "expert",
+    "createdAt": "2026-03-16T10:21:39.743Z",
+    "avatar": "",
+    "bio": "",
+    "skills": []
+  },
+  {
+    "_id": "user123",
+    "name": "Normal User",
+    "email": "normal@test.com",
+    "password": "$2a$10$lxqIFmP/ZyyTssym6tqwG.A7nJj.6WWmeW9MkfqhRrFQnbpnE4Vr2",
     "role": "user",
-    "_id": "6537qkqq7",
-    "createdAt": "2026-02-01T15:35:44.209Z",
+    "createdAt": "2026-03-16T10:21:39.743Z",
+    "avatar": "",
+    "bio": "",
+    "skills": []
+  },
+  {
+    "name": "fad",
+    "email": "fadoua@gmail.com",
+    "password": "$2a$10$qQF4mkkAgchS9D6zns3QN.XSVtGpnKXFUo7/sbAot2PMjIV4/kg9e",
+    "role": "user",
+    "_id": "pioz3ue3s",
+    "createdAt": "2026-03-16T10:23:58.205Z",
     "avatar": "",
     "bio": "",
     "skills": []

@@ -13,6 +13,14 @@ import { Setup } from './components/Setup';
 import { Session } from './components/Session';
 import { Results } from './components/Results';
 import { Footer } from './components/Footer';
+import { AdminOverview } from './components/AdminOverview';
+import { AdminUsers } from './components/AdminUsers';
+import { AdminExperts } from './components/AdminExperts';
+import { AdminInterviews } from './components/AdminInterviews';
+import { AdminFeedback } from './components/AdminFeedback';
+import { AdminSettings } from './components/AdminSettings';
+import { AdminExpertRequests } from './components/AdminExpertRequests';
+import { ExpertDashboard } from './components/ExpertDashboard';
 
 // Pages
 import { Login } from './pages/Login';
@@ -29,6 +37,26 @@ function ProtectedRoute({ children }) {
   if (!user) {
     // Redirect to login but save the attempted location
     return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  return children;
+}
+
+// Role Protected Route Wrapper
+function RoleProtectedRoute({ children, allowedRoles }) {
+  const { user, loading } = useAuth();
+  const location = useLocation();
+
+  if (loading) return <div className="loading-screen">Loading...</div>;
+
+  if (!user) {
+    return <Navigate to="/login" state={{ from: location }} replace />;
+  }
+
+  if (!allowedRoles.includes(user.role)) {
+     if (user.role === 'admin') return <Navigate to="/admin/dashboard" replace />;
+     if (user.role === 'expert') return <Navigate to="/expert/dashboard" replace />;
+     return <Navigate to="/dashboard" replace />;
   }
 
   return children;
@@ -106,7 +134,20 @@ function AuthenticatedLayout() {
         padding: isImmersive ? '2rem' : '0'
       }}>
         <Routes>
-          <Route path="dashboard" element={<Dashboard onStartPractice={() => navigate('/setup')} user={user} />} />
+          <Route path="dashboard" element={<RoleProtectedRoute allowedRoles={['user']}><Dashboard onStartPractice={() => navigate('/setup')} user={user} /></RoleProtectedRoute>} />
+          
+          {/* Admin Routes */}
+          <Route path="admin/dashboard" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminOverview user={user} /></RoleProtectedRoute>} />
+          <Route path="admin/users" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminUsers user={user} /></RoleProtectedRoute>} />
+          <Route path="admin/experts" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminExperts user={user} /></RoleProtectedRoute>} />
+          <Route path="admin/interviews" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminInterviews user={user} /></RoleProtectedRoute>} />
+          <Route path="admin/feedback" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminFeedback user={user} /></RoleProtectedRoute>} />
+          <Route path="admin/expert-requests" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminExpertRequests user={user} /></RoleProtectedRoute>} />
+          <Route path="admin/settings" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminSettings user={user} /></RoleProtectedRoute>} />
+          
+          {/* Expert Routes */}
+          <Route path="expert/dashboard" element={<RoleProtectedRoute allowedRoles={['expert']}><ExpertDashboard user={user} /></RoleProtectedRoute>} />
+          
           <Route path="setup" element={
             <ProtectedRoute>
               <div className="container" style={{ marginTop: '4rem' }}>
@@ -121,7 +162,13 @@ function AuthenticatedLayout() {
           <Route path="results" element={<ProtectedRoute><Results results={results} onReset={reset} /></ProtectedRoute>} />
           <Route path="experts" element={<ExpertSessions />} />
           <Route path="profile" element={<ProtectedRoute><Profile user={user} /></ProtectedRoute>} />
-          <Route path="*" element={<Navigate to="dashboard" replace />} />
+          <Route path="*" element={
+            <ProtectedRoute>
+              {user?.role === 'admin' ? <Navigate to="/admin/dashboard" replace /> : 
+               user?.role === 'expert' ? <Navigate to="/expert/dashboard" replace /> : 
+               <Navigate to="/dashboard" replace />}
+            </ProtectedRoute>
+          } />
         </Routes>
       </main>
       {processing && (

@@ -1,0 +1,11 @@
+[
+  {
+    "_id": "req1",
+    "userId": "user123",
+    "domain": "Frontend Development",
+    "bio": "I am a senior React developer with 10 years of experience.",
+    "experience": "10 years",
+    "status": "pending",
+    "createdAt": "2026-03-16T12:26:20.146Z"
+  }
+]

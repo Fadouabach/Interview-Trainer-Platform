@@ -24,7 +24,14 @@ export function Login({ setView }) {
         } else {
             // Success! Navigate to the intended destination or dashboard
             if (navigate) {
-                navigate(from, { replace: true });
+                if (from === '/dashboard') {
+                    // Default redirect based on role
+                    if (res.user?.role === 'admin') navigate('/admin/dashboard', { replace: true });
+                    else if (res.user?.role === 'expert') navigate('/expert/dashboard', { replace: true });
+                    else navigate('/dashboard', { replace: true });
+                } else {
+                    navigate(from, { replace: true });
+                }
             }
         }
     };

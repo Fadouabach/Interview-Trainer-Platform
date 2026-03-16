@@ -22,7 +22,11 @@ export function Signup({ setView }) {
         if (!res.success) {
             setError(res.message);
         } else {
-            if (navigate) navigate('/dashboard');
+            if (navigate) {
+                if (res.user?.role === 'admin') navigate('/admin/dashboard', { replace: true });
+                else if (res.user?.role === 'expert') navigate('/expert/dashboard', { replace: true });
+                else navigate('/dashboard', { replace: true });
+            }
         }
     };
 

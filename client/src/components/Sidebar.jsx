@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { LayoutDashboard, PlayCircle, Users, BarChart2, User, LogOut } from 'lucide-react';
+import { LayoutDashboard, PlayCircle, Users, BarChart2, User, LogOut, Shield } from 'lucide-react';
 import logo from '../assets/logo.png';
 import { useAuth } from '../context/AuthContext';
 
@@ -10,13 +10,32 @@ export function Sidebar({ onLogout }) {
     const currentPath = location.pathname.substring(1) || 'dashboard'; // remove leading slash
 
     const { user } = useAuth();
-    const menuItems = [
-        { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
-        { id: 'setup', label: 'Practice Interview', icon: PlayCircle, path: '/setup' },
-        { id: 'experts', label: 'Expert Sessions', icon: Users, path: '/experts' },
-        { id: 'results', label: 'My Progress', icon: BarChart2, path: '/results' },
-        ...(user ? [{ id: 'profile', label: 'Profile', icon: User, path: '/profile' }] : []),
-    ];
+    
+    let menuItems = [];
+    if (!user || user.role === 'user') {
+        menuItems = [
+            { id: 'dashboard', label: 'Dashboard', icon: LayoutDashboard, path: '/dashboard' },
+            { id: 'setup', label: 'Practice Interview', icon: PlayCircle, path: '/setup' },
+            { id: 'experts', label: 'Expert Sessions', icon: Users, path: '/experts' },
+            { id: 'results', label: 'My Progress', icon: BarChart2, path: '/results' },
+            ...(user ? [{ id: 'profile', label: 'Profile', icon: User, path: '/profile' }] : []),
+        ];
+    } else if (user.role === 'admin') {
+        menuItems = [
+            { id: 'dashboard', label: 'Overview', icon: LayoutDashboard, path: '/admin/dashboard' },
+            { id: 'users', label: 'Users', icon: Users, path: '/admin/users' },
+            { id: 'expert-requests', label: 'Expert Requests', icon: Shield, path: '/admin/expert-requests' },
+            { id: 'experts', label: 'Experts', icon: Users, path: '/admin/experts' },
+            { id: 'interviews', label: 'Interviews', icon: BarChart2, path: '/admin/interviews' },
+            { id: 'feedback', label: 'Feedback', icon: PlayCircle, path: '/admin/feedback' },
+            { id: 'settings', label: 'Settings', icon: User, path: '/admin/settings' },
+        ];
+    } else if (user.role === 'expert') {
+        menuItems = [
+            { id: 'dashboard', label: 'Expert Dashboard', icon: LayoutDashboard, path: '/expert/dashboard' },
+            { id: 'profile', label: 'Profile', icon: User, path: '/profile' }
+        ];
+    }
 
     // Helper to check active state
     const isActiveVal = (item) => {

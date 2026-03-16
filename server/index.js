@@ -6,7 +6,12 @@ dotenv.config();
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import { setDbConnected } from './db.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 import authRouter from './routes/auth.js';
 import usersRouter from './routes/users.js';
@@ -14,12 +19,14 @@ import interviewsRouter from './routes/interviews.js';
 import dashboardRouter from './routes/dashboard.js';
 import expertsRouter from './routes/experts.js';
 import bookingsRouter from './routes/bookings.js';
+import adminRouter from './routes/admin.js';
 
 const app = express();
 
 // Middleware
 app.use(cors());
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Database Connection
 const uri = process.env.MONGO_URI;
@@ -49,6 +56,7 @@ app.use('/api/interviews', interviewsRouter);
 app.use('/api/dashboard', dashboardRouter);
 app.use('/api/experts', expertsRouter);
 app.use('/api/bookings', bookingsRouter);
+app.use('/api/admin', adminRouter);
 
 // Basic Route
 app.get('/', (req, res) => {
