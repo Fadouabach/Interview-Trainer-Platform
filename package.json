@@ -5,7 +5,8 @@
     "type": "module",
     "scripts": {
         "dev": "node start-dev.js",
-        "install-all": "npm install && cd client && npm install && cd ../server && npm install"
+        "install-all": "npm install && cd client && npm install && cd ../server && npm install",
+        "test": "node test_db.js"
     },
     "dependencies": {
         "git-filter-repo": "^0.0.30"
