@@ -1,10 +1,13 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Play, TrendingUp, Clock, Calendar } from 'lucide-react';
+import { Play, TrendingUp, Clock, Calendar, Video, XCircle, Shield, CheckCircle } from 'lucide-react';
 
 export function Dashboard({ onStartPractice, user }) {
     const [stats, setStats] = React.useState(null);
     const [loading, setLoading] = React.useState(true);
+    const [showVideoCall, setShowVideoCall] = useState(false);
+    const [videoCallConfig, setVideoCallConfig] = useState(null);
+    
     const firstName = user?.name ? user.name.split(' ')[0] : 'User';
 
     React.useEffect(() => {
@@ -34,7 +37,67 @@ export function Dashboard({ onStartPractice, user }) {
         practiceTime: '0h 0m',
         avgScore: '0%',
         readinessScore: '0%',
-        recentActivity: []
+        recentActivity: [],
+        expertRequestStatus: null,
+        expertRequestId: null
+    };
+
+    const openVideoCall = (type, id, room) => {
+        setVideoCallConfig({ type, id, room });
+        setShowVideoCall(true);
+    };
+
+    const VideoCallModal = ({ config, onClose }) => {
+        const jitsiContainerRef = useRef(null);
+
+        useEffect(() => {
+            if (!config || !window.JitsiMeetExternalAPI) return;
+
+            const domain = 'meet.jit.si';
+            const roomName = config.type === 'verification' 
+                ? `Confido_Verification_${config.id}`
+                : config.room;
+
+            const options = {
+                roomName: roomName,
+                width: '100%',
+                height: 500,
+                parentNode: jitsiContainerRef.current,
+                userInfo: {
+                    displayName: user.name || 'Candidate'
+                },
+                interfaceConfigOverwrite: {
+                    TILE_VIEW_MAX_COLUMNS: 2
+                }
+            };
+            const api = new window.JitsiMeetExternalAPI(domain, options);
+
+            return () => api.dispose();
+        }, [config]);
+
+        return (
+            <div style={{
+                position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                zIndex: 10000, padding: '1rem'
+            }}>
+                <div style={{
+                    background: 'white', borderRadius: '1.5rem', width: '100%', maxWidth: '900px',
+                    overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)'
+                }}>
+                    <div style={{ padding: '1.25rem 1.5rem', background: '#1e293b', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                            <Video size={20} />
+                            <h3 style={{ fontSize: '1.1rem', fontWeight: 600 }}>{config?.type === 'verification' ? 'Expert Verification Call' : 'Expert Interview Session'}</h3>
+                        </div>
+                        <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}>
+                            <XCircle size={24} />
+                        </button>
+                    </div>
+                    <div ref={jitsiContainerRef} style={{ background: '#000', height: '500px' }} />
+                </div>
+            </div>
+        );
     };
 
     return (
@@ -51,6 +114,93 @@ export function Dashboard({ onStartPractice, user }) {
 
                 </div>
             </header>
+
+            {/* Expert Verification Banner */}
+            {dashboardData.expertRequestStatus === 'under_review' && (
+                <div style={{
+                    background: 'linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%)',
+                    borderRadius: '1.25rem', padding: '1.5rem 2rem', marginBottom: '2.5rem',
+                    color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    boxShadow: '0 10px 25px -5px rgba(79,70,229,0.4)',
+                    animation: 'pulse-subtle 2s infinite ease-in-out'
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                        <div style={{
+                            width: '56px', height: '56px', borderRadius: '1rem',
+                            background: 'rgba(255,255,255,0.2)', display: 'flex',
+                            alignItems: 'center', justifyContent: 'center'
+                        }}>
+                            <Video size={28} color="white" />
+                        </div>
+                        <div>
+                            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '0.2rem' }}>Verification Interview in Progress</h3>
+                            <p style={{ opacity: 0.9, fontSize: '0.95rem' }}>An administrator is waiting to verify your expert profile.</p>
+                        </div>
+                    </div>
+                    <button
+                        onClick={() => openVideoCall('verification', dashboardData.expertRequestId)}
+                        className="btn"
+                        style={{
+                            background: 'white', color: '#4f46e5',
+                            padding: '0.8rem 1.75rem', fontWeight: 700,
+                            borderRadius: '0.75rem', border: 'none'
+                        }}
+                    >
+                        Join Video Call
+                    </button>
+                </div>
+            )}
+
+            {/* Live Interview Session Call Banner */}
+            {dashboardData.activeInterviewCall && (
+                <div style={{
+                    background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
+                    borderRadius: '1.25rem', padding: '1.5rem 2rem', marginBottom: '2.5rem',
+                    color: 'white', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+                    boxShadow: '0 10px 25px -5px rgba(16,185,129,0.4)',
+                    animation: 'pulse-subtle 2s infinite ease-in-out'
+                }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
+                        <div style={{
+                            width: '56px', height: '56px', borderRadius: '1rem',
+                            background: 'rgba(255,255,255,0.2)', display: 'flex',
+                            alignItems: 'center', justifyContent: 'center'
+                        }}>
+                            <Video size={28} color="white" />
+                        </div>
+                        <div>
+                            <h3 style={{ fontSize: '1.2rem', fontWeight: 700, marginBottom: '0.2rem' }}>Expert Interview in Progress</h3>
+                            <p style={{ opacity: 0.9, fontSize: '0.95rem' }}>An expert is waiting for you in a live video session.</p>
+                        </div>
+                    </div>
+                    <button
+                        onClick={() => openVideoCall('interview', dashboardData.activeInterviewCall.sessionId, dashboardData.activeInterviewCall.roomName)}
+                        className="btn"
+                        style={{
+                            background: 'white', color: '#059669',
+                            padding: '0.8rem 1.75rem', fontWeight: 700,
+                            borderRadius: '0.75rem', border: 'none'
+                        }}
+                    >
+                        Join Interview
+                    </button>
+                </div>
+            )}
+
+            {dashboardData.expertRequestStatus === 'pending' && (
+                <div style={{
+                    background: '#f8fafc', border: '1px solid #e2e8f0',
+                    borderRadius: '1.25rem', padding: '1.25rem 2rem', marginBottom: '2.5rem',
+                    display: 'flex', alignItems: 'center', gap: '1rem'
+                }}>
+                    <Shield size={20} color="#64748b" />
+                    <span style={{ fontSize: '0.95rem', color: '#64748b' }}>
+                        Your expert application is **Pending Review**. We will notify you when an interview is scheduled.
+                    </span>
+                </div>
+            )}
+
+            {showVideoCall && <VideoCallModal config={videoCallConfig} onClose={() => setShowVideoCall(false)} />}
 
             {/* Stats Grid */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))', gap: '1.5rem', marginBottom: '3rem' }}>

@@ -18,6 +18,7 @@ import usersRouter from './routes/users.js';
 import interviewsRouter from './routes/interviews.js';
 import dashboardRouter from './routes/dashboard.js';
 import expertsRouter from './routes/experts.js';
+import expertRouter from './routes/expert.js';
 import bookingsRouter from './routes/bookings.js';
 import adminRouter from './routes/admin.js';
 
@@ -55,8 +56,10 @@ app.use('/api/users', usersRouter);
 app.use('/api/interviews', interviewsRouter);
 app.use('/api/dashboard', dashboardRouter);
 app.use('/api/experts', expertsRouter);
+app.use('/api/expert', expertRouter);
 app.use('/api/bookings', bookingsRouter);
 app.use('/api/admin', adminRouter);
+app.use('/api', expertRouter); // Support for /api/meeting/:expertId
 
 // Basic Route
 app.get('/', (req, res) => {

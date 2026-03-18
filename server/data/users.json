@@ -18,8 +18,31 @@
     "role": "expert",
     "createdAt": "2026-03-16T10:21:39.743Z",
     "avatar": "",
-    "bio": "",
-    "skills": []
+    "bio": "Senior Cloud Architect with 15+ years of experience in AWS, GCP, and Azure. Specialized in scalable microservices and Kubernetes.",
+    "skills": [
+      "AWS",
+      "Kubernetes",
+      "Terraform",
+      "Go",
+      "System Design"
+    ],
+    "domain": "Cloud Computing",
+    "field": "Cloud Computing",
+    "title": "Senior Cloud Architect",
+    "company": "Cloud Solutions Inc.",
+    "location": "San Francisco, CA",
+    "experience": "15 years",
+    "linkedinUrl": "https://linkedin.com/in/expert-user",
+    "githubUrl": "https://github.com/expert-user",
+    "portfolioUrl": "https://expert-user.dev",
+    "price": 120,
+    "sessionTypes": [
+      "Mock Interview",
+      "Architecture Review",
+      "Career Coaching"
+    ],
+    "rating": 4.9,
+    "reviewsCount": 28
   },
   {
     "_id": "user123",
@@ -39,6 +62,17 @@
     "role": "user",
     "_id": "pioz3ue3s",
     "createdAt": "2026-03-16T10:23:58.205Z",
+    "avatar": "",
+    "bio": "",
+    "skills": []
+  },
+  {
+    "name": "fadoua",
+    "email": "fadouaba.97@gmail.com",
+    "password": "$2a$10$I7Xtvq0PQRofeehO.e..0.8.DiFD/V2k0hnXD.7FtRbQbJ5mhI3QK",
+    "role": "user",
+    "_id": "k9gdblkus",
+    "createdAt": "2026-03-18T01:48:06.033Z",
     "avatar": "",
     "bio": "",
     "skills": []

@@ -29,6 +29,16 @@
 
   --font-family: 'Outfit', system-ui, sans-serif;
   --radius: 16px;
+
+  /* Semantic Colors */
+  --success: #10b981;
+  --success-soft: #ecfdf5;
+  --warning: #f59e0b;
+  --warning-soft: #fff7ed;
+  --danger: #ef4444;
+  --danger-soft: #fef2f2;
+  --neutral: #64748b;
+  --neutral-soft: #f1f5f9;
 }
 
 * {

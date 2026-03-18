@@ -6,6 +6,7 @@ const router = express.Router();
 const getInterviewModel = () => getModels().InterviewSession;
 const getPracticeModel = () => getModels().PracticeSession;
 const getLogModel = () => getModels().ActivityLog;
+const getExpertRequestModel = () => getModels().ExpertRequest;
 
 router.get('/:userId', async (req, res) => {
     try {
@@ -15,6 +16,7 @@ router.get('/:userId', async (req, res) => {
         let interviews = await getInterviewModel().find({ userId });
         let practiceSessions = await getPracticeModel().find({ userId });
         let activityLogs = await getLogModel().find({ userId });
+        let expertRequest = await getExpertRequestModel().findOne({ userId });
 
         // Manual sorting and limiting for mocks (Mocks don't support Mongoose chain)
         if (getModels().isFallback) {
@@ -69,7 +71,13 @@ router.get('/:userId', async (req, res) => {
             practiceTime: practiceTimeStr,
             avgScore: `${avgScore}%`,
             readinessScore: `${readinessScore}%`,
-            recentActivity: recentInterviews.concat(recentLogs).sort((a, b) => b.date - a.date).slice(0, 5)
+            recentActivity: recentInterviews.concat(recentLogs).sort((a, b) => b.date - a.date).slice(0, 5),
+            expertRequestStatus: expertRequest ? expertRequest.status : null,
+            expertRequestId: expertRequest ? (expertRequest._id || expertRequest.id) : null,
+            activeInterviewCall: interviews.find(i => i.liveCallActive) ? {
+                sessionId: interviews.find(i => i.liveCallActive)._id || interviews.find(i => i.liveCallActive).id,
+                roomName: interviews.find(i => i.liveCallActive).liveCallRoom
+            } : null
         });
 
     } catch (err) {

@@ -56,6 +56,15 @@ class UserMock {
         return this;
     }
 
+    static async findByIdAndUpdate(id, updateData, opts = {}) {
+        const users = UserMock._getAll();
+        const idx = users.findIndex(u => u._id === id);
+        if (idx < 0) return null;
+        Object.assign(users[idx], updateData);
+        UserMock._writeAll(users);
+        return users[idx];
+    }
+
     select(fields) {
         return this;
     }

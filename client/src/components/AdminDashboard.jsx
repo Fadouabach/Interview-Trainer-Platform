@@ -1,7 +1,9 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Users, BarChart2, Settings, Shield } from 'lucide-react';
 
 export function AdminDashboard({ user }) {
+    const navigate = useNavigate();
     const firstName = user?.name ? user.name.split(' ')[0] : 'Admin';
 
     return (
@@ -22,13 +24,13 @@ export function AdminDashboard({ user }) {
             <div className="card" style={{ marginBottom: '2rem' }}>
                 <h3 style={{ marginBottom: '1.5rem', fontSize: '1.25rem' }}>Management Tools</h3>
                 <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                    <button className="btn" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                    <button className="btn" onClick={() => navigate('/admin/users')} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                         <Users size={18} /> Manage Users
                     </button>
-                    <button className="btn" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: '#10b981' }}>
+                    <button className="btn" onClick={() => navigate('/admin/expert-requests')} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: '#10b981' }}>
                         <Shield size={18} /> Manage Experts
                     </button>
-                    <button className="btn" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: '#64748b' }}>
+                    <button className="btn" onClick={() => navigate('/admin/settings')} style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', background: '#64748b' }}>
                         <Settings size={18} /> Platform Settings
                     </button>
                 </div>

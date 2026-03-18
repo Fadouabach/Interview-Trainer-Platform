@@ -43,8 +43,25 @@ const InterviewSessionSchema = new mongoose.Schema({
     date: {
         type: Date,
         default: Date.now
-    }
-});
+    },
+    status: {
+        type: String,
+        enum: ['pending', 'accepted', 'rejected'],
+        default: 'pending'
+    },
+    expertReview: {
+        decision: { type: String, enum: ['accepted', 'rejected'] },
+        feedback: { type: String, default: '' },
+        adjustedScore: { type: Number },
+        reviewedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        reviewedAt: { type: Date }
+    },
+    liveCallActive: {
+        type: Boolean,
+        default: false
+    },
+    liveCallRoom: String
+}, { timestamps: true });
 
 const InterviewSession = mongoose.model('interviewSession', InterviewSessionSchema);
 export default InterviewSession;

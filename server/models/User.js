@@ -16,6 +16,12 @@ const userSchema = new mongoose.Schema({
     rating: { type: Number, default: 0 },
     reviewsCount: { type: Number, default: 0 },
     sessionTypes: [{ type: String }],
+    experience: { type: String, default: '' },
+    location: { type: String, default: '' },
+    phone: { type: String, default: '' },
+    linkedinUrl: { type: String, default: '' },
+    githubUrl: { type: String, default: '' },
+    portfolioUrl: { type: String, default: '' },
     createdAt: { type: Date, default: Date.now }
 });
 

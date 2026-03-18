@@ -1,17 +1,31 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import mongoose from 'mongoose';
 import { getModels } from '../db.js';
-
+import multer from 'multer';
+import path from 'path';
+import fs from 'fs';
 const router = express.Router();
 
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        const dir = path.join(process.cwd(), 'uploads');
+        if (!fs.existsSync(dir)) fs.mkdirSync(dir, { recursive: true });
+        cb(null, dir);
+    },
+    filename: (req, file, cb) => {
+        cb(null, `${Date.now()}-${file.originalname}`);
+    }
+});
+const upload = multer({ storage });
+
 const getUserModel = () => getModels().User;
+const getExpertRequestModel = () => getModels().ExpertRequest;
 
 // Register
-router.post('/register', async (req, res) => {
+router.post('/register', upload.single('cv'), async (req, res) => {
     try {
-        const { name, email, password, role } = req.body;
+        const { name, email, password, role, domain, bio, experience, skills, linkedinUrl, githubUrl, portfolioUrl } = req.body;
 
         // Validation
         if (!name || !email || !password)
@@ -36,9 +50,28 @@ router.post('/register', async (req, res) => {
         });
 
         const savedUser = await newUser.save();
+
+        // If expert, create ExpertRequest
+        if (role === 'expert') {
+            const expertRequest = new (getExpertRequestModel())({
+                userId: savedUser._id,
+                domain: domain || 'General',
+                bio: bio || '',
+                experience: experience || '',
+                skills: skills ? JSON.parse(skills) : [],
+                linkedinUrl: linkedinUrl || '',
+                githubUrl: githubUrl || '',
+                portfolioUrl: portfolioUrl || '',
+                documents: req.file ? [req.file.filename] : [],
+                status: 'pending'
+            });
+            await expertRequest.save();
+        }
+
         res.json(savedUser);
 
     } catch (err) {
+        console.error("Registration error:", err);
         res.status(500).json({ error: err.message });
     }
 });

@@ -119,13 +119,14 @@ function AuthenticatedLayout() {
   };
 
   const isImmersive = location.pathname === '/session';
+  const isExpertRoute = location.pathname.startsWith('/expert/');
 
   return (
     <div className="app-container" style={{ display: 'flex' }}>
-      {!isImmersive && <Sidebar onLogout={logout} />}
+      {!isImmersive && !isExpertRoute && <Sidebar onLogout={logout} />}
       <main style={{
         flex: 1,
-        marginLeft: isImmersive ? 0 : '260px',
+        marginLeft: isImmersive || isExpertRoute ? 0 : '260px',
         minHeight: '100vh',
         backgroundColor: isImmersive ? '#f8fafc' : 'var(--bg-app)',
         display: isImmersive ? 'flex' : 'block',
@@ -146,7 +147,7 @@ function AuthenticatedLayout() {
           <Route path="admin/settings" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminSettings user={user} /></RoleProtectedRoute>} />
           
           {/* Expert Routes */}
-          <Route path="expert/dashboard" element={<RoleProtectedRoute allowedRoles={['expert']}><ExpertDashboard user={user} /></RoleProtectedRoute>} />
+          <Route path="expert/dashboard" element={<RoleProtectedRoute allowedRoles={['expert', 'user']}><ExpertDashboard user={user} /></RoleProtectedRoute>} />
           
           <Route path="setup" element={
             <ProtectedRoute>

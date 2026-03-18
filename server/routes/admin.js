@@ -192,77 +192,227 @@ router.put('/settings', adminAuth, (req, res) => {
     res.json({ msg: "Settings updated", settings: platformSettings });
 });
 
-// 7. Expert Request Management
+// 7. Expert Request Management — fetch ALL requests (filter by status via query param)
 router.get('/expert-requests', adminAuth, async (req, res) => {
     try {
-        const requests = await getExpertRequestModel().find({ status: 'pending' });
-        // We need to populate userId to get name and email
-        // If it's mock, we might need a workaround since mock doesn't support populate
-        
+        const { status } = req.query;
+        const query = status ? { status } : {};
+        const requests = await getExpertRequestModel().find(query);
+
         const detailedRequests = await Promise.all(requests.map(async (reqst) => {
             const user = await getUserModel().findById(reqst.userId);
             return {
-                ...reqst._doc || reqst,
+                ...(reqst._doc || reqst),
                 name: user ? user.name : 'Unknown User',
                 email: user ? user.email : 'Unknown Email'
             };
         }));
-        
+
+        // Sort newest first
+        detailedRequests.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
         res.json(detailedRequests);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
-router.put('/approve-expert/:id', adminAuth, async (req, res) => {
+// Update expert request status (pending → under_review → accepted/rejected)
+router.put('/expert-requests/:id/status', adminAuth, async (req, res) => {
     try {
-        const expertRequest = await getExpertRequestModel().findById(req.params.id);
-        if (!expertRequest) return res.status(404).json({ msg: "Request not found" });
-
-        // Update request status
-        expertRequest.status = 'approved';
-        if (expertRequest.save) {
-            await expertRequest.save();
-        } else {
-            // Mock handle
-            await getExpertRequestModel().findByIdAndUpdate(req.params.id, { status: 'approved' });
+        const { status, rejectionReason } = req.body;
+        const validStatuses = ['pending', 'under_review', 'accepted', 'rejected', 'approved'];
+        if (!validStatuses.includes(status)) {
+            return res.status(400).json({ msg: 'Invalid status value.' });
         }
 
-        // Update user role
-        const user = await getUserModel().findById(expertRequest.userId);
-        if (user) {
-            user.role = 'expert';
-            if (user.save) {
-                await user.save();
-            } else {
-                // Mock handle
-                await getUserModel().findByIdAndUpdate(expertRequest.userId, { role: 'expert' });
+        const expertRequest = await getExpertRequestModel().findById(req.params.id);
+        if (!expertRequest) return res.status(404).json({ msg: 'Request not found' });
+
+        const updateData = { status };
+        if (rejectionReason) updateData.rejectionReason = rejectionReason;
+
+        // If accepting/approving → set user role to expert and copy profile data
+        if (status === 'accepted' || status === 'approved') {
+            const user = await getUserModel().findById(expertRequest.userId);
+            if (user) {
+                user.role = 'expert';
+                // Copy additional profile fields from the request
+                user.bio = expertRequest.bio || '';
+                user.field = expertRequest.domain || '';
+                user.title = expertRequest.domain || '';
+                user.skills = expertRequest.skills || [];
+                user.location = expertRequest.location || '';
+                user.experience = expertRequest.experience || '';
+                user.linkedinUrl = expertRequest.linkedinUrl || '';
+                user.githubUrl = expertRequest.githubUrl || '';
+                user.portfolioUrl = expertRequest.portfolioUrl || '';
+                user.phone = expertRequest.phone || '';
+                
+                // Set default expert data if not already present
+                if (!user.price) user.price = 50; 
+                if (!user.sessionTypes || user.sessionTypes.length === 0) {
+                    user.sessionTypes = ['Mock Interview', 'Technical Consultation'];
+                }
+
+                if (user.save) await user.save();
+                else await getUserModel().findByIdAndUpdate(expertRequest.userId, user);
             }
         }
 
-        res.json({ msg: "Expert approved successfully" });
+        if (expertRequest.save) {
+            Object.assign(expertRequest, updateData);
+            await expertRequest.save();
+        } else {
+            await getExpertRequestModel().findByIdAndUpdate(req.params.id, updateData);
+        }
+
+        res.json({ msg: `Status updated to ${status}`, status });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
 });
 
-router.put('/reject-expert/:id', adminAuth, async (req, res) => {
+// Save verification interview result
+router.post('/expert-requests/:id/verification', adminAuth, async (req, res) => {
     try {
+        const { questions, adminNotes, verificationScore } = req.body;
         const expertRequest = await getExpertRequestModel().findById(req.params.id);
-        if (!expertRequest) return res.status(404).json({ msg: "Request not found" });
+        if (!expertRequest) return res.status(404).json({ msg: 'Request not found' });
 
-        expertRequest.status = 'rejected';
+        const verificationData = {
+            verificationInterview: {
+                questions: questions || [],
+                adminNotes: adminNotes || '',
+                verificationScore: verificationScore || 0,
+                conductedBy: (req.user._id || req.user.id).toString(),
+                conductedAt: new Date().toISOString()
+            },
+            status: 'under_review'
+        };
+
         if (expertRequest.save) {
+            Object.assign(expertRequest, verificationData);
             await expertRequest.save();
         } else {
-            // Mock handle
-            await getExpertRequestModel().findByIdAndUpdate(req.params.id, { status: 'rejected' });
+            await getExpertRequestModel().findByIdAndUpdate(req.params.id, verificationData);
         }
 
-        res.json({ msg: "Expert request rejected" });
+        res.json({ msg: 'Verification interview saved.', data: verificationData.verificationInterview });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
+});
+
+// Schedule expert verification meeting
+router.put('/expert-requests/:id/schedule', adminAuth, async (req, res) => {
+    try {
+        const { meetingDateTime, meetingLink } = req.body;
+        if (!meetingDateTime || !meetingLink) {
+            return res.status(400).json({ msg: 'Meeting date-time and link are required.' });
+        }
+
+        const updateData = {
+            meetingDateTime,
+            meetingLink,
+            meetingStatus: 'scheduled'
+        };
+
+        const expertRequest = await getExpertRequestModel().findById(req.params.id);
+        if (!expertRequest) return res.status(404).json({ msg: 'Request not found' });
+
+        if (expertRequest.save) {
+            Object.assign(expertRequest, updateData);
+            await expertRequest.save();
+        } else {
+            await getExpertRequestModel().findByIdAndUpdate(req.params.id, updateData);
+        }
+
+        res.json({ msg: 'Meeting scheduled successfully', data: updateData });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Validate meeting access (Check if current time is within join window)
+router.get('/expert-requests/:id/meeting-access', adminAuth, async (req, res) => {
+    try {
+        const expertRequest = await getExpertRequestModel().findById(req.params.id);
+        if (!expertRequest) return res.status(404).json({ msg: 'Request not found' });
+        
+        if (expertRequest.meetingStatus !== 'scheduled') {
+            return res.status(400).json({ msg: 'Meeting is not currently scheduled.', canJoin: false });
+        }
+
+        const now = new Date();
+        const startTime = new Date(expertRequest.meetingDateTime);
+        const fiveMinsBefore = new Date(startTime.getTime() - 5 * 60000);
+        const oneHourAfter = new Date(startTime.getTime() + 60 * 60000);
+
+        if (now < fiveMinsBefore) {
+            return res.json({ canJoin: false, msg: 'Meeting not started yet.' });
+        }
+        if (now > oneHourAfter) {
+            return res.json({ canJoin: false, msg: 'Meeting expired.' });
+        }
+
+        res.json({ canJoin: true, meetingLink: expertRequest.meetingLink });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Mark meeting as completed
+router.put('/expert-requests/:id/complete-meeting', adminAuth, async (req, res) => {
+    try {
+        const expertRequest = await getExpertRequestModel().findById(req.params.id);
+        if (!expertRequest) return res.status(404).json({ msg: 'Request not found' });
+
+        const updateData = { meetingStatus: 'completed' };
+
+        if (expertRequest.save) {
+            expertRequest.meetingStatus = 'completed';
+            await expertRequest.save();
+        } else {
+            await getExpertRequestModel().findByIdAndUpdate(req.params.id, updateData);
+        }
+
+        res.json({ msg: 'Meeting marked as completed' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
+});
+
+// Keep legacy routes for backward compat
+router.put('/approve-expert/:id', adminAuth, async (req, res) => {
+    req.body = { status: 'accepted' };
+    req.params.id = req.params.id;
+    // Inline the logic
+    try {
+        const expertRequest = await getExpertRequestModel().findById(req.params.id);
+        if (!expertRequest) return res.status(404).json({ msg: 'Request not found' });
+        expertRequest.status = 'accepted';
+        if (expertRequest.save) await expertRequest.save();
+        else await getExpertRequestModel().findByIdAndUpdate(req.params.id, { status: 'accepted' });
+        const user = await getUserModel().findById(expertRequest.userId);
+        if (user) {
+            user.role = 'expert';
+            if (user.save) await user.save();
+            else await getUserModel().findByIdAndUpdate(expertRequest.userId, { role: 'expert' });
+        }
+        res.json({ msg: 'Expert approved successfully' });
+    } catch (err) { res.status(500).json({ error: err.message }); }
+});
+
+router.put('/reject-expert/:id', adminAuth, async (req, res) => {
+    try {
+        const { reason } = req.body;
+        const expertRequest = await getExpertRequestModel().findById(req.params.id);
+        if (!expertRequest) return res.status(404).json({ msg: 'Request not found' });
+        const updateData = { status: 'rejected', rejectionReason: reason || '' };
+        if (expertRequest.save) { Object.assign(expertRequest, updateData); await expertRequest.save(); }
+        else await getExpertRequestModel().findByIdAndUpdate(req.params.id, updateData);
+        res.json({ msg: 'Expert request rejected' });
+    } catch (err) { res.status(500).json({ error: err.message }); }
 });
 
 export default router;

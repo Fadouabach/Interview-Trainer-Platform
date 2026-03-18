@@ -12,9 +12,17 @@ if (!fs.existsSync(dataPath)) {
 }
 
 class ExpertRequestMock {
+    constructor(data) {
+        Object.assign(this, data);
+        if (!this._id && !this.id) this._id = Math.random().toString(36).substr(2, 9);
+        if (!this.status) this.status = 'pending';
+        if (!this.createdAt) this.createdAt = new Date().toISOString();
+    }
+
     static _getAll() {
+        if (!fs.existsSync(dataPath)) return [];
         const data = fs.readFileSync(dataPath, 'utf-8');
-        return JSON.parse(data);
+        return JSON.parse(data).map(r => new ExpertRequestMock(r));
     }
 
     static _writeAll(data) {
@@ -26,7 +34,20 @@ class ExpertRequestMock {
         if (query.status) {
             requests = requests.filter(r => r.status === query.status);
         }
+        if (query.userId) {
+            requests = requests.filter(r => r.userId === query.userId.toString());
+        }
         return requests;
+    }
+
+    static async findOne(query) {
+        const requests = this._getAll();
+        return requests.find(r => {
+            for (let key in query) {
+                if (r[key] !== query[key]) return false;
+            }
+            return true;
+        }) || null;
     }
 
     static async findById(id) {
@@ -35,27 +56,31 @@ class ExpertRequestMock {
     }
 
     static async findByIdAndUpdate(id, update) {
-        const requests = this._getAll();
+        const requests = ExpertRequestMock._getAll();
         const index = requests.findIndex(r => r._id === id || r.id === id);
         if (index !== -1) {
-            requests[index] = { ...requests[index], ...update };
-            this._writeAll(requests);
+            Object.assign(requests[index], update);
+            ExpertRequestMock._writeAll(requests);
             return requests[index];
         }
         return null;
     }
 
+    async save() {
+        const requests = ExpertRequestMock._getAll();
+        const index = requests.findIndex(r => r._id === this._id || r.id === this._id);
+        if (index !== -1) {
+            requests[index] = this;
+        } else {
+            requests.push(this);
+        }
+        ExpertRequestMock._writeAll(requests);
+        return this;
+    }
+
     static async create(data) {
-        const requests = this._getAll();
-        const newRequest = {
-            _id: Math.random().toString(36).substr(2, 9),
-            ...data,
-            status: data.status || 'pending',
-            createdAt: new Date().toISOString()
-        };
-        requests.push(newRequest);
-        this._writeAll(requests);
-        return newRequest;
+        const newReq = new ExpertRequestMock(data);
+        return await newReq.save();
     }
 }
 

@@ -28,8 +28,31 @@ const ExpertRequestSchema = new mongoose.Schema({
     documents: [String], // Array of file URLs
     status: {
         type: String,
-        enum: ['pending', 'approved', 'rejected'],
+        enum: ['pending', 'under_review', 'accepted', 'rejected', 'approved'], // kept approved for backward compat
         default: 'pending'
+    },
+    rejectionReason: String,
+    verificationInterview: {
+        questions: [{
+            question: String,
+            answer: String,
+            score: Number,
+            notes: String
+        }],
+        adminNotes: String,
+        verificationScore: Number,
+        conductedBy: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'User'
+        },
+        conductedAt: Date
+    },
+    meetingDateTime: Date,
+    meetingLink: String,
+    meetingStatus: {
+        type: String,
+        enum: ['not_scheduled', 'scheduled', 'completed'],
+        default: 'not_scheduled'
     }
 }, { timestamps: true });
 

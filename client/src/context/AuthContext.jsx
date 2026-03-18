@@ -74,8 +74,19 @@ export const AuthProvider = ({ children }) => {
 
     const register = async (userData) => {
         try {
-            await axios.post('http://localhost:5002/api/auth/register', userData);
+            // Check if userData is FormData (for expert registration with files)
+            const isFormData = userData instanceof FormData;
+            const config = isFormData ? { headers: { 'Content-Type': 'multipart/form-data' } } : {};
+            
+            const res = await axios.post('http://localhost:5002/api/auth/register', userData, config);
+            
             // Auto login after register
+            // If it was FormData, we need to extract email/password for the login call
+            // Alternatively, we can make the register route return the token like login does.
+            // Let's check how login is called.
+            if (isFormData) {
+                return await login(userData.get('email'), userData.get('password'));
+            }
             return await login(userData.email, userData.password);
         } catch (err) {
             return {

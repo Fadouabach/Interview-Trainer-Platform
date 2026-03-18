@@ -16,8 +16,20 @@ class InterviewSessionMock {
         Object.assign(this, data);
         if (!this._id) this._id = Math.random().toString(36).substr(2, 9);
         if (!this.date) this.date = new Date();
+        if (!this.createdAt) this.createdAt = this.date;
         this.answers = this.answers || [];
         this.aiFeedback = this.aiFeedback || {};
+        this.expertReview = this.expertReview || null;
+        this.status = this.status || 'pending';
+    }
+
+    static async findByIdAndUpdate(id, updateData, opts = {}) {
+        const sessions = InterviewSessionMock._getAll();
+        const idx = sessions.findIndex(s => s._id === id);
+        if (idx < 0) return null;
+        Object.assign(sessions[idx], updateData);
+        InterviewSessionMock._writeAll(sessions);
+        return sessions[idx];
     }
 
     static async find(query = {}) {
