@@ -21,6 +21,7 @@ import expertsRouter from './routes/experts.js';
 import expertRouter from './routes/expert.js';
 import bookingsRouter from './routes/bookings.js';
 import adminRouter from './routes/admin.js';
+import subscriptionRouter from './routes/subscription.js';
 
 const app = express();
 
@@ -59,6 +60,7 @@ app.use('/api/experts', expertsRouter);
 app.use('/api/expert', expertRouter);
 app.use('/api/bookings', bookingsRouter);
 app.use('/api/admin', adminRouter);
+app.use('/api/subscription', subscriptionRouter);
 app.use('/api', expertRouter); // Support for /api/meeting/:expertId
 
 // Basic Route

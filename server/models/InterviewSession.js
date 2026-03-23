@@ -24,22 +24,9 @@ const InterviewSessionSchema = new mongoose.Schema({
         recorded: Boolean,
         audioUrl: String,
         transcribedText: String,
-        feedback: {
-            summary: String,
-            strengths: [String],
-            weaknesses: [String],
-            tips: [String],
-            score: Number
-        }
+        feedback: mongoose.Schema.Types.Mixed
     }],
-    aiFeedback: {
-        overallScore: Number,
-        communicationScore: Number,
-        technicalScore: Number,
-        confidenceScore: Number,
-        readinessScore: Number,
-        personalizedAdvice: String
-    },
+    aiFeedback: mongoose.Schema.Types.Mixed,
     date: {
         type: Date,
         default: Date.now

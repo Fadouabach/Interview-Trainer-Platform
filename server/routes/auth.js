@@ -135,16 +135,8 @@ router.get('/', async (req, res) => {
     try {
         const verified = jwt.verify(token, process.env.JWT_SECRET || 'fallback_secret');
         const user = await getUserModel().findById(verified.id);
-        res.json({
-            id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            avatar: user.avatar,
-            bio: user.bio,
-            field: user.field,
-            skills: user.skills
-        });
+        const { password, ...sanitizedUser } = user.toObject();
+        res.json(sanitizedUser);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }

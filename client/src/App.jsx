@@ -77,12 +77,12 @@ function AuthenticatedLayout() {
     navigate('/session');
   };
 
-  const finishSession = async (sessionResults) => {
+  const finishSession = async (sessionResults, totalTime) => {
     setProcessing(true);
     const formData = new FormData();
-    formData.append('userId', user.id);
+    formData.append('userId', user.id || user._id);
     formData.append('category', category || 'General');
-    formData.append('duration', 300);
+    formData.append('duration', totalTime || 0);
 
     const answersMetadata = sessionResults.map(r => ({
       questionId: r.questionId,
@@ -130,52 +130,56 @@ function AuthenticatedLayout() {
         marginLeft: isImmersive || isExpertRoute ? 0 : '260px',
         minHeight: '100vh',
         backgroundColor: isImmersive ? 'var(--bg-panel)' : 'transparent',
-        display: isImmersive ? 'flex' : 'block',
+        display: 'flex',
+        flexDirection: 'column',
         alignItems: isImmersive ? 'center' : 'initial',
         justifyContent: isImmersive ? 'center' : 'initial',
         padding: isImmersive ? '2rem' : '0'
       }}>
-        <Routes>
-          <Route path="dashboard" element={<RoleProtectedRoute allowedRoles={['user']}><Dashboard onStartPractice={() => navigate('/setup')} user={user} /></RoleProtectedRoute>} />
-          
-          {/* Admin Routes */}
-          <Route path="admin/dashboard" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminOverview user={user} /></RoleProtectedRoute>} />
-          <Route path="admin/users" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminUsers user={user} /></RoleProtectedRoute>} />
-          <Route path="admin/experts" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminExperts user={user} /></RoleProtectedRoute>} />
-          <Route path="admin/interviews" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminInterviews user={user} /></RoleProtectedRoute>} />
-          <Route path="admin/feedback" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminFeedback user={user} /></RoleProtectedRoute>} />
-          <Route path="admin/expert-requests" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminExpertRequests user={user} /></RoleProtectedRoute>} />
-          <Route path="admin/settings" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminSettings user={user} /></RoleProtectedRoute>} />
-          
-          {/* Expert Routes */}
-          <Route path="expert/dashboard" element={<RoleProtectedRoute allowedRoles={['expert', 'user']}><ExpertDashboard user={user} /></RoleProtectedRoute>} />
-          
-          <Route path="setup" element={
-            <ProtectedRoute>
-              <div className="container" style={{ marginTop: '4rem' }}>
-                <div className="glass-panel" style={{ padding: '3rem', maxWidth: '800px', margin: '0 auto' }}>
-                  <button onClick={() => navigate('/dashboard')} style={{ marginBottom: '1rem', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>← Back to Dashboard</button>
-                  <Setup onStart={startSession} />
+        <div style={{ flex: 1, width: '100%', display: isImmersive ? 'flex' : 'block', alignItems: isImmersive ? 'center' : 'initial', justifyContent: isImmersive ? 'center' : 'initial' }}>
+          <Routes>
+            <Route path="dashboard" element={<RoleProtectedRoute allowedRoles={['user']}><Dashboard onStartPractice={() => navigate('/setup')} user={user} /></RoleProtectedRoute>} />
+            
+            {/* Admin Routes */}
+            <Route path="admin/dashboard" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminOverview user={user} /></RoleProtectedRoute>} />
+            <Route path="admin/users" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminUsers user={user} /></RoleProtectedRoute>} />
+            <Route path="admin/experts" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminExperts user={user} /></RoleProtectedRoute>} />
+            <Route path="admin/interviews" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminInterviews user={user} /></RoleProtectedRoute>} />
+            <Route path="admin/feedback" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminFeedback user={user} /></RoleProtectedRoute>} />
+            <Route path="admin/expert-requests" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminExpertRequests user={user} /></RoleProtectedRoute>} />
+            <Route path="admin/settings" element={<RoleProtectedRoute allowedRoles={['admin']}><AdminSettings user={user} /></RoleProtectedRoute>} />
+            
+            {/* Expert Routes */}
+            <Route path="expert/dashboard" element={<RoleProtectedRoute allowedRoles={['expert', 'user']}><ExpertDashboard user={user} /></RoleProtectedRoute>} />
+            
+            <Route path="setup" element={
+              <ProtectedRoute>
+                <div className="container" style={{ marginTop: '4rem' }}>
+                  <div className="glass-panel" style={{ padding: '3rem', maxWidth: '800px', margin: '0 auto' }}>
+                    <button onClick={() => navigate('/dashboard')} style={{ marginBottom: '1rem', background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>Back to Dashboard</button>
+                    <Setup onStart={startSession} />
+                  </div>
                 </div>
-              </div>
-            </ProtectedRoute>
-          } />
-          <Route path="session" element={<ProtectedRoute><Session category={category} onFinish={finishSession} /></ProtectedRoute>} />
-          <Route path="results" element={<ProtectedRoute><Results results={results} onReset={reset} /></ProtectedRoute>} />
-          <Route path="experts" element={<ExpertSessions />} />
-          <Route path="profile" element={<ProtectedRoute><Profile user={user} /></ProtectedRoute>} />
-          <Route path="*" element={
-            <ProtectedRoute>
-              {user?.role === 'admin' ? <Navigate to="/admin/dashboard" replace /> : 
-               user?.role === 'expert' ? <Navigate to="/expert/dashboard" replace /> : 
-               <Navigate to="/dashboard" replace />}
-            </ProtectedRoute>
-          } />
-        </Routes>
+              </ProtectedRoute>
+            } />
+            <Route path="session" element={<ProtectedRoute><Session category={category} onFinish={finishSession} /></ProtectedRoute>} />
+            <Route path="results" element={<ProtectedRoute><Results results={results} onReset={reset} /></ProtectedRoute>} />
+            <Route path="experts" element={<ExpertSessions />} />
+            <Route path="profile" element={<ProtectedRoute><Profile user={user} /></ProtectedRoute>} />
+            <Route path="*" element={
+              <ProtectedRoute>
+                {user?.role === 'admin' ? <Navigate to="/admin/dashboard" replace /> : 
+                 user?.role === 'expert' ? <Navigate to="/expert/dashboard" replace /> : 
+                 <Navigate to="/dashboard" replace />}
+              </ProtectedRoute>
+            } />
+          </Routes>
+        </div>
+        {!isImmersive && <Footer />}
       </main>
       {processing && (
         <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', zIndex: 1000, color: 'white' }}>
-          <div className="pulse" style={{ fontSize: '2rem', marginBottom: '1rem' }}>🔮 Analyzing Session...</div>
+          <div className="pulse" style={{ fontSize: '2rem', marginBottom: '1rem' }}>Analyzing Session...</div>
           <p>Generating personalized AI feedback...</p>
         </div>
       )}
@@ -192,11 +196,11 @@ function App() {
             <div style={{ flex: 1 }}>
               <Routes>
                 {/* Public Routes */}
-                <Route path="/" element={<LandingPage />} />
+                <Route path="/" element={<><LandingPage /><Footer /></>} />
                 <Route path="/login" element={<LoginPageWrapper />} />
                 <Route path="/signup" element={<SignupPageWrapper />} />
-                <Route path="/privacy" element={<div className="container" style={{ padding: '8rem 2rem' }}><h1>Privacy Policy</h1><p>Placeholder for Privacy Policy content.</p></div>} />
-                <Route path="/terms" element={<div className="container" style={{ padding: '8rem 2rem' }}><h1>Terms of Service</h1><p>Placeholder for Terms of Service content.</p></div>} />
+                <Route path="/privacy" element={<><div className="container" style={{ padding: '8rem 2rem', flex: 1 }}><h1>Privacy Policy</h1><p>Placeholder for Privacy Policy content.</p></div><Footer /></>} />
+                <Route path="/terms" element={<><div className="container" style={{ padding: '8rem 2rem', flex: 1 }}><h1>Terms of Service</h1><p>Placeholder for Terms of Service content.</p></div><Footer /></>} />
 
                 {/* Main Application with Sidebar */}
                 <Route path="/*" element={<AuthenticatedLayout />} />
@@ -205,7 +209,6 @@ function App() {
                 <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </div>
-            <Footer />
           </div>
         </AuthProvider>
       </Router>

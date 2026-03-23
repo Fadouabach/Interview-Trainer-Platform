@@ -8,7 +8,7 @@ const __dirname = path.dirname(__filename);
 console.log('🚀 Starting Interview Trainer System...');
 
 // Start Backend
-const server = spawn('npm', ['start'], {
+const server = spawn('npm', ['run', 'dev'], {
     stdio: 'inherit',
     cwd: path.join(__dirname, 'server'),
     shell: true

@@ -1,0 +1,446 @@
+[
+  {
+    "userId": "k9gdblkus",
+    "category": "General",
+    "duration": "300",
+    "score": 0,
+    "answers": [],
+    "aiFeedback": {
+      "overallScore": 0,
+      "topStrengths": [],
+      "topImprovements": [],
+      "personalizedAdvice": "AI Service Unavailable. Please add OPENAI_API_KEY to .env file."
+    },
+    "_id": "392clj3d4",
+    "date": "2026-03-23T22:37:55.757Z",
+    "createdAt": "2026-03-23T22:37:55.757Z",
+    "expertReview": null,
+    "status": "pending"
+  },
+  {
+    "userId": "k9gdblkus",
+    "category": "react",
+    "duration": "300",
+    "score": 60,
+    "answers": [
+      {
+        "questionId": 201,
+        "questionText": "What are hooks in React and why do we use them?",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      },
+      {
+        "questionId": 202,
+        "questionText": "Explain the Virtual DOM.",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      },
+      {
+        "questionId": 203,
+        "questionText": "What is the difference between state and props?",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      },
+      {
+        "questionId": 204,
+        "questionText": "Explain the useEffect hook.",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      },
+      {
+        "questionId": 205,
+        "questionText": "What is the Context API?",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      },
+      {
+        "questionId": 206,
+        "questionText": "Difference between Class and Functional components?",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      },
+      {
+        "questionId": 207,
+        "questionText": "What is prop drilling and how to avoid it?",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      },
+      {
+        "questionId": 208,
+        "questionText": "Explain React Fragments.",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      },
+      {
+        "questionId": 209,
+        "questionText": "What are Higher-Order Components?",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      },
+      {
+        "questionId": 210,
+        "questionText": "How does React handle forms?",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      },
+      {
+        "questionId": 211,
+        "questionText": "Explain useMemo and useCallback.",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      },
+      {
+        "questionId": 212,
+        "questionText": "What is the useRef hook used for?",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      },
+      {
+        "questionId": 213,
+        "questionText": "Explain React.memo.",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      },
+      {
+        "questionId": 214,
+        "questionText": "What are portals in React?",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      },
+      {
+        "questionId": 215,
+        "questionText": "Explain the concept of lifting state up.",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      },
+      {
+        "questionId": 216,
+        "questionText": "What is controlled vs uncontrolled component?",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      },
+      {
+        "questionId": 217,
+        "questionText": "How do you optimize a React app?",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      },
+      {
+        "questionId": 218,
+        "questionText": "What is Suspense?",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      },
+      {
+        "questionId": 219,
+        "questionText": "Explain server-side rendering (SSR) briefly.",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      },
+      {
+        "questionId": 220,
+        "questionText": "What are keys in lists and why are they important?",
+        "recorded": true,
+        "transcribedText": "[Audio recorded - Transcription unavailable: OpenAI quota exceeded. Please add credits to your OpenAI account]",
+        "feedback": {
+          "summary": "Answer recorded. AI analysis temporarily unavailable.",
+          "strengths": {
+            "content": "Response captured",
+            "clarity": "",
+            "vocabulary": "",
+            "structure": ""
+          },
+          "suggestions": [
+            "AI feedback generation failed",
+            "Try again later or check server logs"
+          ],
+          "score": 3
+        }
+      }
+    ],
+    "aiFeedback": {
+      "overallScore": 60,
+      "topStrengths": [
+        "Session completed"
+      ],
+      "topImprovements": [
+        {
+          "area": "AI Analysis",
+          "tip": "Retry later"
+        }
+      ],
+      "personalizedAdvice": "Session completed. Detailed feedback generation is temporarily unavailable. Your responses have been saved."
+    },
+    "_id": "tjxziyyjg",
+    "date": "2026-03-23T23:02:01.076Z",
+    "createdAt": "2026-03-23T23:02:01.076Z",
+    "expertReview": null,
+    "status": "pending"
+  }
+]

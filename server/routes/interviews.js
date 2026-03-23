@@ -29,10 +29,9 @@ const upload = multer({ storage: storage });
 router.post('/', upload.any(), async (req, res) => {
     try {
         // req.body contains text fields, req.files contains audio files
-        // The structure of req.body might be flat due to FormData, so we need to parse it carefully
         const { userId, category, duration, answers: answersStr } = req.body;
 
-        // Parse answers if it comes as a JSON string (common with FormData)
+        // Parse answers
         let answers = [];
         if (typeof answersStr === 'string') {
             try {
@@ -45,6 +44,13 @@ router.post('/', upload.any(), async (req, res) => {
             answers = answersStr;
         }
 
+        console.log("Receiving interview request:", {
+            userId,
+            category,
+            filesReceived: req.files?.map(f => f.fieldname),
+            answersCount: answers?.length
+        });
+
         // Process each answer
         const processedAnswers = [];
 
@@ -55,36 +61,32 @@ router.post('/', upload.any(), async (req, res) => {
             let transcribedText = "";
             let feedback = {};
 
-            // Find corresponding file
-            // We assume the frontend sends files with fieldname "audio_<questionId>" or similar mapping
-            // OR we iterate through files and match by logic.
-            // SIMPLER APPROACH: Frontend sends 'audio' files in order, or we map by index if safely possible.
-            // BETTER: Frontend appends file with name `audio_${index}`.
-
             const file = req.files.find(f => f.fieldname === `audio_${i}`);
+            console.log(`Processing answer ${i}... File found:`, !!file);
 
             if (file && answer.recorded) {
                 // 1. Transcribe
                 console.log(`Transcribing answer ${i + 1}...`);
                 transcribedText = await transcribeAudio(file.path);
+                console.log(`Transcription result for ${i}:`, transcribedText.substring(0, 50) + "...");
 
                 // 2. Generate Feedback
                 console.log(`Analyzing answer ${i + 1}...`);
                 feedback = await generateQuestionFeedback(originalQuestion, transcribedText);
+                console.log(`Feedback score for ${i}:`, feedback.score);
 
                 // Cleanup file
                 fs.unlink(file.path, (err) => {
                     if (err) console.error("Error deleting temp file:", err);
                 });
             } else {
-                // Handle text-only or skipped? Assuming all recorded for now as per requirements
+                console.log(`No audio for answer ${i}. Recorded: ${answer.recorded}`);
                 transcribedText = "No audio recorded.";
                 feedback = {
                     summary: "No answer provided.",
-                    strengths: [],
-                    weaknesses: ["Question skipped"],
-                    tips: ["Attempt every question"],
-                    score: 0
+                    strengths: { content: "N/A", clarity: "N/A", vocabulary: "N/A", structure: "N/A" },
+                    suggestions: ["Attempt every question"],
+                    score: 1
                 };
             }
 
@@ -102,30 +104,20 @@ router.post('/', upload.any(), async (req, res) => {
             answer: a.transcribedText,
             feedback: a.feedback
         })));
+        console.log("Overall Score:", aiFeedback.overallScore);
 
         // Save to DB
         const newSession = new (getInterviewModel())({
             userId,
             category,
-            duration,
+            duration: duration || 0,
             score: aiFeedback.overallScore || 0,
             answers: processedAnswers,
             aiFeedback
         });
 
         const savedSession = await newSession.save();
-
-        // Also log activity - simplified for now
-        try {
-            // ActivityLog is not mocked yet, so we just skip it if fallback
-            if (!getModels().isFallback) {
-                // If we are here, we might need to import it properly or just skip
-            }
-        } catch (e) {
-            console.warn("Activity log failed", e.message);
-        }
-
-        console.log("Session saved successfully.");
+        console.log("Session saved successfully. ID:", savedSession._id);
         res.json(savedSession);
 
     } catch (err) {

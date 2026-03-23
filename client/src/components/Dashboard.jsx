@@ -10,10 +10,15 @@ export function Dashboard({ onStartPractice, user }) {
     
     const firstName = user?.name ? user.name.split(' ')[0] : 'User';
 
-    React.useEffect(() => {
+    useEffect(() => {
         const fetchStats = async () => {
+            const userId = user?.id || user?._id;
+            if (!userId) {
+                setLoading(false);
+                return;
+            }
             try {
-                const res = await axios.get(`http://localhost:5002/api/dashboard/${user.id}`);
+                const res = await axios.get(`http://localhost:5002/api/dashboard/${userId}`);
                 setStats(res.data);
             } catch (err) {
                 console.error("Error fetching dashboard stats", err);
@@ -21,7 +26,7 @@ export function Dashboard({ onStartPractice, user }) {
                 setLoading(false);
             }
         };
-        if (user?.id) fetchStats();
+        fetchStats();
     }, [user]);
 
     if (loading) {

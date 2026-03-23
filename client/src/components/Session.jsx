@@ -91,8 +91,15 @@ export function Session({ category, onFinish }) {
         }
     };
 
+    const [totalTimeSpent, setTotalTimeSpent] = useState(0);
+
     const confirmAnswer = () => {
         if (!currentAudio) return;
+
+        // Calculate time spent on THIS question
+        const questionTimeSpent = currentQuestion.timeLimit - timeLeft;
+        const newTotal = totalTimeSpent + questionTimeSpent;
+        setTotalTimeSpent(newTotal);
 
         // Save answer with audio
         const newAnswer = {
@@ -110,7 +117,7 @@ export function Session({ category, onFinish }) {
         if (currentQIndex < categoryQuestions.length - 1) {
             setCurrentQIndex(prev => prev + 1);
         } else {
-            onFinish(updatedAnswers); // Pass answers to finish handler
+            onFinish(updatedAnswers, newTotal); // Pass answers and total time to finish handler
         }
     };
 

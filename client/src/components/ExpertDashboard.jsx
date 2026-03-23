@@ -8,7 +8,7 @@ import {
     Github, Linkedin, Globe, ExternalLink, Trash2, Plus, Briefcase, MapPin, Phone, Mail, LogOut
 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import ThemeToggle from './ThemeToggle';
+import { ThemeToggle } from './ThemeToggle';
 
 const API = 'http://localhost:5002/api/expert';
 

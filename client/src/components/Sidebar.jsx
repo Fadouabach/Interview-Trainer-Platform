@@ -34,6 +34,8 @@ export function Sidebar({ onLogout }) {
     } else if (user.role === 'expert') {
         menuItems = [
             { id: 'dashboard', label: 'Expert Dashboard', icon: LayoutDashboard, path: '/expert/dashboard' },
+            { id: 'setup', label: 'Practice Interview', icon: PlayCircle, path: '/setup' },
+            { id: 'results', label: 'My Progress', icon: BarChart2, path: '/results' },
             { id: 'profile', label: 'Profile', icon: User, path: '/profile' }
         ];
     }

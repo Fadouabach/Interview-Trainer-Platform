@@ -47,46 +47,31 @@ export const transcribeAudio = async (filePath) => {
     }
 };
 
-/**
- * Generate feedback for a specific question and answer
- * @param {string} question - The interview question
- * @param {string} answer - The user's transcribed answer
- * @returns {Promise<Object>} - Structured feedback
- */
 export const generateQuestionFeedback = async (question, answer) => {
     const client = getOpenAIClient();
     if (!client) {
         return {
             summary: "AI Service Unavailable (Missing Key)",
-            strengths: [],
-            weaknesses: [],
-            tips: ["Please configure OpenAI API Key"],
+            strengths: { content: "", clarity: "", vocabulary: "", structure: "" },
+            suggestions: ["Please configure OpenAI API Key"],
             score: 0
         };
     }
     try {
         const prompt = `
-        You are a professional technical interviewer and career coach. Analyze the following interview question and candidate's answer with extreme strictness and realism. Do NOT inflate scores or give generic encouragement.
-
-        Domain context: ${question}
-        
-        Evaluation Criteria:
-        1. Technical Correctness: Is the answer factually accurate?
-        2. Clarity & Structure: Is the explanation logical and easy to follow?
-        3. Depth: Does it show a senior level of understanding or just surface-level knowledge?
-        4. Relevance: Does it directly address the question without fluff?
+        You are a professional job interviewer.
+        Analyze the candidate's answer and give structured feedback.
+        Keep it clear and realistic like a real interview.
 
         Question: "${question}"
         Answer: "${answer}"
         
-        Provide structured feedback in JSON format with the following fields:
-        - summary: A brutal and honest summary of the quality of this specific answer.
-        - strengths: Array of strings. Only include genuine strong points. If none, leave empty.
-        - weaknesses: Array of strings. Be specific about technical gaps, logical errors, or vague phrasing.
-        - tips: Array of strings. Concrete, technical, or structural advice on how to improve this specific answer.
-        - score: An integer from 0 to 10. 10 is perfect (Senior), 7 is solid (Mid), 4 is struggling (Junior), 0-2 is a fail.
-        
-        Important: If the user gives a vague, incomplete, or "I don't know" answer, give a score between 0-3.
+        Provide structured feedback in JSON format strictly matching this exact schema:
+        - score: An integer from 1 to 5 (1=Poor, 5=Excellent).
+        - strengths: { content: string, clarity: string, vocabulary: string, structure: string } (briefly describe what was good in each category).
+        - suggestions: Array of strings (specific, actionable suggestions for improvement).
+        - improvedAnswer: A well-written string providing a professional "Improved sample answer" they could have used.
+        - summary: A short, realistic summary of the interaction.
         `;
 
         const completion = await client.chat.completions.create({
@@ -99,24 +84,11 @@ export const generateQuestionFeedback = async (question, answer) => {
         return feedback;
     } catch (error) {
         console.error("Error generating question feedback:", error.message);
-
-        // Provide helpful fallback feedback based on error type
-        if (error.status === 429) {
-            return {
-                summary: "Your answer was recorded successfully. AI analysis unavailable due to OpenAI quota limits.",
-                strengths: ["Answer recorded"],
-                weaknesses: ["AI feedback unavailable - please add OpenAI credits"],
-                tips: ["Add credits to your OpenAI account to enable AI-powered feedback"],
-                score: 50
-            };
-        }
-
         return {
             summary: "Answer recorded. AI analysis temporarily unavailable.",
-            strengths: ["Response captured"],
-            weaknesses: ["Feedback generation failed"],
-            tips: ["Try again later or check server logs"],
-            score: 50
+            strengths: { content: "Response captured", clarity: "", vocabulary: "", structure: "" },
+            suggestions: ["AI feedback generation failed", "Try again later or check server logs"],
+            score: 3
         };
     }
 };
@@ -131,20 +103,17 @@ export const generateOverallFeedback = async (sessionData) => {
     if (!client) {
         return {
             overallScore: 0,
-            communicationScore: 0,
-            technicalScore: 0,
-            confidenceScore: 0,
-            readinessScore: 0,
+            topStrengths: [],
+            topImprovements: [],
             personalizedAdvice: "AI Service Unavailable. Please add OPENAI_API_KEY to .env file."
         };
     }
     try {
         const sessionSummary = sessionData.map((item, index) =>
             `--- Question ${index + 1} ---
-            Domain: ${item.category || 'General'}
             Q: ${item.question}
             A: ${item.answer}
-            Individual Score: ${item.feedback.score}/10`
+            Score: ${item.feedback.score}/5`
         ).join('\n\n');
 
         const prompt = `
@@ -153,69 +122,39 @@ export const generateOverallFeedback = async (sessionData) => {
         Candidate Session Data:
         ${sessionSummary}
         
-        Your evaluation must be realistic and professional. Judge the candidate's readiness for a real-world role (Junior, Mid, or Senior).
-
         Provide the output in STRICT JSON format with these exact fields:
         
-        - result: {
-            "finalScore": integer (0-100),
-            "levelAssessment": string ("Below Junior" | "Junior" | "Mid" | "Senior")
-          }
-        - strengths: Array of strings (based on demonstrated knowledge).
-        - weaknesses: Array of strings (real mistakes, missing concepts, poor logic).
-        - questionReview: Array of objects, one for each question: {
-            "question": string,
-            "score": integer (0-10),
-            "good": string (what was correct),
-            "wrong": string (what was missing/incorrect),
-            "advice": string (concrete technical/logical fix)
-          }
-        - communication: {
-            "clarity": string,
-            "structure": string,
-            "confidence": string,
-            "language": string,
-            "paceAnalysis": string (analyze hesitation, filler words, or rushes based on the text structure)
-          }
-        - improvementPlan: {
-            "mustStudy": Array of strings (topics to master),
-            "suggestedExercises": Array of strings (specific tasks/projects),
-            "nextFix": string (the single most important thing to fix before next interview)
-          }
+        - overallScore: integer (percentage 0-100 based on the average of 1-5 ratings).
+        - topStrengths: Array of 3 strings (the most significant strengths noted across all answers).
+        - topImprovements: Array of 3 objects { "area": string, "tip": string } (the most critical areas for improvement with actionable tips).
+        - levelAssessment: string ("Below Junior" | "Junior" | "Mid" | "Senior").
+        - communicationSummary: string (a summary of clarity, structure, and confidence).
+        - nextSteps: string (the single most important thing to fix before the next interview).
         `;
 
+        console.log("Sending Overall Prompt To OpenAI...");
         const completion = await client.chat.completions.create({
             messages: [{ role: "system", content: "You are a helpful assistant that outputs JSON." }, { role: "user", content: prompt }],
             model: "gpt-4o",
             response_format: { type: "json_object" },
         });
 
-        return JSON.parse(completion.choices[0].message.content);
+        const content = completion.choices[0].message.content;
+        console.log("Overall OpenAI Response received.");
+        return JSON.parse(content);
     } catch (error) {
         console.error("Error generating overall feedback:", error.message);
-
-        // Calculate basic scores from individual question scores if available
         const avgScore = sessionData.length > 0
-            ? Math.round(sessionData.reduce((sum, item) => sum + (item.feedback?.score || 0), 0) / sessionData.length)
+            ? Math.round((sessionData.reduce((sum, item) => sum + (item.feedback?.score || 3), 0) / (sessionData.length * 5)) * 100)
             : 50;
-
-        if (error.status === 429) {
-            return {
-                overallScore: avgScore,
-                communicationScore: avgScore,
-                technicalScore: avgScore,
-                confidenceScore: avgScore,
-                readinessScore: avgScore,
-                personalizedAdvice: "Your interview session was completed successfully! However, detailed AI analysis is currently unavailable because your OpenAI account has exceeded its quota. Please add credits to your OpenAI account at https://platform.openai.com/account/billing to enable AI-powered feedback and insights."
-            };
-        }
 
         return {
             overallScore: avgScore,
-            communicationScore: avgScore,
-            technicalScore: avgScore,
-            confidenceScore: avgScore,
-            readinessScore: avgScore,
+            topStrengths: ["Session completed successfully"],
+            topImprovements: [{ area: "AI Analysis", tip: "Detailed AI analysis is currently unavailable. Please try again later." }],
+            levelAssessment: "Evaluating",
+            communicationSummary: "Communication analysis is pending. Based on your inputs, your session has been saved.",
+            nextSteps: "Review your transcribed answers and prepare for the next round.",
             personalizedAdvice: "Session completed. Detailed feedback generation is temporarily unavailable. Your responses have been saved."
         };
     }

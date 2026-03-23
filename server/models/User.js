@@ -22,6 +22,11 @@ const userSchema = new mongoose.Schema({
     linkedinUrl: { type: String, default: '' },
     githubUrl: { type: String, default: '' },
     portfolioUrl: { type: String, default: '' },
+    // Subscription & Profile Settings
+    plan: { type: String, enum: ['free', 'pro'], default: 'free' },
+    subscriptionStatus: { type: String, enum: ['active', 'canceled', 'none'], default: 'none' },
+    emailNotifications: { type: Boolean, default: true },
+    pushNotifications: { type: Boolean, default: true },
     createdAt: { type: Date, default: Date.now }
 });
 

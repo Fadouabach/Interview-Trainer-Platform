@@ -12,7 +12,7 @@ const getUserModel = () => getModels().User;
 const getInterviewModel = () => getModels().InterviewSession;
 const getExpertRequestModel = () => getModels().ExpertRequest;
 
-// ─── Expert Auth Middleware ───────────────────────────────────────────────────
+// ─── Expert Auth Middleware (Strict for Experts only) ─────────────────────────
 const expertAuth = async (req, res, next) => {
     try {
         const token = req.header('x-auth-token');
@@ -303,56 +303,7 @@ router.post('/interviews/:id/stop-call', expertAuth, async (req, res) => {
     }
 });
 
-// ─── 9. Get Current Expert Request (Candidate Application) ───────────────────
-router.get('/my-request', expertAuth, async (req, res) => {
-    try {
-        const userId = req.user._id || req.user.id;
-        const request = await getExpertRequestModel().findOne({ userId });
-        if (!request) {
-            // Return a default structure if no request exists yet
-            return res.json({
-                status: 'new',
-                userId,
-                skills: [],
-                previousCompanies: [],
-                documents: []
-            });
-        }
-        res.json(request);
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// Validate meeting access for the expert (Check if current time is within join window)
-router.get('/my-request/meeting-access', expertAuth, async (req, res) => {
-    try {
-        const userId = req.user._id || req.user.id;
-        const expertRequest = await getExpertRequestModel().findOne({ userId });
-        
-        if (!expertRequest) return res.status(404).json({ msg: 'Expert request not found.' });
-        
-        if (expertRequest.meetingStatus !== 'scheduled') {
-            return res.status(400).json({ msg: 'Meeting is not currently scheduled.', canJoin: false });
-        }
-
-        const now = new Date();
-        const startTime = new Date(expertRequest.meetingDateTime);
-        const oneHourAfter = new Date(startTime.getTime() + 60 * 60000);
-
-        if (now < startTime) {
-            return res.json({ canJoin: false, msg: 'Meeting not started yet.' });
-        }
-        if (now > oneHourAfter) {
-            return res.json({ canJoin: false, msg: 'Meeting expired.' });
-        }
-
-        res.json({ canJoin: true, meetingLink: expertRequest.meetingLink });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
+// ─── 9. Get Meeting Info (Public/Shared) ──────────────────────────────────
 // GET /api/expert/meeting/:expertId (or mounted as /api/meeting/:expertId)
 router.get('/meeting/:expertId', async (req, res) => {
     try {
@@ -362,113 +313,6 @@ router.get('/meeting/:expertId', async (req, res) => {
             meetingLink: expertRequest.meetingLink,
             meetingDateTime: expertRequest.meetingDateTime
         });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// ─── 10. Create or Update Expert Request ─────────────────────────────────────
-router.put('/my-request', expertAuth, async (req, res) => {
-    try {
-        const userId = req.user._id || req.user.id;
-        const {
-            phone, location, domain, bio, experience,
-            skills, previousCompanies, linkedinUrl, githubUrl, portfolioUrl
-        } = req.body;
-
-        // Validation for required fields before actual submission (can be partial save too)
-        // If they just click "Save", we allow partial. If status becomes 'pending', we should validate.
-        
-        const updateData = {
-            userId,
-            phone, location, domain, bio, experience,
-            skills: skills || [],
-            previousCompanies: previousCompanies || [],
-            linkedinUrl, githubUrl, portfolioUrl
-        };
-
-        let request = await getExpertRequestModel().findOne({ userId });
-        
-        if (request) {
-            // Don't allow updates if already accepted (unless we want them to be able to edit profile later)
-            // For now, allow updates but maybe log it.
-            Object.assign(request, updateData);
-            if (request.save) await request.save();
-            else await getExpertRequestModel().findByIdAndUpdate(request._id || request.id, updateData);
-        } else {
-            // New request
-            updateData.status = 'pending';
-            if (getExpertRequestModel().create) {
-                request = await getExpertRequestModel().create(updateData);
-            } else {
-                // Mock fallback
-                const NewReq = getExpertRequestModel();
-                request = new NewReq(updateData);
-                await request.save();
-            }
-        }
-
-        res.json({ msg: 'Application updated successfully.', request });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// ─── 11. Document Upload ─────────────────────────────────────────────────────
-router.post('/my-request/upload', expertAuth, uploadDoc.array('files', 5), async (req, res) => {
-    try {
-        const userId = req.user._id || req.user.id;
-        if (!req.files || req.files.length === 0) {
-            return res.status(400).json({ msg: 'No files uploaded.' });
-        }
-
-        const request = await getExpertRequestModel().findOne({ userId });
-        if (!request) return res.status(404).json({ msg: 'Expert request not found. Save profile first.' });
-
-        const newDocs = req.files.map(file => `/uploads/documents/${file.filename}`);
-        
-        if (request.save) {
-            request.documents = [...(request.documents || []), ...newDocs];
-            await request.save();
-        } else {
-            await getExpertRequestModel().findByIdAndUpdate(request._id || request.id, {
-                $push: { documents: { $each: newDocs } }
-            });
-        }
-
-        res.json({ msg: 'Documents uploaded successfully.', documents: request.documents });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
-    }
-});
-
-// ─── 12. Delete Document ─────────────────────────────────────────────────────
-router.delete('/my-request/documents/:filename', expertAuth, async (req, res) => {
-    try {
-        const userId = req.user._id || req.user.id;
-        const { filename } = req.params;
-        const filePath = `/uploads/documents/${filename}`;
-
-        const request = await getExpertRequestModel().findOne({ userId });
-        if (!request) return res.status(404).json({ msg: 'Request not found' });
-
-        // Remove from DB
-        const updatedDocs = (request.documents || []).filter(d => d !== filePath);
-        
-        if (request.save) {
-            request.documents = updatedDocs;
-            await request.save();
-        } else {
-            await getExpertRequestModel().findByIdAndUpdate(request._id || request.id, {
-                documents: updatedDocs
-            });
-        }
-
-        // Remove from FS
-        const fullPath = path.join(process.cwd(), 'uploads', 'documents', filename);
-        if (fs.existsSync(fullPath)) fs.unlinkSync(fullPath);
-
-        res.json({ msg: 'Document removed.', documents: updatedDocs });
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
