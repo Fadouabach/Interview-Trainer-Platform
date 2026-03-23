@@ -5,8 +5,10 @@ import {
     ChevronRight, FileText, MessageSquare, Award, BarChart2,
     Loader2, AlertCircle, Edit3, Save, X, Check, ArrowLeft,
     TrendingUp, Hash, Camera, BookOpen, History, Video, Info,
-    Github, Linkedin, Globe, ExternalLink, Trash2, Plus, Briefcase, MapPin, Phone, Mail
+    Github, Linkedin, Globe, ExternalLink, Trash2, Plus, Briefcase, MapPin, Phone, Mail, LogOut
 } from 'lucide-react';
+import { useAuth } from '../context/AuthContext';
+import ThemeToggle from './ThemeToggle';
 
 const API = 'http://localhost:5002/api/expert';
 
@@ -91,7 +93,7 @@ function LoadingSpinner({ text = 'Loading...' }) {
 function EmptyState({ icon, title, subtitle }) {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '5rem 2rem', gap: '1rem', textAlign: 'center' }}>
-            <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg, #f1f5f9, #e2e8f0)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'var(--bg-app)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 {React.cloneElement(icon, { size: 32, color: 'var(--text-light)' })}
             </div>
             <div>
@@ -332,12 +334,12 @@ function InterviewReviewModal({ interview, token, onClose, onSave, toast }) {
 
                     {/* AI Advice */}
                     {interview.aiFeedback?.personalizedAdvice && (
-                        <div style={{ background: '#f0f9ff', border: '1px solid #bae6fd', borderRadius: '14px', padding: '1.25rem' }}>
+                        <div style={{ background: 'rgba(14, 165, 233, 0.1)', border: '1px solid rgba(14, 165, 233, 0.2)', borderRadius: '14px', padding: '1.25rem' }}>
                             <div style={{ display: 'flex', gap: '0.6rem', alignItems: 'flex-start' }}>
                                 <BookOpen size={18} color="#0ea5e9" style={{ marginTop: '2px', flexShrink: 0 }} />
                                 <div>
-                                    <div style={{ fontWeight: 600, color: '#0369a1', marginBottom: '0.4rem', fontSize: '0.9rem' }}>AI Personalized Advice</div>
-                                    <p style={{ color: '#0c4a6e', fontSize: '0.88rem', lineHeight: 1.6 }}>{interview.aiFeedback.personalizedAdvice}</p>
+                                    <div style={{ fontWeight: 600, color: 'var(--info)', marginBottom: '0.4rem', fontSize: '0.9rem' }}>AI Personalized Advice</div>
+                                    <p style={{ color: 'var(--text-main)', fontSize: '0.88rem', lineHeight: 1.6 }}>{interview.aiFeedback.personalizedAdvice}</p>
                                 </div>
                             </div>
                         </div>
@@ -357,13 +359,13 @@ function InterviewReviewModal({ interview, token, onClose, onSave, toast }) {
                                             {ans.feedback?.score != null && <ScorePill score={ans.feedback.score} small />}
                                         </div>
                                         <p style={{ fontWeight: 600, color: 'var(--text-main)', marginBottom: '0.6rem', fontSize: '0.92rem' }}>{ans.questionText}</p>
-                                        <p style={{ color: '#475569', fontSize: '0.88rem', lineHeight: 1.65, marginBottom: '0.75rem' }}>
+                                        <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', lineHeight: 1.65, marginBottom: '0.75rem' }}>
                                             {ans.transcribedText || <em style={{ color: 'var(--text-light)' }}>No answer recorded</em>}
                                         </p>
                                         {ans.feedback?.summary && (
                                             <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '0.75rem' }}>
                                                 <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>AI Feedback: </span>
-                                                <span style={{ fontSize: '0.82rem', color: '#475569' }}>{ans.feedback.summary}</span>
+                                                <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>{ans.feedback.summary}</span>
                                             </div>
                                         )}
                                     </div>
@@ -380,7 +382,7 @@ function InterviewReviewModal({ interview, token, onClose, onSave, toast }) {
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                             {/* Adjust Score */}
                             <div>
-                                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
+                                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '0.5rem' }}>
                                     Adjusted Score: <span style={{ color: '#4f46e5' }}>{adjustedScore}%</span>
                                 </label>
                                 <input
@@ -394,7 +396,7 @@ function InterviewReviewModal({ interview, token, onClose, onSave, toast }) {
                             </div>
                             {/* Feedback Text */}
                             <div>
-                                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
+                                <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-main)', marginBottom: '0.5rem' }}>
                                     Expert Feedback <span style={{ color: 'var(--text-light)', fontWeight: 400 }}>(required to accept)</span>
                                 </label>
                                 <textarea
@@ -406,7 +408,7 @@ function InterviewReviewModal({ interview, token, onClose, onSave, toast }) {
                                         width: '100%', padding: '0.875rem', borderRadius: '12px',
                                         border: '1.5px solid #e2e8f0', fontFamily: 'inherit',
                                         fontSize: '0.9rem', resize: 'vertical', outline: 'none',
-                                        color: 'var(--text-main)', lineHeight: 1.6, background: '#fafafa',
+                                        color: 'var(--text-main)', lineHeight: 1.6, background: 'var(--bg-app)',
                                         transition: 'border-color 0.2s'
                                     }}
                                     onFocus={e => e.target.style.borderColor = '#4f46e5'}
@@ -423,7 +425,7 @@ function InterviewReviewModal({ interview, token, onClose, onSave, toast }) {
                             disabled={saving}
                             style={{
                                 flex: 1, padding: '0.875rem 1.5rem', borderRadius: '14px',
-                                border: '2px solid #fecaca', background: saving ? '#f8fafc' : '#fef2f2',
+                                border: '2px solid var(--danger)', background: saving ? '#f8fafc' : '#fef2f2',
                                 color: 'var(--danger)', fontWeight: 600, cursor: saving ? 'not-allowed' : 'pointer',
                                 fontSize: '0.95rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
                                 transition: 'all 0.2s',
@@ -454,7 +456,7 @@ function InterviewReviewModal({ interview, token, onClose, onSave, toast }) {
                     ) : (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                             {!liveCall ? (
-                                <div style={{ textAlign: 'center', padding: '3rem 1rem', background: 'var(--bg-app)', borderRadius: '20px', border: '2px dashed #e2e8f0' }}>
+                                <div style={{ textAlign: 'center', padding: '3rem 1rem', background: 'var(--bg-app)', borderRadius: '20px', border: '2px dashed var(--border-subtle)' }}>
                                     <Video size={48} color="#94a3b8" style={{ marginBottom: '1rem' }} />
                                     <h4 style={{ marginBottom: '0.5rem', fontSize: '1.1rem' }}>Conduct a Live Interview</h4>
                                     <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', maxWidth: '400px', margin: '0 auto 1.5rem' }}>
@@ -566,7 +568,7 @@ function PendingRequestsSection({ token, toast }) {
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                     {score != null && <ScorePill score={score} />}
                                     <span style={{
-                                        background: 'var(--warning-soft)', color: '#d97706', border: '1px solid #fde68a',
+                                        background: 'var(--warning-soft)', color: 'var(--warning)', border: '1px solid var(--warning)',
                                         padding: '0.3rem 0.85rem', borderRadius: '99px', fontSize: '0.78rem', fontWeight: 600
                                     }}>Pending</span>
                                     <button
@@ -687,7 +689,7 @@ function FeedbackHistorySection({ token, toast }) {
                                         </div>
                                         {feedback && (
                                             <p style={{
-                                                marginTop: '0.75rem', fontSize: '0.87rem', color: '#475569',
+                                                marginTop: '0.75rem', fontSize: '0.87rem', color: 'var(--text-muted)',
                                                 lineHeight: 1.6, background: 'var(--bg-app)', padding: '0.75rem 1rem',
                                                 borderRadius: '10px', borderLeft: '3px solid #cbd5e1'
                                             }}>
@@ -867,7 +869,7 @@ function ProfileSettingsSection({ token, toast, requestData, setRequestData }) {
         width: '100%', padding: '0.8rem 1rem', borderRadius: '12px',
         border: '1.5px solid #e2e8f0', fontFamily: 'inherit',
         fontSize: '0.92rem', outline: 'none', color: 'var(--text-main)',
-        background: '#fafafa', transition: 'all 0.2s'
+        background: 'var(--bg-app)', transition: 'all 0.2s'
     };
 
     const sectionStyle = {
@@ -876,7 +878,7 @@ function ProfileSettingsSection({ token, toast, requestData, setRequestData }) {
         boxShadow: '0 2px 10px -4px rgba(0,0,0,0.06)'
     };
 
-    const labelStyle = { display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#475569', marginBottom: '0.5rem' };
+    const labelStyle = { display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.5rem' };
 
     return (
         <div style={{ paddingBottom: '4rem' }}>
@@ -1026,7 +1028,7 @@ function ProfileSettingsSection({ token, toast, requestData, setRequestData }) {
                                 </div>
                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                                     {form.skills.map(s => (
-                                        <span key={s} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.4rem 0.75rem', background: '#eff6ff', color: '#3b82f6', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 600 }}>
+                                        <span key={s} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.4rem 0.75rem', background: 'rgba(59, 130, 246, 0.1)', color: '#3b82f6', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 600 }}>
                                             {s} <X size={14} style={{ cursor: 'pointer' }} onClick={() => removeSkill(s)} />
                                         </span>
                                     ))}
@@ -1046,7 +1048,7 @@ function ProfileSettingsSection({ token, toast, requestData, setRequestData }) {
                                 </div>
                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                                     {form.previousCompanies.map(c => (
-                                        <span key={c} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.4rem 0.75rem', background: '#f0fdf4', color: '#16a34a', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 600 }}>
+                                        <span key={c} style={{ display: 'inline-flex', alignItems: 'center', gap: '0.4rem', padding: '0.4rem 0.75rem', background: 'var(--success-soft)', color: '#16a34a', borderRadius: '8px', fontSize: '0.85rem', fontWeight: 600 }}>
                                             {c} <X size={14} style={{ cursor: 'pointer' }} onClick={() => removeCompany(c)} />
                                         </span>
                                     ))}
@@ -1148,7 +1150,7 @@ function DocumentsSection({ token, toast, requestData, setRequestData }) {
 
             <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1.2fr) 2fr', gap: '2rem', alignItems: 'flex-start' }}>
                 {/* Upload Card */}
-                <div style={{ background: 'var(--bg-panel)', border: '2px dashed #e2e8f0', borderRadius: '24px', padding: '3rem 2rem', textAlign: 'center' }}>
+                <div style={{ background: 'var(--bg-panel)', border: '2px dashed var(--border-subtle)', borderRadius: '24px', padding: '3rem 2rem', textAlign: 'center' }}>
                     <div style={{ width: '64px', height: '64px', background: 'var(--bg-app)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
                         <FileText size={32} color="#4f46e5" />
                     </div>
@@ -1316,7 +1318,7 @@ function VideoVerificationSection({ requestData, currentTime, toast, token, meet
                         <Info size={20} color="#475569" style={{ flexShrink: 0, marginTop: '2px' }} />
                         <div>
                             <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-main)', marginBottom: '0.25rem' }}>How it works</div>
-                            <p style={{ margin: 0, fontSize: '0.9rem', color: '#475569', lineHeight: 1.5 }}>
+                            <p style={{ margin: 0, fontSize: '0.9rem', color: 'var(--text-muted)', lineHeight: 1.5 }}>
                                 Our administrator will review your profile and documents. If everything looks good, they will schedule a 10-15 minute video call to discuss your expertise and interview style. 
                                 <strong> Admin will verify your profile through this call.</strong>
                             </p>
@@ -1358,7 +1360,7 @@ function VideoVerificationSection({ requestData, currentTime, toast, token, meet
                                 <Clock size={16} style={{ verticalAlign: 'middle', marginRight: '0.5rem' }} /> Meeting not started yet
                             </div>
                         ) : (
-                            <div style={{ padding: '0.75rem 1.5rem', background: '#fef2f2', color: 'var(--danger)', borderRadius: '12px', border: '1px solid #fecaca', fontWeight: 600, fontSize: '0.9rem' }}>
+                            <div style={{ padding: '0.75rem 1.5rem', background: 'var(--danger-soft)', color: 'var(--danger)', borderRadius: '12px', border: '1px solid var(--danger)', fontWeight: 600, fontSize: '0.9rem' }}>
                                 <AlertCircle size={16} style={{ verticalAlign: 'middle', marginRight: '0.5rem' }} /> Meeting expired
                             </div>
                         )}
@@ -1372,7 +1374,7 @@ function VideoVerificationSection({ requestData, currentTime, toast, token, meet
                 )}
 
                 {isCompleted && (
-                    <div style={{ textAlign: 'center', padding: '2rem', border: '2px dashed #bbf7d0', borderRadius: '20px', background: '#f0fdf4' }}>
+                    <div style={{ textAlign: 'center', padding: '2rem', border: '2px dashed #bbf7d0', borderRadius: '20px', background: 'var(--success-soft)' }}>
                         <p style={{ color: 'var(--success)', fontWeight: 600, fontSize: '1rem', margin: 0 }}>
                             Meeting completed! Our team is now making a final decision. You'll see an update on your dashboard soon.
                         </p>
@@ -1428,8 +1430,18 @@ export function ExpertDashboard({ user }) {
     const [loadingRequest, setLoadingRequest] = useState(true);
     const [currentTime, setCurrentTime] = useState(new Date());
     const toast = useToast();
+    const { logout } = useAuth();
     const token = localStorage.getItem('auth-token');
     const firstName = user?.name ? user.name.split(' ')[0] : 'Expert';
+
+    const handleLogout = () => {
+        if (window.confirm("Are you sure you want to log out?")) {
+            toast.info("Logging out safely...");
+            setTimeout(() => {
+                logout();
+            }, 800);
+        }
+    };
 
     useEffect(() => {
         const fetchMyRequest = async () => {
@@ -1477,7 +1489,7 @@ export function ExpertDashboard({ user }) {
     return (
         <div style={{
             minHeight: '100vh',
-            background: '#f3f4f6',
+            background: 'var(--bg-app)',
             display: 'flex',
             flexDirection: 'column',
         }}>
@@ -1505,15 +1517,30 @@ export function ExpertDashboard({ user }) {
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                     <div style={{
                         display: 'flex', alignItems: 'center', gap: '0.6rem',
-                        background: '#f0fdf4', color: '#16a34a',
-                        border: '1px solid #bbf7d0',
+                        background: 'var(--success-soft)', color: '#16a34a',
+                        border: '1px solid var(--success)',
                         padding: '0.4rem 1rem', borderRadius: '99px',
                         fontSize: '0.82rem', fontWeight: 600,
                     }}>
                         <div style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#22c55e' }} />
                         Expert
                     </div>
+                    <ThemeToggle />
                     <Avatar name={user?.name || ''} avatar={user?.avatar || ''} size={38} />
+                    <button
+                        onClick={handleLogout}
+                        title="Logout"
+                        style={{
+                            display: 'flex', alignItems: 'center', justifyContent: 'center',
+                            background: 'var(--bg-app)', border: '1px solid var(--border-subtle)',
+                            color: 'var(--danger)', padding: '0.55rem', borderRadius: '10px',
+                            cursor: 'pointer', transition: 'all 0.2s', marginLeft: '0.5rem'
+                        }}
+                        onMouseEnter={e => { e.currentTarget.style.background = 'var(--danger-soft)'; e.currentTarget.style.color = '#dc2626'; }}
+                        onMouseLeave={e => { e.currentTarget.style.background = 'var(--bg-app)'; e.currentTarget.style.color = 'var(--danger)'; }}
+                    >
+                        <LogOut size={18} />
+                    </button>
                 </div>
             </div>
 
