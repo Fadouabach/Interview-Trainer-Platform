@@ -132,10 +132,10 @@ export function Session({ category, onFinish }) {
     return (
         <div style={{ width: '100%', maxWidth: '900px', margin: '0 auto' }}>
             <div style={{ textAlign: 'center', marginBottom: '2.5rem' }}>
-                <h1 style={{ fontSize: '1.75rem', fontWeight: '700', color: '#0f172a', marginBottom: '0.5rem' }}>
+                <h1 style={{ fontSize: '1.75rem', fontWeight: '700', color: 'var(--text-main)', marginBottom: '0.5rem' }}>
                     Mock Interview – {displayCategory}
                 </h1>
-                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', color: '#64748b' }}>
+                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.75rem', color: 'var(--text-muted)' }}>
                     <span style={{ fontSize: '0.9rem', fontWeight: '600' }}>Question {currentQIndex + 1} of {categoryQuestions.length}</span>
                     <div style={{ width: '150px', height: '6px', background: '#e2e8f0', borderRadius: '10px', overflow: 'hidden' }}>
                         <div style={{ width: `${progress}%`, height: '100%', background: 'var(--primary)', transition: 'width 0.5s ease' }}></div>
@@ -148,8 +148,8 @@ export function Session({ category, onFinish }) {
                 position: 'relative',
                 boxShadow: '0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 8px 10px -6px rgba(0, 0, 0, 0.05)',
                 borderRadius: '32px',
-                background: 'white',
-                border: '1px solid #f1f5f9'
+                background: 'var(--bg-panel)',
+                border: '1px solid var(--border-subtle)'
             }}>
                 <div style={{
                     position: 'absolute',
@@ -171,7 +171,7 @@ export function Session({ category, onFinish }) {
                 </div>
 
                 <div style={{ marginBottom: '3rem', textAlign: 'center' }}>
-                    <h2 style={{ fontSize: '2.25rem', fontWeight: '800', color: '#0f172a', lineHeight: '1.3', maxWidth: '700px', margin: '0 auto' }}>
+                    <h2 style={{ fontSize: '2.25rem', fontWeight: '800', color: 'var(--text-main)', lineHeight: '1.3', maxWidth: '700px', margin: '0 auto' }}>
                         {currentQuestion.question}
                     </h2>
                 </div>
@@ -190,7 +190,7 @@ export function Session({ category, onFinish }) {
                     boxShadow: isRecording ? 'inset 0 0 20px rgba(139, 92, 246, 0.1)' : 'none'
                 }}>
                     {permission === 'denied' ? (
-                        <div style={{ textAlign: 'center', color: '#ef4444', padding: '1rem' }}>
+                        <div style={{ textAlign: 'center', color: 'var(--danger)', padding: '1rem' }}>
                             <p style={{ fontWeight: '600' }}>Microphone access denied.</p>
                             <p style={{ fontSize: '0.9rem' }}>Please allow access in your browser settings to record your answer.</p>
                         </div>
@@ -201,11 +201,11 @@ export function Session({ category, onFinish }) {
                         </div>
                     ) : currentAudio ? (
                         <div style={{ width: '85%', textAlign: 'center' }}>
-                            <p style={{ marginBottom: '1.5rem', color: '#64748b', fontWeight: '500' }}>How did you do? Review your answer below:</p>
+                            <p style={{ marginBottom: '1.5rem', color: 'var(--text-muted)', fontWeight: '500' }}>How did you do? Review your answer below:</p>
                             <audio controls src={currentAudio.url} style={{ width: '100%', height: '45px' }} />
                         </div>
                     ) : (
-                        <div style={{ textAlign: 'center', color: '#94a3b8' }}>
+                        <div style={{ textAlign: 'center', color: 'var(--text-light)' }}>
                             <div style={{ fontSize: '3rem', marginBottom: '1rem', opacity: 0.5 }}>🎙️</div>
                             <p style={{ fontSize: '1.1rem', fontWeight: '500' }}>Ready? Click the button below to start answering</p>
                         </div>
@@ -240,7 +240,7 @@ export function Session({ category, onFinish }) {
                         <>
                             <button
                                 className="btn"
-                                style={{ background: 'white', color: '#0f172a', border: '1px solid #e2e8f0', padding: '1.25rem 2rem', fontSize: '1.1rem', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '0.75rem' }}
+                                style={{ background: 'var(--bg-panel)', color: 'var(--text-main)', border: '1px solid var(--border-subtle)', padding: '1.25rem 2rem', fontSize: '1.1rem', borderRadius: '16px', display: 'flex', alignItems: 'center', gap: '0.75rem' }}
                                 onClick={startRecording}
                             >
                                 <RefreshCw size={22} />

@@ -2,48 +2,50 @@ import React, { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { CheckCircle, Play, Mic, FileText, ArrowRight, Star, X, Layout, MessageSquare, Zap, BarChart } from 'lucide-react';
 import logo from '../assets/logo.png';
+import { ThemeToggle } from '../components/ThemeToggle';
 
 export function LandingPage() {
     const [showDemo, setShowDemo] = useState(false);
     const navigate = useNavigate();
 
     return (
-        <div style={{ fontFamily: '"Inter", sans-serif', background: '#ffffff', color: '#1e293b' }}>
+        <div style={{ fontFamily: '"Inter", sans-serif', background: 'var(--bg-app)', color: 'var(--text-main)' }}>
             {/* Navbar */}
             <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem 2rem', maxWidth: '1200px', margin: '0 auto' }}>
-                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '0.5rem', color: '#0f172a' }}>
+                <div style={{ fontSize: '1.5rem', fontWeight: 'bold', display: 'flex', alignItems: 'center', gap: '0.5rem', color: 'var(--text-main)' }}>
                     <img src={logo} alt="Confido Logo" style={{ height: '40px' }} />
                 </div>
                 <div style={{ display: 'flex', gap: '2rem', alignItems: 'center' }}>
-                    <a href="#features" style={{ textDecoration: 'none', color: '#64748b', fontWeight: '500' }}>Features</a>
-                    <a href="#experts" style={{ textDecoration: 'none', color: '#64748b', fontWeight: '500' }}>Experts</a>
-                    <Link to="/login" style={{ textDecoration: 'none', color: '#0f172a', fontWeight: '600' }}>Sign In</Link>
-                    <Link to="/signup" className="btn" style={{ textDecoration: 'none', background: '#0f172a', color: 'white', padding: '0.75rem 1.5rem', borderRadius: '8px', fontWeight: '600' }}>
+                    <a href="#features" style={{ textDecoration: 'none', color: 'var(--text-muted)', fontWeight: '500' }}>Features</a>
+                    <a href="#experts" style={{ textDecoration: 'none', color: 'var(--text-muted)', fontWeight: '500' }}>Experts</a>
+                    <ThemeToggle />
+                    <Link to="/login" style={{ textDecoration: 'none', color: 'var(--text-main)', fontWeight: '600' }}>Sign In</Link>
+                    <Link to="/signup" className="btn" style={{ textDecoration: 'none', background: 'var(--text-main)', color: 'var(--bg-panel)', padding: '0.75rem 1.5rem', borderRadius: '8px', fontWeight: '600' }}>
                         Get Started
                     </Link>
                 </div>
             </nav>
 
             {/* Hero Section */}
-            <header style={{ textAlign: 'center', padding: '6rem 2rem', background: 'radial-gradient(circle at top, #f1f5f9 0%, transparent 40%)' }}>
+            <header style={{ textAlign: 'center', padding: '6rem 2rem', background: 'radial-gradient(circle at top, var(--neutral-soft) 0%, transparent 40%)' }}>
                 <div style={{
-                    display: 'inline-block', padding: '0.5rem 1rem', background: '#eff6ff', color: '#3b82f6',
+                    display: 'inline-block', padding: '0.5rem 1rem', background: 'var(--primary-light)', color: 'var(--bg-panel)',
                     borderRadius: '50px', fontSize: '0.9rem', fontWeight: '600', marginBottom: '1.5rem'
                 }}>
                     ✨ AI-Powered Interview Coach
                 </div>
-                <h1 style={{ fontSize: '4rem', fontWeight: '800', maxWidth: '800px', margin: '0 auto 1.5rem auto', lineHeight: '1.1', letterSpacing: '-0.02em', color: '#0f172a' }}>
-                    Master Your Next Interview with <span style={{ background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Real-Time AI Feedback</span>
+                <h1 style={{ fontSize: '4rem', fontWeight: '800', maxWidth: '800px', margin: '0 auto 1.5rem auto', lineHeight: '1.1', letterSpacing: '-0.02em', color: 'var(--text-main)' }}>
+                    Master Your Next Interview with <span style={{ background: 'linear-gradient(135deg, var(--primary), var(--secondary))', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>Real-Time AI Feedback</span>
                 </h1>
-                <p style={{ fontSize: '1.25rem', color: '#64748b', maxWidth: '600px', margin: '0 auto 2.5rem auto', lineHeight: '1.6' }}>
+                <p style={{ fontSize: '1.25rem', color: 'var(--text-muted)', maxWidth: '600px', margin: '0 auto 2.5rem auto', lineHeight: '1.6' }}>
                     Practice with realistic questions, get instant transcription analysis, and boost your confidence before the big day.
                 </p>
                 <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
                     <Link to="/dashboard" style={{
                         display: 'flex', alignItems: 'center', gap: '0.5rem',
-                        background: '#0f172a', color: 'white', padding: '1rem 2rem',
+                        background: 'var(--text-main)', color: 'var(--bg-panel)', padding: '1rem 2rem',
                         borderRadius: '12px', fontWeight: '600', textDecoration: 'none', fontSize: '1.1rem',
-                        boxShadow: '0 10px 25px rgba(15, 23, 42, 0.15)'
+                        boxShadow: 'var(--shadow-md)'
                     }}>
                         Start Practicing Now <ArrowRight size={20} />
                     </Link>
@@ -51,9 +53,9 @@ export function LandingPage() {
                         onClick={() => setShowDemo(true)}
                         style={{
                             display: 'flex', alignItems: 'center', gap: '0.5rem',
-                            background: 'white', color: '#0f172a', padding: '1rem 2rem',
+                            background: 'var(--bg-panel)', color: 'var(--text-main)', padding: '1rem 2rem',
                             borderRadius: '12px', fontWeight: '600', textDecoration: 'none', fontSize: '1.1rem',
-                            border: '1px solid #e2e8f0', cursor: 'pointer'
+                            border: '1px solid var(--border-subtle)', cursor: 'pointer'
                         }}
                     >
                         <Play size={20} /> Watch Demo
@@ -65,8 +67,8 @@ export function LandingPage() {
             {/* Features Grid */}
             <section id="features" style={{ padding: '6rem 2rem', maxWidth: '1200px', margin: '0 auto' }}>
                 <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-                    <h2 style={{ fontSize: '2.5rem', fontWeight: '700', marginBottom: '1rem', color: '#0f172a' }}>Everything you need to succeed</h2>
-                    <p style={{ color: '#64748b', fontSize: '1.1rem' }}>Our platform provides comprehensive tools to prepare you for any role.</p>
+                    <h2 style={{ fontSize: '2.5rem', fontWeight: '700', marginBottom: '1rem', color: 'var(--text-main)' }}>Everything you need to succeed</h2>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Our platform provides comprehensive tools to prepare you for any role.</p>
                 </div>
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '2rem' }}>
                     <FeatureCard
@@ -88,11 +90,11 @@ export function LandingPage() {
             </section>
 
             {/* Experts Preview */}
-            <section id="experts" style={{ background: '#f8fafc', padding: '6rem 2rem' }}>
+            <section id="experts" style={{ background: 'var(--neutral-soft)', padding: '6rem 2rem' }}>
                 <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
                     <div style={{ textAlign: 'center', marginBottom: '4rem' }}>
-                        <h2 style={{ fontSize: '2.5rem', fontWeight: '700', marginBottom: '1rem', color: '#0f172a' }}>Learn from the best</h2>
-                        <p style={{ color: '#64748b', fontSize: '1.1rem' }}>Book 1:1 sessions with industry veterans from top companies.</p>
+                        <h2 style={{ fontSize: '2.5rem', fontWeight: '700', marginBottom: '1rem', color: 'var(--text-main)' }}>Learn from the best</h2>
+                        <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem' }}>Book 1:1 sessions with industry veterans from top companies.</p>
                     </div>
                     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '2rem' }}>
                         <ExpertCard name="Jihane K." company="Ex-Google" role="Frontend Expert" />
@@ -109,24 +111,24 @@ export function LandingPage() {
 
 function FeatureCard({ icon, title, description }) {
     return (
-        <div style={{ padding: '2rem', borderRadius: '16px', border: '1px solid #e2e8f0', background: 'white' }}>
+        <div style={{ padding: '2rem', borderRadius: '16px', border: '1px solid var(--border-subtle)', background: 'var(--bg-panel)' }}>
             <div style={{ marginBottom: '1.5rem' }}>{icon}</div>
-            <h3 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.75rem', color: '#0f172a' }}>{title}</h3>
-            <p style={{ color: '#64748b', lineHeight: '1.6' }}>{description}</p>
+            <h3 style={{ fontSize: '1.25rem', fontWeight: '600', marginBottom: '0.75rem', color: 'var(--text-main)' }}>{title}</h3>
+            <p style={{ color: 'var(--text-muted)', lineHeight: '1.6' }}>{description}</p>
         </div>
     );
 }
 
 function ExpertCard({ name, company, role }) {
     return (
-        <div style={{ background: 'white', borderRadius: '16px', padding: '1.5rem', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)' }}>
+        <div style={{ background: 'var(--bg-panel)', borderRadius: '16px', padding: '1.5rem', boxShadow: 'var(--shadow-md)' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1rem' }}>
                 <div>
-                    <div style={{ fontWeight: 'bold', color: '#0f172a' }}>{name}</div>
-                    <div style={{ fontSize: '0.9rem', color: '#64748b' }}>{company}</div>
+                    <div style={{ fontWeight: 'bold', color: 'var(--text-main)' }}>{name}</div>
+                    <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{company}</div>
                 </div>
             </div>
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', padding: '0.25rem 0.75rem', background: '#eff6ff', color: '#3b82f6', borderRadius: '20px', fontSize: '0.8rem', fontWeight: '600' }}>
+            <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.25rem', padding: '0.25rem 0.75rem', background: 'var(--neutral-soft)', color: 'var(--primary)', borderRadius: '20px', fontSize: '0.8rem', fontWeight: '600' }}>
                 <Star size={12} fill="currentColor" /> {role}
             </div>
         </div>
@@ -176,15 +178,15 @@ function DemoModal({ onClose, onTryNow }) {
             alignItems: 'center', justifyContent: 'center', padding: '2rem'
         }} onClick={onClose}>
             <div style={{
-                background: 'white', width: '100%', maxWidth: '700px',
+                background: 'var(--bg-panel)', width: '100%', maxWidth: '700px',
                 borderRadius: '24px', overflow: 'hidden', position: 'relative',
-                boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5)'
+                boxShadow: 'var(--shadow-lg)'
             }} onClick={e => e.stopPropagation()}>
 
                 {/* Header */}
-                <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                    <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>Platform Demo</h3>
-                    <button onClick={onClose} style={{ background: '#f8fafc', border: 'none', padding: '0.5rem', borderRadius: '50%', cursor: 'pointer', color: '#64748b' }}>
+                <div style={{ padding: '1.5rem 2rem', borderBottom: '1px solid var(--border-subtle)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <h3 style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--text-main)' }}>Platform Demo</h3>
+                    <button onClick={onClose} style={{ background: 'var(--neutral-soft)', border: 'none', padding: '0.5rem', borderRadius: '50%', cursor: 'pointer', color: 'var(--text-muted)' }}>
                         <X size={20} />
                     </button>
                 </div>
@@ -199,10 +201,10 @@ function DemoModal({ onClose, onTryNow }) {
                     }}>
                         {steps[step].icon}
                     </div>
-                    <h2 style={{ fontSize: '1.75rem', fontWeight: '800', marginBottom: '1rem', color: '#0f172a', transition: 'all 0.5s ease' }}>
+                    <h2 style={{ fontSize: '1.75rem', fontWeight: '800', marginBottom: '1rem', color: 'var(--text-main)', transition: 'all 0.5s ease' }}>
                         {steps[step].title}
                     </h2>
-                    <p style={{ fontSize: '1.1rem', color: '#64748b', lineHeight: '1.6', maxWidth: '450px', margin: '0 auto', transition: 'all 0.5s ease' }}>
+                    <p style={{ fontSize: '1.1rem', color: 'var(--text-muted)', lineHeight: '1.6', maxWidth: '450px', margin: '0 auto', transition: 'all 0.5s ease' }}>
                         {steps[step].desc}
                     </p>
 
@@ -219,9 +221,9 @@ function DemoModal({ onClose, onTryNow }) {
                 </div>
 
                 {/* Footer Actions */}
-                <div style={{ padding: '1.5rem 2rem', background: '#f8fafc', borderTop: '1px solid #f1f5f9', display: 'flex', gap: '1rem' }}>
+                <div style={{ padding: '1.5rem 2rem', background: 'var(--bg-app)', borderTop: '1px solid var(--border-subtle)', display: 'flex', gap: '1rem' }}>
                     <button onClick={onTryNow} style={{
-                        flex: 1, background: '#0f172a', color: 'white',
+                        flex: 1, background: 'var(--text-main)', color: 'var(--bg-panel)',
                         padding: '1rem', borderRadius: '12px', fontWeight: '700',
                         border: 'none', cursor: 'pointer', fontSize: '1rem',
                         display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem'
@@ -229,9 +231,9 @@ function DemoModal({ onClose, onTryNow }) {
                         Try it now <ArrowRight size={18} />
                     </button>
                     <button onClick={onClose} style={{
-                        flex: 1, background: 'white', color: '#0f172a',
+                        flex: 1, background: 'var(--bg-panel)', color: 'var(--text-main)',
                         padding: '1rem', borderRadius: '12px', fontWeight: '700',
-                        border: '1px solid #e2e8f0', cursor: 'pointer', fontSize: '1rem'
+                        border: '1px solid var(--border-subtle)', cursor: 'pointer', fontSize: '1rem'
                     }}>
                         Close Preview
                     </button>

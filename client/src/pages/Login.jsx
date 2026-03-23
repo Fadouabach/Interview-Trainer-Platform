@@ -58,7 +58,7 @@ export function Login({ setView }) {
 
                 {error && (
                     <div style={{
-                        background: '#fee2e2', color: '#dc2626',
+                        background: 'var(--danger-soft)', color: 'var(--danger)',
                         padding: '0.75rem', borderRadius: '8px',
                         marginBottom: '1rem', fontSize: '0.9rem'
                     }}>

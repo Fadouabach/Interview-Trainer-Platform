@@ -77,7 +77,7 @@ export function AdminInterviews() {
                             
                             <button 
                                 onClick={() => handleDelete(session._id || session.id)} 
-                                style={{ padding: '0.5rem', background: '#fee2e2', color: '#dc2626', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
+                                style={{ padding: '0.5rem', background: 'var(--danger-soft)', color: 'var(--danger)', border: 'none', borderRadius: '8px', cursor: 'pointer' }}
                             >
                                 <Trash2 size={20} />
                             </button>

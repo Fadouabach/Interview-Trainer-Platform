@@ -47,8 +47,8 @@ export function Profile({ user }) {
                     {user?.role === 'expert' ? 'Expert Coach' : 'Aspiring Developer'}
                 </p>
                 <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center' }}>
-                    <span style={{ background: '#dcfce7', color: '#166534', padding: '6px 16px', borderRadius: '20px', fontSize: '0.875rem', fontWeight: '600' }}>Pro Member</span>
-                    <span style={{ background: '#f1f5f9', color: '#64748b', padding: '6px 16px', borderRadius: '20px', fontSize: '0.875rem' }}>{formData.field || 'General'}</span>
+                    <span style={{ background: 'var(--success-soft)', color: 'var(--success)', padding: '6px 16px', borderRadius: '20px', fontSize: '0.875rem', fontWeight: '600' }}>Pro Member</span>
+                    <span style={{ background: 'var(--neutral-soft)', color: 'var(--text-muted)', padding: '6px 16px', borderRadius: '20px', fontSize: '0.875rem' }}>{formData.field || 'General'}</span>
                 </div>
             </div>
 
@@ -103,7 +103,7 @@ export function Profile({ user }) {
                 ].map((item, idx) => (
                     <div key={idx} className="card" style={{ display: 'flex', alignItems: 'center', gap: '1.5rem', cursor: 'pointer' }}>
                         <div style={{
-                            padding: '12px', background: '#f8fafc', borderRadius: '12px',
+                            padding: '12px', background: 'var(--bg-app)', borderRadius: '12px',
                             color: 'var(--text-muted)'
                         }}>
                             <item.icon size={24} />

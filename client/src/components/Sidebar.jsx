@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { LayoutDashboard, PlayCircle, Users, BarChart2, User, LogOut, Shield } from 'lucide-react';
 import logo from '../assets/logo.png';
 import { useAuth } from '../context/AuthContext';
+import { ThemeToggle } from './ThemeToggle';
 
 export function Sidebar({ onLogout }) {
     const navigate = useNavigate();
@@ -78,7 +79,7 @@ export function Sidebar({ onLogout }) {
                                         padding: '0.875rem 1rem',
                                         border: 'none',
                                         borderRadius: '12px',
-                                        background: isActive ? 'white' : 'transparent',
+                                        background: isActive ? 'var(--bg-panel)' : 'transparent',
                                         color: isActive ? 'var(--primary)' : 'var(--text-muted)',
                                         fontWeight: isActive ? '600' : '500',
                                         cursor: 'pointer',
@@ -96,7 +97,8 @@ export function Sidebar({ onLogout }) {
                 </ul>
             </nav>
 
-            <div style={{ padding: '1.5rem', borderTop: '1px solid var(--border-subtle)' }}>
+            <div style={{ padding: '1.5rem', borderTop: '1px solid var(--border-subtle)', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+                <ThemeToggle style={{ width: '100%' }} />
                 {user ? (
                     <button
                         onClick={onLogout}

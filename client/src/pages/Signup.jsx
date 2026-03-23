@@ -115,7 +115,7 @@ export function Signup({ setView }) {
 
                 {error && (
                     <div style={{
-                        background: '#fee2e2', color: '#dc2626', padding: '0.75rem 1rem',
+                        background: 'var(--danger-soft)', color: 'var(--danger)', padding: '0.75rem 1rem',
                         borderRadius: '10px', marginBottom: '1.5rem', fontSize: '0.9rem',
                         border: '1px solid #fecaca', display: 'flex', alignItems: 'center', gap: '0.5rem'
                     }}>
@@ -182,7 +182,7 @@ export function Signup({ setView }) {
                             <div>
                                 <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.9rem' }}>Full Name</label>
                                 <div style={{ position: 'relative' }}>
-                                    <User size={18} style={{ position: 'absolute', left: '12px', top: '14px', color: '#94a3b8' }} />
+                                    <User size={18} style={{ position: 'absolute', left: '12px', top: '14px', color: 'var(--text-light)' }} />
                                     <input
                                         type="text" value={name} onChange={(e) => setName(e.target.value)}
                                         style={{ width: '100%', padding: '0.85rem 1rem 0.85rem 2.75rem', borderRadius: '10px', border: '1px solid var(--border-subtle)', outline: 'none' }}
@@ -194,7 +194,7 @@ export function Signup({ setView }) {
                             <div>
                                 <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.9rem' }}>Email Address</label>
                                 <div style={{ position: 'relative' }}>
-                                    <Mail size={18} style={{ position: 'absolute', left: '12px', top: '14px', color: '#94a3b8' }} />
+                                    <Mail size={18} style={{ position: 'absolute', left: '12px', top: '14px', color: 'var(--text-light)' }} />
                                     <input
                                         type="email" value={email} onChange={(e) => setEmail(e.target.value)}
                                         style={{ width: '100%', padding: '0.85rem 1rem 0.85rem 2.75rem', borderRadius: '10px', border: '1px solid var(--border-subtle)', outline: 'none' }}
@@ -206,18 +206,18 @@ export function Signup({ setView }) {
                             <div>
                                 <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.9rem' }}>Password</label>
                                 <div style={{ position: 'relative' }}>
-                                    <Lock size={18} style={{ position: 'absolute', left: '12px', top: '14px', color: '#94a3b8' }} />
+                                    <Lock size={18} style={{ position: 'absolute', left: '12px', top: '14px', color: 'var(--text-light)' }} />
                                     <input
                                         type="password" value={password} onChange={(e) => setPassword(e.target.value)}
                                         style={{ width: '100%', padding: '0.85rem 1rem 0.85rem 2.75rem', borderRadius: '10px', border: '1px solid var(--border-subtle)', outline: 'none' }}
                                         placeholder="••••••••" required minLength={6}
                                     />
                                 </div>
-                                <p style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.4rem' }}>Must be at least 6 characters</p>
+                                <p style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginTop: '0.4rem' }}>Must be at least 6 characters</p>
                             </div>
 
                             <div style={{ display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                                <button type="button" onClick={prevStep} style={{ flex: 1, padding: '0.85rem', borderRadius: '10px', border: '1px solid var(--border-subtle)', background: 'white', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
+                                <button type="button" onClick={prevStep} style={{ flex: 1, padding: '0.85rem', borderRadius: '10px', border: '1px solid var(--border-subtle)', background: 'var(--bg-panel)', cursor: 'pointer', fontWeight: 600, display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem' }}>
                                     <ArrowLeft size={18} /> Back
                                 </button>
                                 <button type="submit" className="btn" style={{ flex: 2, height: '52px' }} disabled={isLoading}>
@@ -270,7 +270,7 @@ export function Signup({ setView }) {
                             <div>
                                 <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.9rem' }}>LinkedIn Profile</label>
                                 <div style={{ position: 'relative' }}>
-                                    <Linkedin size={16} style={{ position: 'absolute', left: '12px', top: '15px', color: '#94a3b8' }} />
+                                    <Linkedin size={16} style={{ position: 'absolute', left: '12px', top: '15px', color: 'var(--text-light)' }} />
                                     <input
                                         type="url" value={linkedin} onChange={(e) => setLinkedin(e.target.value)}
                                         style={{ width: '100%', padding: '0.85rem 1rem 0.85rem 2.5rem', borderRadius: '10px', border: '1px solid var(--border-subtle)', outline: 'none' }}
@@ -282,7 +282,7 @@ export function Signup({ setView }) {
                             <div>
                                 <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.9rem' }}>Portfolio URL</label>
                                 <div style={{ position: 'relative' }}>
-                                    <Globe size={16} style={{ position: 'absolute', left: '12px', top: '15px', color: '#94a3b8' }} />
+                                    <Globe size={16} style={{ position: 'absolute', left: '12px', top: '15px', color: 'var(--text-light)' }} />
                                     <input
                                         type="url" value={portfolio} onChange={(e) => setPortfolio(e.target.value)}
                                         style={{ width: '100%', padding: '0.85rem 1rem 0.85rem 2.5rem', borderRadius: '10px', border: '1px solid var(--border-subtle)', outline: 'none' }}
@@ -295,7 +295,7 @@ export function Signup({ setView }) {
                                 <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '600', fontSize: '0.9rem' }}>Upload CV (PDF)</label>
                                 <div style={{
                                     border: '2px dashed var(--border-subtle)', borderRadius: '12px', padding: '1.5rem',
-                                    textAlign: 'center', cursor: 'pointer', background: '#f8fafc'
+                                    textAlign: 'center', cursor: 'pointer', background: 'var(--bg-app)'
                                 }} onClick={() => document.getElementById('cv-upload').click()}>
                                     <Upload size={24} color="var(--primary)" style={{ marginBottom: '0.5rem' }} />
                                     <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>{cv ? cv.name : 'Click to upload your CV'}</div>
@@ -308,7 +308,7 @@ export function Signup({ setView }) {
                             </div>
 
                             <div style={{ gridColumn: '1 / -1', display: 'flex', gap: '1rem', marginTop: '1rem' }}>
-                                <button type="button" onClick={prevStep} style={{ flex: 1, padding: '0.85rem', borderRadius: '10px', border: '1px solid var(--border-subtle)', background: 'white', cursor: 'pointer', fontWeight: 600 }}>
+                                <button type="button" onClick={prevStep} style={{ flex: 1, padding: '0.85rem', borderRadius: '10px', border: '1px solid var(--border-subtle)', background: 'var(--bg-panel)', cursor: 'pointer', fontWeight: 600 }}>
                                     Back
                                 </button>
                                 <button type="submit" className="btn" style={{ flex: 2, height: '52px' }} disabled={isLoading}>

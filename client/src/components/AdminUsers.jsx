@@ -112,7 +112,7 @@ export function AdminUsers() {
                                     {u.createdAt ? new Date(u.createdAt).toLocaleDateString() : 'N/A'}
                                 </td>
                                 <td style={{ padding: '1rem', textAlign: 'right' }}>
-                                    <button onClick={() => handleDelete(u._id || u.id)} style={{ background: 'none', border: 'none', color: '#ef4444', cursor: 'pointer' }}>
+                                    <button onClick={() => handleDelete(u._id || u.id)} style={{ background: 'none', border: 'none', color: 'var(--danger)', cursor: 'pointer' }}>
                                         <Trash2 size={18} />
                                     </button>
                                 </td>

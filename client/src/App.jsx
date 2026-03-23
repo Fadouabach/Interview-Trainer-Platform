@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import './App.css';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { ThemeProvider } from './context/ThemeContext';
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation, useNavigate } from 'react-router-dom';
 
 // Components
@@ -128,7 +129,7 @@ function AuthenticatedLayout() {
         flex: 1,
         marginLeft: isImmersive || isExpertRoute ? 0 : '260px',
         minHeight: '100vh',
-        backgroundColor: isImmersive ? '#f8fafc' : 'var(--bg-app)',
+        backgroundColor: isImmersive ? 'var(--bg-panel)' : 'transparent',
         display: isImmersive ? 'flex' : 'block',
         alignItems: isImmersive ? 'center' : 'initial',
         justifyContent: isImmersive ? 'center' : 'initial',
@@ -184,29 +185,31 @@ function AuthenticatedLayout() {
 
 function App() {
   return (
-    <Router>
-      <AuthProvider>
-        <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
-          <div style={{ flex: 1 }}>
-            <Routes>
-              {/* Public Routes */}
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/login" element={<LoginPageWrapper />} />
-              <Route path="/signup" element={<SignupPageWrapper />} />
-              <Route path="/privacy" element={<div className="container" style={{ padding: '8rem 2rem' }}><h1>Privacy Policy</h1><p>Placeholder for Privacy Policy content.</p></div>} />
-              <Route path="/terms" element={<div className="container" style={{ padding: '8rem 2rem' }}><h1>Terms of Service</h1><p>Placeholder for Terms of Service content.</p></div>} />
+    <ThemeProvider>
+      <Router>
+        <AuthProvider>
+          <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh', background: 'var(--bg-app)', color: 'var(--text-main)', transition: 'background-color 0.3s ease, color 0.3s ease' }}>
+            <div style={{ flex: 1 }}>
+              <Routes>
+                {/* Public Routes */}
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/login" element={<LoginPageWrapper />} />
+                <Route path="/signup" element={<SignupPageWrapper />} />
+                <Route path="/privacy" element={<div className="container" style={{ padding: '8rem 2rem' }}><h1>Privacy Policy</h1><p>Placeholder for Privacy Policy content.</p></div>} />
+                <Route path="/terms" element={<div className="container" style={{ padding: '8rem 2rem' }}><h1>Terms of Service</h1><p>Placeholder for Terms of Service content.</p></div>} />
 
-              {/* Main Application with Sidebar */}
-              <Route path="/*" element={<AuthenticatedLayout />} />
+                {/* Main Application with Sidebar */}
+                <Route path="/*" element={<AuthenticatedLayout />} />
 
-              {/* Fallback */}
-              <Route path="*" element={<Navigate to="/" replace />} />
-            </Routes>
+                {/* Fallback */}
+                <Route path="*" element={<Navigate to="/" replace />} />
+              </Routes>
+            </div>
+            <Footer />
           </div>
-          <Footer />
-        </div>
-      </AuthProvider>
-    </Router>
+        </AuthProvider>
+      </Router>
+    </ThemeProvider>
   );
 }
 

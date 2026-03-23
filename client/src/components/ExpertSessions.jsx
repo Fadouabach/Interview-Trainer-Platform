@@ -119,7 +119,7 @@ export function ExpertSessions() {
                                     background: 'var(--bg-app)'
                                 }}
                             />
-                            <User size={18} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: '#94a3b8' }} />
+                            <User size={18} style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)', color: 'var(--text-light)' }} />
                         </div>
                     </div>
 
@@ -133,7 +133,7 @@ export function ExpertSessions() {
                         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(350px, 1fr))', gap: '2rem' }}>
                             {filteredExperts.map((expert) => (
                                 <div key={expert._id} className="card" style={{ display: 'flex', gap: '1.5rem', transition: '0.3s', cursor: 'pointer' }} onClick={() => { setSelectedExpert(expert); setBookingStep('profile'); }}>
-                                    <div style={{ width: '100px', height: '100px', borderRadius: '16px', background: '#f8fafc', overflow: 'hidden', flexShrink: 0 }}>
+                                    <div style={{ width: '100px', height: '100px', borderRadius: '16px', background: 'var(--bg-app)', overflow: 'hidden', flexShrink: 0 }}>
                                         {expert.avatar ? <img src={expert.avatar} alt={expert.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#e0e7ff', color: '#4f46e5' }}><User size={40}/></div>}
                                     </div>
                                     <div style={{ flex: 1 }}>
@@ -148,19 +148,19 @@ export function ExpertSessions() {
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', fontSize: '0.85rem', marginBottom: '1rem' }}>
                                             <div style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', color: '#fbbf24' }}>
                                                 <Star size={14} fill="currentColor" />
-                                                <span style={{ fontWeight: '700', color: '#1e293b' }}>{expert.rating || 0}</span>
+                                                <span style={{ fontWeight: '700', color: 'var(--text-main)' }}>{expert.rating || 0}</span>
                                             </div>
-                                            <span style={{ color: '#94a3b8' }}>•</span>
-                                            <span style={{ color: '#64748b' }}>{expert.location || 'Remote'}</span>
-                                            <span style={{ color: '#94a3b8' }}>•</span>
-                                            <span style={{ color: '#64748b' }}>{expert.experience || 'Senior'} exp</span>
+                                            <span style={{ color: 'var(--text-light)' }}>•</span>
+                                            <span style={{ color: 'var(--text-muted)' }}>{expert.location || 'Remote'}</span>
+                                            <span style={{ color: 'var(--text-light)' }}>•</span>
+                                            <span style={{ color: 'var(--text-muted)' }}>{expert.experience || 'Senior'} exp</span>
                                         </div>
 
                                         <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
                                             {(expert.skills || []).slice(0, 3).map((s, i) => (
-                                                <span key={i} style={{ fontSize: '0.7rem', background: '#f1f5f9', padding: '2px 8px', borderRadius: '4px', color: '#64748b' }}>{s}</span>
+                                                <span key={i} style={{ fontSize: '0.7rem', background: 'var(--neutral-soft)', padding: '2px 8px', borderRadius: '4px', color: 'var(--text-muted)' }}>{s}</span>
                                             ))}
-                                            {expert.skills?.length > 3 && <span style={{ fontSize: '0.7rem', color: '#94a3b8' }}>+{expert.skills.length - 3} more</span>}
+                                            {expert.skills?.length > 3 && <span style={{ fontSize: '0.7rem', color: 'var(--text-light)' }}>+{expert.skills.length - 3} more</span>}
                                         </div>
 
                                         <div style={{ display: 'flex', gap: '0.75rem' }}>
@@ -197,9 +197,9 @@ export function ExpertSessions() {
                     backdropFilter: 'blur(4px)'
                 }}>
                     <div className="card" style={{ maxWidth: '700px', width: '100%', maxHeight: '90vh', overflowY: 'auto', padding: 0, borderRadius: '24px' }}>
-                        <div style={{ position: 'sticky', top: 0, background: 'white', padding: '1.5rem', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 10 }}>
+                        <div style={{ position: 'sticky', top: 0, background: 'var(--bg-panel)', padding: '1.5rem', borderBottom: '1px solid #f1f5f9', display: 'flex', justifyContent: 'space-between', alignItems: 'center', zIndex: 10 }}>
                             <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center' }}>
-                                <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: '#f8fafc', overflow: 'hidden' }}>
+                                <div style={{ width: '64px', height: '64px', borderRadius: '16px', background: 'var(--bg-app)', overflow: 'hidden' }}>
                                     {selectedExpert.avatar ? <img src={selectedExpert.avatar} alt={selectedExpert.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} /> : <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#e0e7ff', color: '#4f46e5' }}><User size={30}/></div>}
                                 </div>
                                 <div>
@@ -207,7 +207,7 @@ export function ExpertSessions() {
                                     <p style={{ color: 'var(--text-muted)', margin: 0 }}>{selectedExpert.title || selectedExpert.field} @ {selectedExpert.company}</p>
                                 </div>
                             </div>
-                            <button onClick={() => { setSelectedExpert(null); setBookingStep(null); }} style={{ background: '#f1f5f9', border: 'none', cursor: 'pointer', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#64748b' }}>&times;</button>
+                            <button onClick={() => { setSelectedExpert(null); setBookingStep(null); }} style={{ background: 'var(--neutral-soft)', border: 'none', cursor: 'pointer', width: '36px', height: '36px', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--text-muted)' }}>&times;</button>
                         </div>
 
                         <div style={{ padding: '2rem' }}>
@@ -232,7 +232,7 @@ export function ExpertSessions() {
                                             <h3 style={{ fontSize: '1.1rem', marginBottom: '1rem', fontWeight: '800' }}>Session Types</h3>
                                             <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
                                                 {(selectedExpert.sessionTypes || ['Mock Interview', 'Tech Review']).map((type, i) => (
-                                                    <div key={i} style={{ border: '1px solid #e2e8f0', padding: '1rem', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
+                                                    <div key={i} style={{ border: '1px solid var(--border-subtle)', padding: '1rem', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                                                         <Check size={18} color="#10b981" />
                                                         <span style={{ fontSize: '0.9rem', fontWeight: '500' }}>{type}</span>
                                                     </div>
@@ -243,8 +243,8 @@ export function ExpertSessions() {
 
                                     <div style={{ borderLeft: '1px solid #f1f5f9', paddingLeft: '2rem' }}>
                                         <div style={{ marginBottom: '2rem' }}>
-                                            <div style={{ fontSize: '2rem', fontWeight: '800', color: '#1e293b' }}>${selectedExpert.price}</div>
-                                            <div style={{ fontSize: '0.9rem', color: '#64748b' }}>per session</div>
+                                            <div style={{ fontSize: '2rem', fontWeight: '800', color: 'var(--text-main)' }}>${selectedExpert.price}</div>
+                                            <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>per session</div>
                                             <button className="btn" style={{ width: '100%', marginTop: '1.5rem' }} onClick={() => setBookingStep('book')}>Book Now</button>
                                         </div>
 
@@ -258,10 +258,10 @@ export function ExpertSessions() {
                                         </div>
 
                                         <div style={{ marginTop: '2.5rem', paddingTop: '2.5rem', borderTop: '1px solid #f1f5f9' }}>
-                                            <h4 style={{ fontSize: '0.85rem', color: '#94a3b8', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Social Links</h4>
+                                            <h4 style={{ fontSize: '0.85rem', color: 'var(--text-light)', marginBottom: '1rem', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Social Links</h4>
                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                                                 {selectedExpert.linkedinUrl && <a href={selectedExpert.linkedinUrl} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: '#1d4ed8', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '600' }}><Check size={16} /> LinkedIn</a>}
-                                                {selectedExpert.githubUrl && <a href={selectedExpert.githubUrl} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: '#334155', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '600' }}><Check size={16} /> GitHub</a>}
+                                                {selectedExpert.githubUrl && <a href={selectedExpert.githubUrl} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: 'var(--text-main)', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '600' }}><Check size={16} /> GitHub</a>}
                                                 {selectedExpert.portfolioUrl && <a href={selectedExpert.portfolioUrl} target="_blank" rel="noreferrer" style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', color: '#7c3aed', textDecoration: 'none', fontSize: '0.9rem', fontWeight: '600' }}><Check size={16} /> Portfolio</a>}
                                             </div>
                                         </div>
@@ -271,7 +271,7 @@ export function ExpertSessions() {
 
                             {bookingStep === 'book' && (
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-                                    {msg && <div style={{ padding: '0.75rem', background: '#dcfce7', color: '#166534', borderRadius: '8px' }}>{msg}</div>}
+                                    {msg && <div style={{ padding: '0.75rem', background: 'var(--success-soft)', color: 'var(--success)', borderRadius: '8px' }}>{msg}</div>}
 
                                     <div>
                                         <label style={{ display: 'block', marginBottom: '0.5rem', fontWeight: '500' }}>Select Session Type</label>

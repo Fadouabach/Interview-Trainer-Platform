@@ -82,19 +82,19 @@ export function Dashboard({ onStartPractice, user }) {
                 zIndex: 10000, padding: '1rem'
             }}>
                 <div style={{
-                    background: 'white', borderRadius: '1.5rem', width: '100%', maxWidth: '900px',
-                    overflow: 'hidden', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.5)'
+                    background: 'var(--bg-panel)', borderRadius: '1.5rem', width: '100%', maxWidth: '900px',
+                    overflow: 'hidden', boxShadow: 'var(--shadow-lg)'
                 }}>
-                    <div style={{ padding: '1.25rem 1.5rem', background: '#1e293b', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <div style={{ padding: '1.25rem 1.5rem', background: 'var(--bg-app)', color: 'var(--text-main)', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                             <Video size={20} />
                             <h3 style={{ fontSize: '1.1rem', fontWeight: 600 }}>{config?.type === 'verification' ? 'Expert Verification Call' : 'Expert Interview Session'}</h3>
                         </div>
-                        <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'white', cursor: 'pointer' }}>
+                        <button onClick={onClose} style={{ background: 'none', border: 'none', color: 'var(--text-main)', cursor: 'pointer' }}>
                             <XCircle size={24} />
                         </button>
                     </div>
-                    <div ref={jitsiContainerRef} style={{ background: '#000', height: '500px' }} />
+                    <div ref={jitsiContainerRef} style={{ background: 'var(--bg-panel)', height: '500px' }} />
                 </div>
             </div>
         );
@@ -141,7 +141,7 @@ export function Dashboard({ onStartPractice, user }) {
                         onClick={() => openVideoCall('verification', dashboardData.expertRequestId)}
                         className="btn"
                         style={{
-                            background: 'white', color: '#4f46e5',
+                            background: 'var(--bg-panel)', color: '#4f46e5',
                             padding: '0.8rem 1.75rem', fontWeight: 700,
                             borderRadius: '0.75rem', border: 'none'
                         }}
@@ -177,7 +177,7 @@ export function Dashboard({ onStartPractice, user }) {
                         onClick={() => openVideoCall('interview', dashboardData.activeInterviewCall.sessionId, dashboardData.activeInterviewCall.roomName)}
                         className="btn"
                         style={{
-                            background: 'white', color: '#059669',
+                            background: 'var(--bg-panel)', color: '#059669',
                             padding: '0.8rem 1.75rem', fontWeight: 700,
                             borderRadius: '0.75rem', border: 'none'
                         }}
@@ -189,12 +189,12 @@ export function Dashboard({ onStartPractice, user }) {
 
             {dashboardData.expertRequestStatus === 'pending' && (
                 <div style={{
-                    background: '#f8fafc', border: '1px solid #e2e8f0',
+                    background: 'var(--bg-panel)', border: '1px solid var(--border-subtle)',
                     borderRadius: '1.25rem', padding: '1.25rem 2rem', marginBottom: '2.5rem',
                     display: 'flex', alignItems: 'center', gap: '1rem'
                 }}>
-                    <Shield size={20} color="#64748b" />
-                    <span style={{ fontSize: '0.95rem', color: '#64748b' }}>
+                    <Shield size={20} color="var(--text-muted)" />
+                    <span style={{ fontSize: '0.95rem', color: 'var(--text-muted)' }}>
                         Your expert application is **Pending Review**. We will notify you when an interview is scheduled.
                     </span>
                 </div>
@@ -229,7 +229,7 @@ export function Dashboard({ onStartPractice, user }) {
 
             <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: '2rem' }}>
                 {/* Main Action Area */}
-                <div className="card" style={{ background: 'linear-gradient(135deg, var(--bg-panel), #f0f7ff)' }}>
+                <div className="card" style={{ background: 'linear-gradient(135deg, var(--bg-panel), var(--bg-app))' }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
                         <div>
                             <h2 style={{ marginBottom: '1rem', color: 'var(--primary)' }}>Start Practice Session</h2>
@@ -244,9 +244,9 @@ export function Dashboard({ onStartPractice, user }) {
                         </div>
                         <div style={{
                             width: '180px', height: '180px',
-                            background: 'white', borderRadius: '50%',
+                            background: 'var(--bg-app)', borderRadius: '50%',
                             display: 'flex', alignItems: 'center', justifyContent: 'center',
-                            boxShadow: '0 20px 40px rgba(14, 165, 233, 0.15)'
+                            boxShadow: 'var(--shadow-lg)'
                         }}>
                             <div style={{ textAlign: 'center' }}>
                                 <div style={{ fontSize: '3rem', fontWeight: 'bold', color: 'var(--secondary)' }}>{dashboardData.readinessScore}</div>
@@ -271,8 +271,8 @@ export function Dashboard({ onStartPractice, user }) {
                                         <div style={{ fontSize: '0.875rem', color: 'var(--text-muted)' }}>{new Date(item.date).toLocaleDateString()}</div>
                                     </div>
                                     <div style={{
-                                        background: item.score?.includes('Pending') ? '#f1f5f9' : '#dcfce7',
-                                        color: item.score?.includes('Pending') ? '#64748b' : '#166534',
+                                        background: item.score?.includes('Pending') ? 'var(--neutral-soft)' : 'var(--success-soft)',
+                                        color: item.score?.includes('Pending') ? 'var(--text-muted)' : 'var(--success)',
                                         padding: '0.25rem 0.75rem', borderRadius: '20px', fontSize: '0.875rem', fontWeight: '500'
                                     }}>
                                         {item.score}
@@ -302,7 +302,7 @@ function StatCard({ icon, label, value, trend, color }) {
             <div>
                 <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)' }}>{label}</div>
                 <div style={{ fontSize: '1.75rem', fontWeight: '700', lineHeight: '1.2' }}>{value}</div>
-                <div style={{ fontSize: '0.8rem', color: '#10b981', fontWeight: '500' }}>{trend}</div>
+                <div style={{ fontSize: '0.8rem', color: 'var(--success)', fontWeight: '500' }}>{trend}</div>
             </div>
         </div>
     );

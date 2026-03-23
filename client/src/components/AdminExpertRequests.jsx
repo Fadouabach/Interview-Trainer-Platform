@@ -189,11 +189,11 @@ export function AdminExpertRequests() {
 
             <header style={{ marginBottom: '2.5rem', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderBottom: '1px solid var(--border-subtle)', paddingBottom: '1.5rem' }}>
                 <div>
-                    <h1 style={{ fontSize: '2.25rem', fontWeight: '800', color: '#1e293b', letterSpacing: '-0.025em' }}>Expert Verification</h1>
-                    <p style={{ color: '#64748b', fontSize: '1.1rem', marginTop: '0.25rem' }}>Approve or reject experts for the platform.</p>
+                    <h1 style={{ fontSize: '2.25rem', fontWeight: '800', color: 'var(--text-main)', letterSpacing: '-0.025em' }}>Expert Verification</h1>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '1.1rem', marginTop: '0.25rem' }}>Approve or reject experts for the platform.</p>
                 </div>
                 {!selectedRequest && (
-                    <div style={{ display: 'flex', gap: '0.25rem', background: '#f1f5f9', padding: '0.25rem', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
+                    <div style={{ display: 'flex', gap: '0.25rem', background: 'var(--neutral-soft)', padding: '0.25rem', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
                         {['all', 'pending', 'under_review', 'approved', 'rejected'].map(f => (
                             <button key={f} onClick={() => setStatusFilter(f)} style={{ padding: '0.5rem 1rem', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: '600', fontSize: '0.85rem', transition: '0.2s', background: statusFilter === f ? 'white' : 'transparent', color: statusFilter === f ? 'var(--primary)' : '#64748b', boxShadow: statusFilter === f ? 'var(--shadow-sm)' : 'none' }}>
                                 {f.replace('_', ' ')}
@@ -203,13 +203,13 @@ export function AdminExpertRequests() {
                 )}
             </header>
 
-            {message && <div style={{ padding: '1rem', borderRadius: '8px', marginBottom: '1rem', backgroundColor: message.type === 'success' ? '#f0fdf4' : '#fef2f2', color: message.type === 'success' ? '#166534' : '#991b1b', border: '1px solid #e2e8f0' }}>{message.text}</div>}
+            {message && <div style={{ padding: '1rem', borderRadius: '8px', marginBottom: '1rem', backgroundColor: message.type === 'success' ? '#f0fdf4' : '#fef2f2', color: message.type === 'success' ? '#166534' : '#991b1b', border: '1px solid var(--border-subtle)' }}>{message.text}</div>}
 
             {!selectedRequest ? (
                 <div className="card" style={{ padding: '0' }}>
                     <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-                        <thead style={{ background: '#f8fafc', borderBottom: '1px solid #f1f5f9' }}>
-                            <tr style={{ textAlign: 'left', color: '#64748b', fontSize: '0.85rem' }}>
+                        <thead style={{ background: 'var(--bg-app)', borderBottom: '1px solid #f1f5f9' }}>
+                            <tr style={{ textAlign: 'left', color: 'var(--text-muted)', fontSize: '0.85rem' }}>
                                 <th style={{ padding: '1rem' }}>Expert</th>
                                 <th style={{ padding: '1rem' }}>Domain</th>
                                 <th style={{ padding: '1rem' }}>Status</th>
@@ -224,7 +224,7 @@ export function AdminExpertRequests() {
                                     <tr key={r._id || r.id} className="req-row">
                                         <td onClick={() => setSelectedRequest(r)} style={{ padding: '1rem' }}>
                                             <div style={{ fontWeight: '700' }}>{r.name}</div>
-                                            <div style={{ fontSize: '0.8rem', color: '#64748b' }}>{r.email}</div>
+                                            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>{r.email}</div>
                                         </td>
                                         <td style={{ padding: '1rem', fontWeight: '600' }}>{r.domain}</td>
                                         <td style={{ padding: '1rem' }}>
@@ -232,7 +232,7 @@ export function AdminExpertRequests() {
                                                 {st.icon} {r.status.replace('_', ' ')}
                                             </span>
                                         </td>
-                                        <td style={{ padding: '1rem', color: '#64748b', fontSize: '0.85rem' }}>{new Date(r.createdAt).toLocaleDateString()}</td>
+                                        <td style={{ padding: '1rem', color: 'var(--text-muted)', fontSize: '0.85rem' }}>{new Date(r.createdAt).toLocaleDateString()}</td>
                                         <td style={{ padding: '1rem', textAlign: 'right' }}>
                                             <button className="btn" onClick={() => setSelectedRequest(r)}>View Profile</button>
                                         </td>
@@ -248,11 +248,11 @@ export function AdminExpertRequests() {
                         <div className="card-header">
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                 <div style={{ width: '56px', height: '56px', borderRadius: '12px', background: '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--primary)' }}><User size={28}/></div>
-                                <div><h2 style={{ fontSize: '1.3rem', fontWeight: '800' }}>{selectedRequest.name}</h2><p style={{ color: '#64748b', fontSize: '0.9rem' }}>{selectedRequest.email}</p></div>
+                                <div><h2 style={{ fontSize: '1.3rem', fontWeight: '800' }}>{selectedRequest.name}</h2><p style={{ color: 'var(--text-muted)', fontSize: '0.9rem' }}>{selectedRequest.email}</p></div>
                             </div>
-                            <button className="btn" onClick={() => setSelectedRequest(null)} style={{ background: '#f1f5f9', color: '#475569' }}>← Back</button>
+                            <button className="btn" onClick={() => setSelectedRequest(null)} style={{ background: 'var(--neutral-soft)', color: '#475569' }}>← Back</button>
                         </div>
-                        <div style={{ display: 'flex', background: '#f8fafc', borderBottom: '1px solid #f1f5f9' }}>
+                        <div style={{ display: 'flex', background: 'var(--bg-app)', borderBottom: '1px solid #f1f5f9' }}>
                             {['profile', 'documents', 'video', 'interview'].map(t => (
                                 <button key={t} className={`tab-btn ${activeTab === t ? 'active' : ''}`} onClick={() => setActiveTab(t)}>{t === 'video' ? 'Video Meeting' : t.charAt(0).toUpperCase() + t.slice(1)}</button>
                             ))}
@@ -261,12 +261,12 @@ export function AdminExpertRequests() {
                             {activeTab === 'profile' && (
                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                                     <section>
-                                        <h3 style={{ fontSize: '0.9rem', fontWeight: '700', marginBottom: '0.5rem', color: '#1e293b' }}>Professional Bio</h3>
+                                        <h3 style={{ fontSize: '0.9rem', fontWeight: '700', marginBottom: '0.5rem', color: 'var(--text-main)' }}>Professional Bio</h3>
                                         <p style={{ lineHeight: '1.6', color: '#475569' }}>{selectedRequest.bio}</p>
                                     </section>
                                     <section style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
-                                        <div style={{ background: '#f8fafc', padding: '1.25rem', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
-                                            <h3 style={{ fontSize: '0.85rem', fontWeight: '700', textTransform: 'uppercase', color: '#64748b', marginBottom: '1rem', letterSpacing: '0.025em' }}>Contact & Location</h3>
+                                        <div style={{ background: 'var(--bg-app)', padding: '1.25rem', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
+                                            <h3 style={{ fontSize: '0.85rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1rem', letterSpacing: '0.025em' }}>Contact & Location</h3>
                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.9rem' }}>
                                                     <Phone size={16} color="#94a3b8" /> <span>{selectedRequest.phone || 'N/A'}</span>
@@ -279,43 +279,43 @@ export function AdminExpertRequests() {
                                                 </div>
                                             </div>
                                         </div>
-                                        <div style={{ background: '#f8fafc', padding: '1.25rem', borderRadius: '12px', border: '1px solid #e2e8f0' }}>
-                                            <h3 style={{ fontSize: '0.85rem', fontWeight: '700', textTransform: 'uppercase', color: '#64748b', marginBottom: '1rem', letterSpacing: '0.025em' }}>Professional Links</h3>
+                                        <div style={{ background: 'var(--bg-app)', padding: '1.25rem', borderRadius: '12px', border: '1px solid var(--border-subtle)' }}>
+                                            <h3 style={{ fontSize: '0.85rem', fontWeight: '700', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: '1rem', letterSpacing: '0.025em' }}>Professional Links</h3>
                                             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                                                 {selectedRequest.linkedinUrl ? (
                                                     <a href={selectedRequest.linkedinUrl} target="_blank" rel="noreferrer" style={{ color: '#0077b5', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', fontWeight: 600 }}>
                                                         <Linkedin size={16}/> LinkedIn Profile <ExternalLink size={12}/>
                                                     </a>
-                                                ) : <span style={{ color: '#94a3b8', fontSize: '0.9rem' }}>No LinkedIn</span>}
+                                                ) : <span style={{ color: 'var(--text-light)', fontSize: '0.9rem' }}>No LinkedIn</span>}
                                                 {selectedRequest.githubUrl ? (
                                                     <a href={selectedRequest.githubUrl} target="_blank" rel="noreferrer" style={{ color: '#1f2328', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', fontWeight: 600 }}>
                                                         <Github size={16}/> GitHub Profile <ExternalLink size={12}/>
                                                     </a>
-                                                ) : <span style={{ color: '#94a3b8', fontSize: '0.9rem' }}>No GitHub</span>}
+                                                ) : <span style={{ color: 'var(--text-light)', fontSize: '0.9rem' }}>No GitHub</span>}
                                                 {selectedRequest.portfolioUrl ? (
                                                     <a href={selectedRequest.portfolioUrl} target="_blank" rel="noreferrer" style={{ color: '#4f46e5', display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.9rem', fontWeight: 600 }}>
                                                         <Globe size={16}/> Portfolio Website <ExternalLink size={12}/>
                                                     </a>
-                                                ) : <span style={{ color: '#94a3b8', fontSize: '0.9rem' }}>No Portfolio</span>}
+                                                ) : <span style={{ color: 'var(--text-light)', fontSize: '0.9rem' }}>No Portfolio</span>}
                                             </div>
                                         </div>
                                     </section>
 
                                     <section style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
                                         <div>
-                                            <h3 style={{ fontSize: '0.9rem', fontWeight: '700', marginBottom: '0.75rem', color: '#1e293b' }}>Technical Skills</h3>
+                                            <h3 style={{ fontSize: '0.9rem', fontWeight: '700', marginBottom: '0.75rem', color: 'var(--text-main)' }}>Technical Skills</h3>
                                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                                                 {selectedRequest.skills?.length > 0 ? (
                                                     selectedRequest.skills.map(s => <span key={s} style={{ padding: '6px 12px', background: '#eff6ff', color: '#3b82f6', borderRadius: '8px', fontSize: '0.85rem', fontWeight: '600' }}>{s}</span>)
-                                                ) : <span style={{ color: '#94a3b8' }}>None listed</span>}
+                                                ) : <span style={{ color: 'var(--text-light)' }}>None listed</span>}
                                             </div>
                                         </div>
                                         <div>
-                                            <h3 style={{ fontSize: '0.9rem', fontWeight: '700', marginBottom: '0.75rem', color: '#1e293b' }}>Previous Companies</h3>
+                                            <h3 style={{ fontSize: '0.9rem', fontWeight: '700', marginBottom: '0.75rem', color: 'var(--text-main)' }}>Previous Companies</h3>
                                             <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                                                 {selectedRequest.previousCompanies?.length > 0 ? (
                                                     selectedRequest.previousCompanies.map(c => <span key={c} style={{ padding: '6px 12px', background: '#f0fdf4', color: '#16a34a', borderRadius: '8px', fontSize: '0.85rem', fontWeight: '600' }}>{c}</span>)
-                                                ) : <span style={{ color: '#94a3b8' }}>None listed</span>}
+                                                ) : <span style={{ color: 'var(--text-light)' }}>None listed</span>}
                                             </div>
                                         </div>
                                     </section>
@@ -323,7 +323,7 @@ export function AdminExpertRequests() {
                                         <button className="btn" onClick={() => setActiveTab('video')} style={{ background: 'linear-gradient(135deg, #4f46e5, #7c3aed)', color: 'white', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                             <Video size={18} /> Join Video Meeting
                                         </button>
-                                        <button className="btn" onClick={() => setActiveTab('interview')} style={{ background: '#f8fafc', color: '#4f46e5', border: '1px solid #e2e8f0' }}>Start Verification Evaluation</button>
+                                        <button className="btn" onClick={() => setActiveTab('interview')} style={{ background: 'var(--bg-app)', color: '#4f46e5', border: '1px solid var(--border-subtle)' }}>Start Verification Evaluation</button>
                                     </div>
                                 </div>
                             )}
@@ -334,28 +334,28 @@ export function AdminExpertRequests() {
                                         const fullUrl = `http://localhost:5002${doc}`;
                                         const filename = doc.split('/').pop();
                                         return (
-                                            <div key={idx} style={{ padding: '1.25rem', border: '1px solid #e2e8f0', borderRadius: '16px', background: 'white', display: 'flex', flexDirection: 'column', gap: '0.75rem', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}>
+                                            <div key={idx} style={{ padding: '1.25rem', border: '1px solid var(--border-subtle)', borderRadius: '16px', background: 'var(--bg-panel)', display: 'flex', flexDirection: 'column', gap: '0.75rem', boxShadow: '0 2px 4px rgba(0,0,0,0.02)' }}>
                                                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
-                                                    <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: '#fef2f2', display: 'flex', alignItems: 'center', justifyContent: 'center', color: '#ef4444' }}>
+                                                    <div style={{ width: '40px', height: '40px', borderRadius: '10px', background: '#fef2f2', display: 'flex', alignItems: 'center', justifyContent: 'center', color: 'var(--danger)' }}>
                                                         <FileText size={20}/>
                                                     </div>
                                                     <div style={{ flex: 1, minWidth: 0 }}>
-                                                        <div style={{ fontSize: '0.85rem', fontWeight: '700', color: '#1e293b', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{filename}</div>
-                                                        <div style={{ fontSize: '0.7rem', color: '#94a3b8' }}>Verification Doc</div>
+                                                        <div style={{ fontSize: '0.85rem', fontWeight: '700', color: 'var(--text-main)', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{filename}</div>
+                                                        <div style={{ fontSize: '0.7rem', color: 'var(--text-light)' }}>Verification Doc</div>
                                                     </div>
                                                 </div>
                                                 <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.25rem' }}>
-                                                    <a href={fullUrl} target="_blank" rel="noreferrer" className="btn" style={{ padding: '0.5rem', flex: 1, textAlign: 'center', background: '#f1f5f9', color: '#475569', fontSize: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+                                                    <a href={fullUrl} target="_blank" rel="noreferrer" className="btn" style={{ padding: '0.5rem', flex: 1, textAlign: 'center', background: 'var(--neutral-soft)', color: '#475569', fontSize: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
                                                         <Eye size={14}/> View
                                                     </a>
-                                                    <a href={fullUrl} download className="btn" style={{ padding: '0.5rem', flex: 1, textAlign: 'center', background: '#f1f5f9', color: '#475569', fontSize: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
+                                                    <a href={fullUrl} download className="btn" style={{ padding: '0.5rem', flex: 1, textAlign: 'center', background: 'var(--neutral-soft)', color: '#475569', fontSize: '0.8rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.4rem' }}>
                                                         <Download size={14}/> Save
                                                     </a>
                                                 </div>
                                             </div>
                                         );
                                     }) : (
-                                        <div style={{ gridColumn: 'span 4', textAlign: 'center', padding: '3rem', color: '#94a3b8' }}>
+                                        <div style={{ gridColumn: 'span 4', textAlign: 'center', padding: '3rem', color: 'var(--text-light)' }}>
                                             <FileText size={48} style={{ marginBottom: '1rem', opacity: 0.2 }} />
                                             <p>No documents uploaded for this request.</p>
                                         </div>
@@ -370,16 +370,16 @@ export function AdminExpertRequests() {
                                         <button className="btn" onClick={generateAIQuestions} style={{ background: '#f5f3ff', color: '#7c3aed', border: '1px solid #ddd6fe' }}><Sparkles size={16}/> AI Questions</button>
                                     </div>
                                     {interviewData.questions.map((q, idx) => (
-                                        <div key={idx} style={{ background: '#f8fafc', padding: '1rem', borderRadius: '12px' }}>
+                                        <div key={idx} style={{ background: 'var(--bg-app)', padding: '1rem', borderRadius: '12px' }}>
                                             <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.5rem' }}><label style={{ fontWeight: '700', fontSize: '0.9rem' }}>{q.question}</label> <input type="number" min="0" max="100" value={q.score} onChange={(e) => { const nQs = [...interviewData.questions]; nQs[idx].score = parseInt(e.target.value); setInterviewData({...interviewData, questions: nQs, verificationScore: Math.round(nQs.reduce((a,b)=>a+b.score,0)/nQs.length)}); }} style={{ width: '50px' }}/></div>
-                                            <textarea placeholder="Admin notes..." value={q.notes} onChange={(e) => { const nQs = [...interviewData.questions]; nQs[idx].notes = e.target.value; setInterviewData({...interviewData, questions: nQs}); }} style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', border: '1px solid #e2e8f0', minHeight: '60px' }}/>
+                                            <textarea placeholder="Admin notes..." value={q.notes} onChange={(e) => { const nQs = [...interviewData.questions]; nQs[idx].notes = e.target.value; setInterviewData({...interviewData, questions: nQs}); }} style={{ width: '100%', padding: '0.5rem', borderRadius: '8px', border: '1px solid var(--border-subtle)', minHeight: '60px' }}/>
                                         </div>
                                     ))}
                                     <button className="btn" onClick={saveVerificationInterview} style={{ display: 'flex', gap: '0.5rem', alignSelf: 'flex-start' }}><Save size={18}/> Save Evaluation</button>
                                 </div>
                             )}                             {activeTab === 'video' && (
-                                <div style={{ background: '#0f172a', borderRadius: '16px', overflow: 'hidden', border: '1px solid #334155' }}>
-                                    <div style={{ padding: '1.25rem 1.5rem', background: '#1e293b', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #334155' }}>
+                                <div style={{ background: 'var(--bg-panel)', borderRadius: '16px', overflow: 'hidden', border: '1px solid #334155' }}>
+                                    <div style={{ padding: '1.25rem 1.5rem', background: 'var(--bg-panel)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid #334155' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                                             <div style={{ width: '36px', height: '36px', borderRadius: '10px', background: 'rgba(79, 70, 229, 0.2)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                                                 <Video size={18} color="#818cf8" />
@@ -400,32 +400,32 @@ export function AdminExpertRequests() {
                                     </div>
 
                                     {(!selectedRequest.meetingStatus || selectedRequest.meetingStatus === 'not_scheduled') ? (
-                                        <div style={{ padding: '3rem 2rem', background: 'white', color: '#1e293b' }}>
+                                        <div style={{ padding: '3rem 2rem', background: 'var(--bg-panel)', color: 'var(--text-main)' }}>
                                             <div style={{ maxWidth: '400px', margin: '0 auto', textAlign: 'center' }}>
                                                 <div style={{ width: '64px', height: '64px', background: '#f5f3ff', color: '#7c3aed', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
                                                     <Clock size={32} />
                                                 </div>
                                                 <h4 style={{ fontSize: '1.1rem', marginBottom: '0.5rem' }}>Schedule a Meeting</h4>
-                                                <p style={{ color: '#64748b', fontSize: '0.9rem', marginBottom: '2rem' }}>Set a date and time for the video verification call. The expert will see this on their dashboard.</p>
+                                                <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', marginBottom: '2rem' }}>Set a date and time for the video verification call. The expert will see this on their dashboard.</p>
                                                 
                                                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', textAlign: 'left' }}>
                                                     <div>
-                                                        <label style={{ fontSize: '0.8rem', fontWeight: 700, color: '#64748b', display: 'block', marginBottom: '0.4rem' }}>Meeting Date & Time</label>
+                                                        <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)', display: 'block', marginBottom: '0.4rem' }}>Meeting Date & Time</label>
                                                         <input 
                                                             type="datetime-local" 
                                                             value={schedulingDate}
                                                             onChange={e => setSchedulingDate(e.target.value)}
-                                                            style={{ width: '100%', padding: '0.75rem', borderRadius: '10px', border: '1px solid #e2e8f0', fontSize: '0.9rem' }}
+                                                            style={{ width: '100%', padding: '0.75rem', borderRadius: '10px', border: '1px solid var(--border-subtle)', fontSize: '0.9rem' }}
                                                         />
                                                     </div>
                                                     <div>
-                                                        <label style={{ fontSize: '0.8rem', fontWeight: 700, color: '#64748b', display: 'block', marginBottom: '0.4rem' }}>Google Meet Link</label>
+                                                        <label style={{ fontSize: '0.8rem', fontWeight: 700, color: 'var(--text-muted)', display: 'block', marginBottom: '0.4rem' }}>Google Meet Link</label>
                                                         <input 
                                                             type="text" 
                                                             placeholder="https://meet.google.com/xxx-xxxx-xxx"
                                                             value={schedulingLink}
                                                             onChange={e => setSchedulingLink(e.target.value)}
-                                                            style={{ width: '100%', padding: '0.75rem', borderRadius: '10px', border: '1px solid #e2e8f0', fontSize: '0.9rem' }}
+                                                            style={{ width: '100%', padding: '0.75rem', borderRadius: '10px', border: '1px solid var(--border-subtle)', fontSize: '0.9rem' }}
                                                         />
                                                     </div>
                                                     <button 
@@ -443,7 +443,7 @@ export function AdminExpertRequests() {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div style={{ position: 'relative', background: 'white', minHeight: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
+                                        <div style={{ position: 'relative', background: 'var(--bg-panel)', minHeight: '300px', display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}>
                                             {selectedRequest.meetingStatus === 'completed' && (
                                                 <div style={{ position: 'absolute', inset: 0, background: 'rgba(15, 23, 42, 0.9)', zIndex: 10, display: 'flex', alignItems: 'center', justifyContent: 'center', textAlign: 'center', color: 'white', padding: '2rem' }}>
                                                     <div>
@@ -463,9 +463,9 @@ export function AdminExpertRequests() {
                                             )}
                                             
                                             <div style={{ textAlign: 'center', width: '100%', maxWidth: '500px' }}>
-                                                <div style={{ marginBottom: '2rem', padding: '1.5rem', background: '#f8fafc', borderRadius: '16px', border: '1px solid #e2e8f0' }}>
-                                                    <div style={{ fontSize: '0.9rem', color: '#64748b', marginBottom: '0.5rem' }}>Scheduled For</div>
-                                                    <div style={{ fontSize: '1.2rem', fontWeight: 800, color: '#1e293b' }}>
+                                                <div style={{ marginBottom: '2rem', padding: '1.5rem', background: 'var(--bg-app)', borderRadius: '16px', border: '1px solid var(--border-subtle)' }}>
+                                                    <div style={{ fontSize: '0.9rem', color: 'var(--text-muted)', marginBottom: '0.5rem' }}>Scheduled For</div>
+                                                    <div style={{ fontSize: '1.2rem', fontWeight: 800, color: 'var(--text-main)' }}>
                                                         {new Date(selectedRequest.meetingDateTime).toLocaleString([], { dateStyle: 'long', timeStyle: 'short' })}
                                                     </div>
                                                 </div>
@@ -516,11 +516,11 @@ export function AdminExpertRequests() {
                                                                 <Video size={20} style={{ verticalAlign: 'middle', marginRight: '0.5rem' }} /> Join Google Meet as Admin
                                                             </button>
                                                             
-                                                            {isEarly && <div style={{ color: '#f59e0b', fontWeight: 600 }}>Meeting not started yet</div>}
-                                                            {isExpired && <div style={{ color: '#ef4444', fontWeight: 600 }}>Meeting expired</div>}
-                                                            {canJoin && <div style={{ color: '#10b981', fontWeight: 600 }}>Meeting is LIVE!</div>}
+                                                            {isEarly && <div style={{ color: 'var(--warning)', fontWeight: 600 }}>Meeting not started yet</div>}
+                                                            {isExpired && <div style={{ color: 'var(--danger)', fontWeight: 600 }}>Meeting expired</div>}
+                                                            {canJoin && <div style={{ color: 'var(--success)', fontWeight: 600 }}>Meeting is LIVE!</div>}
                                                             
-                                                            <p style={{ fontSize: '0.8rem', color: '#94a3b8', marginTop: '1rem' }}>
+                                                            <p style={{ fontSize: '0.8rem', color: 'var(--text-light)', marginTop: '1rem' }}>
                                                                 Meet URL: <span style={{ color: '#6366f1' }}>{selectedRequest.meetingLink}</span>
                                                             </p>
                                                         </div>
@@ -535,7 +535,7 @@ export function AdminExpertRequests() {
                     </div>
 
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <div className="card" style={{ padding: '1.5rem', background: 'white' }}>
+                        <div className="card" style={{ padding: '1.5rem', background: 'var(--bg-panel)' }}>
                             <h3 style={{ fontSize: '1rem', fontWeight: '800', marginBottom: '1.25rem', color: 'var(--text-main)' }}>Final Decision</h3>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                                 <button className="btn-action btn-accept" onClick={() => updateStatus(selectedRequest._id || selectedRequest.id, 'approved')}><CheckCircle size={20}/> Accept Application</button>
@@ -550,10 +550,10 @@ export function AdminExpertRequests() {
             {isRejectionModalOpen && (
                 <div style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.6)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000, backdropFilter: 'blur(4px)' }}>
                     <div className="card" style={{ maxWidth: '400px', width: '90%', padding: '2rem' }}>
-                        <h3 style={{ marginBottom: '1rem', color: '#ef4444' }}>Reason for Rejection</h3>
-                        <textarea value={rejectionReason} onChange={(e) => setRejectionReason(e.target.value)} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid #e2e8f0', minHeight: '100px', marginBottom: '1rem' }} placeholder="Provide feedback to the candidate..."/>
+                        <h3 style={{ marginBottom: '1rem', color: 'var(--danger)' }}>Reason for Rejection</h3>
+                        <textarea value={rejectionReason} onChange={(e) => setRejectionReason(e.target.value)} style={{ width: '100%', padding: '0.8rem', borderRadius: '8px', border: '1px solid var(--border-subtle)', minHeight: '100px', marginBottom: '1rem' }} placeholder="Provide feedback to the candidate..."/>
                         <div style={{ display: 'flex', gap: '1rem', justifyContent: 'flex-end' }}>
-                            <button onClick={() => setIsRejectionModalOpen(false)} style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer' }}>Cancel</button>
+                            <button onClick={() => setIsRejectionModalOpen(false)} style={{ background: 'none', border: 'none', color: 'var(--text-muted)', cursor: 'pointer' }}>Cancel</button>
                             <button onClick={() => updateStatus(selectedRequest._id || selectedRequest.id, 'rejected', rejectionReason)} style={{ background: '#ef4444', color: 'white', border: 'none', padding: '0.6rem 1.2rem', borderRadius: '8px', fontWeight: '700', cursor: 'pointer' }}>Confirm</button>
                         </div>
                     </div>

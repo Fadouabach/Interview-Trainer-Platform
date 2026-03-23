@@ -1,24 +1,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
 
-:root {
+:root, [data-theme='light'] {
   /* Premium Light Theme Palette */
-  --bg-app: #f3f4f6;
-  /* Very light cool gray for main background */
+  --bg-app: #f8fafc;
   --bg-panel: #ffffff;
-  /* White for cards */
-  --bg-sidebar: #f8fafc;
-  /* Slightly off-white for sidebar */
+  --bg-sidebar: #ffffff;
 
   --primary: #4f46e5;
-  /* Indigo/Purple premium feel */
   --primary-light: #818cf8;
   --secondary: #0ea5e9;
-  /* Sky blue */
 
-  --text-main: #1e293b;
-  /* Slate 800 - High contrast text */
+  --text-main: #0f172a;
   --text-muted: #64748b;
-  /* Slate 500 */
   --text-light: #94a3b8;
 
   --border-subtle: #e2e8f0;
@@ -41,10 +34,40 @@
   --neutral-soft: #f1f5f9;
 }
 
+[data-theme='dark'] {
+  --bg-app: #0f172a;
+  --bg-panel: #1e293b;
+  --bg-sidebar: #1e293b;
+
+  --primary: #6366f1;
+  --primary-light: #818cf8;
+  --secondary: #38bdf8;
+
+  --text-main: #f8fafc;
+  --text-muted: #94a3b8;
+  --text-light: #64748b;
+
+  --border-subtle: #334155;
+
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.3);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.4), 0 2px 4px -2px rgb(0 0 0 / 0.4);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.5), 0 4px 6px -4px rgb(0 0 0 / 0.5);
+
+  --success: #10b981;
+  --success-soft: #064e3b;
+  --warning: #f59e0b;
+  --warning-soft: #78350f;
+  --danger: #ef4444;
+  --danger-soft: #7f1d1d;
+  --neutral: #94a3b8;
+  --neutral-soft: #334155;
+}
+
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 body {

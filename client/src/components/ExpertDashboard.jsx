@@ -30,8 +30,8 @@ function Toast({ toasts, removeToast }) {
                     {t.type === 'success' ? <CheckCircle size={18} color="#10b981" style={{ flexShrink: 0 }} /> :
                         t.type === 'error' ? <XCircle size={18} color="#ef4444" style={{ flexShrink: 0 }} /> :
                             <AlertCircle size={18} color="#3b82f6" style={{ flexShrink: 0 }} />}
-                    <span style={{ fontSize: '0.9rem', fontWeight: 500, color: '#1e293b', flex: 1 }}>{t.message}</span>
-                    <button onClick={() => removeToast(t.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#94a3b8', padding: '0' }}>
+                    <span style={{ fontSize: '0.9rem', fontWeight: 500, color: 'var(--text-main)', flex: 1 }}>{t.message}</span>
+                    <button onClick={() => removeToast(t.id)} style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-light)', padding: '0' }}>
                         <X size={16} />
                     </button>
                 </div>
@@ -72,8 +72,8 @@ function StatCard({ icon, label, value, color, gradient }) {
                 {React.cloneElement(icon, { size: 26, color: 'white' })}
             </div>
             <div>
-                <div style={{ fontSize: '0.85rem', color: '#64748b', fontWeight: 500, marginBottom: '0.25rem' }}>{label}</div>
-                <div style={{ fontSize: '2rem', fontWeight: 700, color: '#1e293b', lineHeight: 1 }}>{value}</div>
+                <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', fontWeight: 500, marginBottom: '0.25rem' }}>{label}</div>
+                <div style={{ fontSize: '2rem', fontWeight: 700, color: 'var(--text-main)', lineHeight: 1 }}>{value}</div>
             </div>
         </div>
     );
@@ -83,7 +83,7 @@ function LoadingSpinner({ text = 'Loading...' }) {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '5rem 2rem', gap: '1rem' }}>
             <Loader2 size={36} color="#4f46e5" style={{ animation: 'spin 1s linear infinite' }} />
-            <span style={{ color: '#64748b', fontSize: '0.95rem' }}>{text}</span>
+            <span style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>{text}</span>
         </div>
     );
 }
@@ -92,11 +92,11 @@ function EmptyState({ icon, title, subtitle }) {
     return (
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', padding: '5rem 2rem', gap: '1rem', textAlign: 'center' }}>
             <div style={{ width: '80px', height: '80px', borderRadius: '50%', background: 'linear-gradient(135deg, #f1f5f9, #e2e8f0)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                {React.cloneElement(icon, { size: 32, color: '#94a3b8' })}
+                {React.cloneElement(icon, { size: 32, color: 'var(--text-light)' })}
             </div>
             <div>
-                <div style={{ fontWeight: 600, fontSize: '1.1rem', color: '#334155', marginBottom: '0.4rem' }}>{title}</div>
-                <div style={{ color: '#94a3b8', fontSize: '0.9rem' }}>{subtitle}</div>
+                <div style={{ fontWeight: 600, fontSize: '1.1rem', color: 'var(--text-main)', marginBottom: '0.4rem' }}>{title}</div>
+                <div style={{ color: 'var(--text-light)', fontSize: '0.9rem' }}>{subtitle}</div>
             </div>
         </div>
     );
@@ -163,7 +163,7 @@ function OverviewSection({ token }) {
         <div>
             <div style={{ marginBottom: '2rem' }}>
                 <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Overview</h2>
-                <p style={{ color: '#64748b', fontSize: '0.95rem' }}>Your activity summary at a glance.</p>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Your activity summary at a glance.</p>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: '1.25rem', marginBottom: '2.5rem' }}>
@@ -258,7 +258,7 @@ function InterviewReviewModal({ interview, token, onClose, onSave, toast }) {
             zIndex: 1000, overflowY: 'auto', padding: '2rem 1rem'
         }} onClick={e => e.target === e.currentTarget && onClose()}>
             <div style={{
-                background: 'white', borderRadius: '24px', width: '100%', maxWidth: '760px',
+                background: 'var(--bg-panel)', borderRadius: '24px', width: '100%', maxWidth: '760px',
                 boxShadow: '0 25px 60px -10px rgba(0,0,0,0.3)', overflow: 'hidden',
                 animation: 'slideUp 0.3s ease'
             }}>
@@ -273,7 +273,7 @@ function InterviewReviewModal({ interview, token, onClose, onSave, toast }) {
                         <div>
                             <h3 style={{ color: 'white', marginBottom: '0.2rem', fontSize: '1.15rem' }}>{candidate.name}</h3>
                             <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                                <span style={{ color: '#94a3b8', fontSize: '0.85rem' }}>{candidate.email}</span>
+                                <span style={{ color: 'var(--text-light)', fontSize: '0.85rem' }}>{candidate.email}</span>
                                 <span style={{
                                     background: 'rgba(255,255,255,0.1)', color: 'white',
                                     padding: '0.2rem 0.75rem', borderRadius: '99px', fontSize: '0.8rem'
@@ -287,7 +287,7 @@ function InterviewReviewModal({ interview, token, onClose, onSave, toast }) {
                 </div>
 
                 {/* Tabs for Review vs Video */}
-                <div style={{ display: 'flex', borderBottom: '1px solid #e2e8f0', background: '#f8fafc' }}>
+                <div style={{ display: 'flex', borderBottom: '1px solid var(--border-subtle)', background: 'var(--bg-app)' }}>
                     <button 
                         onClick={() => setActiveTab('review')}
                         style={{
@@ -320,12 +320,12 @@ function InterviewReviewModal({ interview, token, onClose, onSave, toast }) {
                         {[
                             { label: 'Overall AI Score', val: `${aiScore}%`, color: '#4f46e5' },
                             { label: 'Communication', val: `${interview.aiFeedback?.communicationScore ?? '—'}%`, color: '#0ea5e9' },
-                            { label: 'Technical', val: `${interview.aiFeedback?.technicalScore ?? '—'}%`, color: '#10b981' },
-                            { label: 'Confidence', val: `${interview.aiFeedback?.confidenceScore ?? '—'}%`, color: '#f59e0b' },
+                            { label: 'Technical', val: `${interview.aiFeedback?.technicalScore ?? '—'}%`, color: 'var(--success)' },
+                            { label: 'Confidence', val: `${interview.aiFeedback?.confidenceScore ?? '—'}%`, color: 'var(--warning)' },
                         ].map(s => (
-                            <div key={s.label} style={{ background: '#f8fafc', borderRadius: '14px', padding: '1rem', textAlign: 'center', border: '1px solid #e2e8f0' }}>
+                            <div key={s.label} style={{ background: 'var(--bg-app)', borderRadius: '14px', padding: '1rem', textAlign: 'center', border: '1px solid var(--border-subtle)' }}>
                                 <div style={{ color: s.color, fontWeight: 700, fontSize: '1.4rem' }}>{s.val}</div>
-                                <div style={{ color: '#64748b', fontSize: '0.78rem', marginTop: '0.25rem' }}>{s.label}</div>
+                                <div style={{ color: 'var(--text-muted)', fontSize: '0.78rem', marginTop: '0.25rem' }}>{s.label}</div>
                             </div>
                         ))}
                     </div>
@@ -351,18 +351,18 @@ function InterviewReviewModal({ interview, token, onClose, onSave, toast }) {
                             </h4>
                             <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem', maxHeight: '320px', overflowY: 'auto', paddingRight: '4px' }}>
                                 {answers.map((ans, i) => (
-                                    <div key={i} style={{ background: '#f8fafc', borderRadius: '14px', padding: '1.25rem', border: '1px solid #e2e8f0' }}>
+                                    <div key={i} style={{ background: 'var(--bg-app)', borderRadius: '14px', padding: '1.25rem', border: '1px solid var(--border-subtle)' }}>
                                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '0.75rem', flexWrap: 'wrap', gap: '0.5rem' }}>
                                             <span style={{ fontWeight: 600, color: '#4f46e5', fontSize: '0.85rem' }}>Q{i + 1}</span>
                                             {ans.feedback?.score != null && <ScorePill score={ans.feedback.score} small />}
                                         </div>
-                                        <p style={{ fontWeight: 600, color: '#1e293b', marginBottom: '0.6rem', fontSize: '0.92rem' }}>{ans.questionText}</p>
+                                        <p style={{ fontWeight: 600, color: 'var(--text-main)', marginBottom: '0.6rem', fontSize: '0.92rem' }}>{ans.questionText}</p>
                                         <p style={{ color: '#475569', fontSize: '0.88rem', lineHeight: 1.65, marginBottom: '0.75rem' }}>
-                                            {ans.transcribedText || <em style={{ color: '#94a3b8' }}>No answer recorded</em>}
+                                            {ans.transcribedText || <em style={{ color: 'var(--text-light)' }}>No answer recorded</em>}
                                         </p>
                                         {ans.feedback?.summary && (
-                                            <div style={{ borderTop: '1px solid #e2e8f0', paddingTop: '0.75rem' }}>
-                                                <span style={{ fontSize: '0.8rem', color: '#64748b', fontWeight: 600 }}>AI Feedback: </span>
+                                            <div style={{ borderTop: '1px solid var(--border-subtle)', paddingTop: '0.75rem' }}>
+                                                <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', fontWeight: 600 }}>AI Feedback: </span>
                                                 <span style={{ fontSize: '0.82rem', color: '#475569' }}>{ans.feedback.summary}</span>
                                             </div>
                                         )}
@@ -388,14 +388,14 @@ function InterviewReviewModal({ interview, token, onClose, onSave, toast }) {
                                     onChange={e => setAdjustedScore(Number(e.target.value))}
                                     style={{ width: '100%', accentColor: '#4f46e5' }}
                                 />
-                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: '#94a3b8' }}>
+                                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '0.75rem', color: 'var(--text-light)' }}>
                                     <span>0%</span><span>50%</span><span>100%</span>
                                 </div>
                             </div>
                             {/* Feedback Text */}
                             <div>
                                 <label style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: '#374151', marginBottom: '0.5rem' }}>
-                                    Expert Feedback <span style={{ color: '#94a3b8', fontWeight: 400 }}>(required to accept)</span>
+                                    Expert Feedback <span style={{ color: 'var(--text-light)', fontWeight: 400 }}>(required to accept)</span>
                                 </label>
                                 <textarea
                                     value={feedback}
@@ -406,7 +406,7 @@ function InterviewReviewModal({ interview, token, onClose, onSave, toast }) {
                                         width: '100%', padding: '0.875rem', borderRadius: '12px',
                                         border: '1.5px solid #e2e8f0', fontFamily: 'inherit',
                                         fontSize: '0.9rem', resize: 'vertical', outline: 'none',
-                                        color: '#1e293b', lineHeight: 1.6, background: '#fafafa',
+                                        color: 'var(--text-main)', lineHeight: 1.6, background: '#fafafa',
                                         transition: 'border-color 0.2s'
                                     }}
                                     onFocus={e => e.target.style.borderColor = '#4f46e5'}
@@ -424,7 +424,7 @@ function InterviewReviewModal({ interview, token, onClose, onSave, toast }) {
                             style={{
                                 flex: 1, padding: '0.875rem 1.5rem', borderRadius: '14px',
                                 border: '2px solid #fecaca', background: saving ? '#f8fafc' : '#fef2f2',
-                                color: '#ef4444', fontWeight: 600, cursor: saving ? 'not-allowed' : 'pointer',
+                                color: 'var(--danger)', fontWeight: 600, cursor: saving ? 'not-allowed' : 'pointer',
                                 fontSize: '0.95rem', display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '0.5rem',
                                 transition: 'all 0.2s',
                             }}
@@ -454,10 +454,10 @@ function InterviewReviewModal({ interview, token, onClose, onSave, toast }) {
                     ) : (
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                             {!liveCall ? (
-                                <div style={{ textAlign: 'center', padding: '3rem 1rem', background: '#f8fafc', borderRadius: '20px', border: '2px dashed #e2e8f0' }}>
+                                <div style={{ textAlign: 'center', padding: '3rem 1rem', background: 'var(--bg-app)', borderRadius: '20px', border: '2px dashed #e2e8f0' }}>
                                     <Video size={48} color="#94a3b8" style={{ marginBottom: '1rem' }} />
                                     <h4 style={{ marginBottom: '0.5rem', fontSize: '1.1rem' }}>Conduct a Live Interview</h4>
-                                    <p style={{ color: '#64748b', fontSize: '0.9rem', maxWidth: '400px', margin: '0 auto 1.5rem' }}>
+                                    <p style={{ color: 'var(--text-muted)', fontSize: '0.9rem', maxWidth: '400px', margin: '0 auto 1.5rem' }}>
                                         Starting a video meeting will notify the candidate on their dashboard to join you for a live technical or behavioral assessment.
                                     </p>
                                     <button 
@@ -473,8 +473,8 @@ function InterviewReviewModal({ interview, token, onClose, onSave, toast }) {
                                     </button>
                                 </div>
                             ) : (
-                                <div style={{ background: '#0f172a', borderRadius: '20px', overflow: 'hidden' }}>
-                                    <div style={{ padding: '1rem 1.5rem', background: '#1e293b', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                                <div style={{ background: 'var(--bg-panel)', borderRadius: '20px', overflow: 'hidden' }}>
+                                    <div style={{ padding: '1rem 1.5rem', background: 'var(--bg-panel)', color: 'white', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
                                             <div style={{ width: '10px', height: '10px', borderRadius: '50%', background: '#10b981', animation: 'pulse 1.5s infinite' }}></div>
                                             <span style={{ fontWeight: 600, fontSize: '0.95rem' }}>Live Meeting in Progress</span>
@@ -531,7 +531,7 @@ function PendingRequestsSection({ token, toast }) {
         <div>
             <div style={{ marginBottom: '2rem' }}>
                 <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Pending Requests</h2>
-                <p style={{ color: '#64748b', fontSize: '0.95rem' }}>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
                     {requests.length} candidate{requests.length !== 1 ? 's' : ''} awaiting your review.
                 </p>
             </div>
@@ -545,8 +545,8 @@ function PendingRequestsSection({ token, toast }) {
                         const date = req.createdAt || req.date;
                         return (
                             <div key={req._id || req.id} style={{
-                                background: 'white', borderRadius: '18px', padding: '1.5rem',
-                                border: '1px solid #e2e8f0', boxShadow: '0 2px 12px -4px rgba(0,0,0,0.08)',
+                                background: 'var(--bg-panel)', borderRadius: '18px', padding: '1.5rem',
+                                border: '1px solid var(--border-subtle)', boxShadow: '0 2px 12px -4px rgba(0,0,0,0.08)',
                                 display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap',
                                 transition: 'transform 0.2s, box-shadow 0.2s'
                             }}
@@ -555,10 +555,10 @@ function PendingRequestsSection({ token, toast }) {
                             >
                                 <Avatar name={req.candidateName} avatar={req.candidateAvatar} size={50} />
                                 <div style={{ flex: 1, minWidth: '160px' }}>
-                                    <div style={{ fontWeight: 600, color: '#1e293b', marginBottom: '0.25rem' }}>{req.candidateName}</div>
+                                    <div style={{ fontWeight: 600, color: 'var(--text-main)', marginBottom: '0.25rem' }}>{req.candidateName}</div>
                                     <div style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', alignItems: 'center' }}>
-                                        <span style={{ fontSize: '0.82rem', color: '#64748b' }}>{req.category}</span>
-                                        {date && <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>
+                                        <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>{req.category}</span>
+                                        {date && <span style={{ fontSize: '0.78rem', color: 'var(--text-light)' }}>
                                             {new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                                         </span>}
                                     </div>
@@ -566,7 +566,7 @@ function PendingRequestsSection({ token, toast }) {
                                 <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                                     {score != null && <ScorePill score={score} />}
                                     <span style={{
-                                        background: '#fffbeb', color: '#d97706', border: '1px solid #fde68a',
+                                        background: 'var(--warning-soft)', color: '#d97706', border: '1px solid #fde68a',
                                         padding: '0.3rem 0.85rem', borderRadius: '99px', fontSize: '0.78rem', fontWeight: 600
                                     }}>Pending</span>
                                     <button
@@ -629,7 +629,7 @@ function FeedbackHistorySection({ token, toast }) {
         <div>
             <div style={{ marginBottom: '2rem' }}>
                 <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Feedback History</h2>
-                <p style={{ color: '#64748b', fontSize: '0.95rem' }}>All candidates you have reviewed.</p>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>All candidates you have reviewed.</p>
             </div>
 
             {history.length === 0 ? (
@@ -644,7 +644,7 @@ function FeedbackHistorySection({ token, toast }) {
                         const aiScore = item.aiFeedback?.overallScore ?? item.score;
                         return (
                             <div key={item._id || item.id} style={{
-                                background: 'white', borderRadius: '18px', padding: '1.5rem',
+                                background: 'var(--bg-panel)', borderRadius: '18px', padding: '1.5rem',
                                 border: `1px solid ${decision === 'accepted' ? '#bbf7d0' : '#fecaca'}`,
                                 borderLeft: `4px solid ${decision === 'accepted' ? '#10b981' : '#ef4444'}`,
                                 boxShadow: '0 2px 12px -4px rgba(0,0,0,0.08)',
@@ -657,7 +657,7 @@ function FeedbackHistorySection({ token, toast }) {
                                     <Avatar name={item.candidateName} avatar={item.candidateAvatar} size={50} />
                                     <div style={{ flex: 1, minWidth: '160px' }}>
                                         <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap', marginBottom: '0.4rem' }}>
-                                            <span style={{ fontWeight: 700, color: '#1e293b', fontSize: '1rem' }}>{item.candidateName}</span>
+                                            <span style={{ fontWeight: 700, color: 'var(--text-main)', fontSize: '1rem' }}>{item.candidateName}</span>
                                             <span style={{
                                                 padding: '0.2rem 0.75rem', borderRadius: '99px', fontSize: '0.78rem', fontWeight: 700,
                                                 background: decision === 'accepted' ? '#ecfdf5' : '#fef2f2',
@@ -668,19 +668,19 @@ function FeedbackHistorySection({ token, toast }) {
                                             </span>
                                         </div>
                                         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', marginBottom: '0.75rem' }}>
-                                            <span style={{ fontSize: '0.82rem', color: '#64748b' }}>{item.category}</span>
-                                            {reviewedAt && <span style={{ fontSize: '0.78rem', color: '#94a3b8' }}>
+                                            <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>{item.category}</span>
+                                            {reviewedAt && <span style={{ fontSize: '0.78rem', color: 'var(--text-light)' }}>
                                                 Reviewed {new Date(reviewedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
                                             </span>}
                                         </div>
                                         <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center' }}>
                                             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                                                <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>AI Score:</span>
+                                                <span style={{ fontSize: '0.8rem', color: 'var(--text-light)' }}>AI Score:</span>
                                                 {aiScore != null && <ScorePill score={aiScore} small />}
                                             </div>
                                             {adjustedScore != null && adjustedScore !== aiScore && (
                                                 <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                                                    <span style={{ fontSize: '0.8rem', color: '#94a3b8' }}>Adjusted:</span>
+                                                    <span style={{ fontSize: '0.8rem', color: 'var(--text-light)' }}>Adjusted:</span>
                                                     <ScorePill score={adjustedScore} small />
                                                 </div>
                                             )}
@@ -688,7 +688,7 @@ function FeedbackHistorySection({ token, toast }) {
                                         {feedback && (
                                             <p style={{
                                                 marginTop: '0.75rem', fontSize: '0.87rem', color: '#475569',
-                                                lineHeight: 1.6, background: '#f8fafc', padding: '0.75rem 1rem',
+                                                lineHeight: 1.6, background: 'var(--bg-app)', padding: '0.75rem 1rem',
                                                 borderRadius: '10px', borderLeft: '3px solid #cbd5e1'
                                             }}>
                                                 "{feedback}"
@@ -698,7 +698,7 @@ function FeedbackHistorySection({ token, toast }) {
                                     <button
                                         onClick={() => setSelected(item)}
                                         style={{
-                                            background: '#f8fafc', border: '1px solid #e2e8f0',
+                                            background: 'var(--bg-app)', border: '1px solid var(--border-subtle)',
                                             borderRadius: '10px', padding: '0.5rem 1rem',
                                             fontSize: '0.82rem', color: '#4f46e5', fontWeight: 600,
                                             cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '0.4rem',
@@ -866,13 +866,13 @@ function ProfileSettingsSection({ token, toast, requestData, setRequestData }) {
     const inputStyle = {
         width: '100%', padding: '0.8rem 1rem', borderRadius: '12px',
         border: '1.5px solid #e2e8f0', fontFamily: 'inherit',
-        fontSize: '0.92rem', outline: 'none', color: '#1e293b',
+        fontSize: '0.92rem', outline: 'none', color: 'var(--text-main)',
         background: '#fafafa', transition: 'all 0.2s'
     };
 
     const sectionStyle = {
-        background: 'white', borderRadius: '20px', padding: '1.5rem',
-        border: '1px solid #e2e8f0', marginBottom: '1.5rem',
+        background: 'var(--bg-panel)', borderRadius: '20px', padding: '1.5rem',
+        border: '1px solid var(--border-subtle)', marginBottom: '1.5rem',
         boxShadow: '0 2px 10px -4px rgba(0,0,0,0.06)'
     };
 
@@ -883,7 +883,7 @@ function ProfileSettingsSection({ token, toast, requestData, setRequestData }) {
             <div style={{ marginBottom: '2rem', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
                 <div>
                     <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Expert Profile</h2>
-                    <p style={{ color: '#64748b', fontSize: '0.95rem' }}>Complete your profile to get verified by our team.</p>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Complete your profile to get verified by our team.</p>
                 </div>
                 <div style={{ textAlign: 'right', minWidth: '200px' }}>
                     <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#4f46e5', marginBottom: '0.4rem' }}>Profile Completion: {completion}%</div>
@@ -919,7 +919,7 @@ function ProfileSettingsSection({ token, toast, requestData, setRequestData }) {
                                 <input ref={fileRef} type="file" accept="image/*" onChange={handleAvatarChange} style={{ display: 'none' }} />
                             </div>
                             <h3 style={{ margin: '0 0 0.25rem', fontSize: '1.1rem' }}>{form.name || 'Your Name'}</h3>
-                            <p style={{ margin: 0, color: '#64748b', fontSize: '0.85rem' }}>{profile?.email}</p>
+                            <p style={{ margin: 0, color: 'var(--text-muted)', fontSize: '0.85rem' }}>{profile?.email}</p>
                         </div>
                         
                         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem', borderTop: '1px solid #f1f5f9', paddingTop: '1.25rem' }}>
@@ -1022,7 +1022,7 @@ function ProfileSettingsSection({ token, toast, requestData, setRequestData }) {
                                         onKeyPress={e => e.key === 'Enter' && addSkill()}
                                         style={inputStyle} placeholder="Add a skill (e.g. React, Node.js)" 
                                     />
-                                    <button onClick={addSkill} style={{ padding: '0 1.25rem', background: '#f1f5f9', border: '1.5px solid #e2e8f0', borderRadius: '12px', cursor: 'pointer' }}><Plus size={18}/></button>
+                                    <button onClick={addSkill} style={{ padding: '0 1.25rem', background: 'var(--neutral-soft)', border: '1.5px solid #e2e8f0', borderRadius: '12px', cursor: 'pointer' }}><Plus size={18}/></button>
                                 </div>
                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                                     {form.skills.map(s => (
@@ -1030,7 +1030,7 @@ function ProfileSettingsSection({ token, toast, requestData, setRequestData }) {
                                             {s} <X size={14} style={{ cursor: 'pointer' }} onClick={() => removeSkill(s)} />
                                         </span>
                                     ))}
-                                    {form.skills.length === 0 && <span style={{ color: '#94a3b8', fontSize: '0.85rem' }}>No skills added.</span>}
+                                    {form.skills.length === 0 && <span style={{ color: 'var(--text-light)', fontSize: '0.85rem' }}>No skills added.</span>}
                                 </div>
                             </div>
                             <div>
@@ -1042,7 +1042,7 @@ function ProfileSettingsSection({ token, toast, requestData, setRequestData }) {
                                         onKeyPress={e => e.key === 'Enter' && addCompany()}
                                         style={inputStyle} placeholder="Add company (e.g. Google, Meta)" 
                                     />
-                                    <button onClick={addCompany} style={{ padding: '0 1.25rem', background: '#f1f5f9', border: '1.5px solid #e2e8f0', borderRadius: '12px', cursor: 'pointer' }}><Plus size={18}/></button>
+                                    <button onClick={addCompany} style={{ padding: '0 1.25rem', background: 'var(--neutral-soft)', border: '1.5px solid #e2e8f0', borderRadius: '12px', cursor: 'pointer' }}><Plus size={18}/></button>
                                 </div>
                                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
                                     {form.previousCompanies.map(c => (
@@ -1050,7 +1050,7 @@ function ProfileSettingsSection({ token, toast, requestData, setRequestData }) {
                                             {c} <X size={14} style={{ cursor: 'pointer' }} onClick={() => removeCompany(c)} />
                                         </span>
                                     ))}
-                                    {form.previousCompanies.length === 0 && <span style={{ color: '#94a3b8', fontSize: '0.85rem' }}>No companies added.</span>}
+                                    {form.previousCompanies.length === 0 && <span style={{ color: 'var(--text-light)', fontSize: '0.85rem' }}>No companies added.</span>}
                                 </div>
                             </div>
                         </div>
@@ -1143,17 +1143,17 @@ function DocumentsSection({ token, toast, requestData, setRequestData }) {
         <div>
             <div style={{ marginBottom: '2rem' }}>
                 <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Verification Documents</h2>
-                <p style={{ color: '#64748b', fontSize: '0.95rem' }}>Upload your CV, certificates, or portfolio to help us verify your expertise.</p>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>Upload your CV, certificates, or portfolio to help us verify your expertise.</p>
             </div>
 
             <div style={{ display: 'grid', gridTemplateColumns: 'minmax(300px, 1.2fr) 2fr', gap: '2rem', alignItems: 'flex-start' }}>
                 {/* Upload Card */}
-                <div style={{ background: 'white', border: '2px dashed #e2e8f0', borderRadius: '24px', padding: '3rem 2rem', textAlign: 'center' }}>
-                    <div style={{ width: '64px', height: '64px', background: '#f8fafc', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
+                <div style={{ background: 'var(--bg-panel)', border: '2px dashed #e2e8f0', borderRadius: '24px', padding: '3rem 2rem', textAlign: 'center' }}>
+                    <div style={{ width: '64px', height: '64px', background: 'var(--bg-app)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem' }}>
                         <FileText size={32} color="#4f46e5" />
                     </div>
                     <h4 style={{ marginBottom: '0.5rem' }}>Upload PDF or Image</h4>
-                    <p style={{ color: '#64748b', fontSize: '0.85rem', marginBottom: '1.5rem' }}>Drag and drop your files here, or click the button below to browse.</p>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '0.85rem', marginBottom: '1.5rem' }}>Drag and drop your files here, or click the button below to browse.</p>
                     
                     <button
                         onClick={() => fileInputRef.current.click()}
@@ -1168,7 +1168,7 @@ function DocumentsSection({ token, toast, requestData, setRequestData }) {
                         {uploading ? 'Uploading...' : 'Browse Files'}
                     </button>
                     <input type="file" ref={fileInputRef} multiple onChange={handleUpload} style={{ display: 'none' }} accept=".pdf,image/*" />
-                    <p style={{ marginTop: '1rem', fontSize: '0.75rem', color: '#94a3b8' }}>Supported: PDF, JPG, PNG (Max 10MB per file)</p>
+                    <p style={{ marginTop: '1rem', fontSize: '0.75rem', color: 'var(--text-light)' }}>Supported: PDF, JPG, PNG (Max 10MB per file)</p>
                 </div>
 
                 {/* File List */}
@@ -1178,9 +1178,9 @@ function DocumentsSection({ token, toast, requestData, setRequestData }) {
                     </h4>
                     
                     {documents.length === 0 ? (
-                        <div style={{ padding: '3rem', background: '#f8fafc', borderRadius: '20px', border: '1px solid #e2e8f0', textAlign: 'center' }}>
+                        <div style={{ padding: '3rem', background: 'var(--bg-app)', borderRadius: '20px', border: '1px solid var(--border-subtle)', textAlign: 'center' }}>
                             <FileText size={32} color="#cbd5e1" style={{ marginBottom: '1rem' }} />
-                            <div style={{ fontSize: '0.9rem', color: '#94a3b8' }}>No documents uploaded yet.</div>
+                            <div style={{ fontSize: '0.9rem', color: 'var(--text-light)' }}>No documents uploaded yet.</div>
                         </div>
                     ) : (
                         documents.map((doc, idx) => {
@@ -1188,23 +1188,23 @@ function DocumentsSection({ token, toast, requestData, setRequestData }) {
                             const isPdf = filename.toLowerCase().endsWith('.pdf');
                             return (
                                 <div key={idx} style={{
-                                    background: 'white', borderRadius: '16px', padding: '1rem 1.25rem',
-                                    border: '1px solid #e2e8f0', display: 'flex', alignItems: 'center', gap: '1rem',
+                                    background: 'var(--bg-panel)', borderRadius: '16px', padding: '1rem 1.25rem',
+                                    border: '1px solid var(--border-subtle)', display: 'flex', alignItems: 'center', gap: '1rem',
                                     animation: 'fadeIn 0.3s ease'
                                 }}>
                                     <div style={{ width: '42px', height: '42px', borderRadius: '10px', background: isPdf ? '#fef2f2' : '#eff6ff', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
                                         <FileText size={20} color={isPdf ? '#ef4444' : '#3b82f6'} />
                                     </div>
                                     <div style={{ flex: 1, minWidth: 0 }}>
-                                        <div style={{ fontSize: '0.9rem', fontWeight: 600, color: '#1e293b', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{filename}</div>
-                                        <div style={{ fontSize: '0.75rem', color: '#94a3b8' }}>Added {new Date().toLocaleDateString()}</div>
+                                        <div style={{ fontSize: '0.9rem', fontWeight: 600, color: 'var(--text-main)', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>{filename}</div>
+                                        <div style={{ fontSize: '0.75rem', color: 'var(--text-light)' }}>Added {new Date().toLocaleDateString()}</div>
                                     </div>
                                     <div style={{ display: 'flex', gap: '0.5rem' }}>
                                         <a 
                                             href={`http://localhost:5002${doc}`} 
                                             target="_blank" 
                                             rel="noopener noreferrer"
-                                            style={{ padding: '0.5rem', borderRadius: '8px', color: '#64748b', transition: 'background 0.2s' }}
+                                            style={{ padding: '0.5rem', borderRadius: '8px', color: 'var(--text-muted)', transition: 'background 0.2s' }}
                                             onMouseEnter={e => e.currentTarget.style.background = '#f1f5f9'}
                                             onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                                         >
@@ -1212,7 +1212,7 @@ function DocumentsSection({ token, toast, requestData, setRequestData }) {
                                         </a>
                                         <button
                                             onClick={() => handleDelete(doc)}
-                                            style={{ padding: '0.5rem', borderRadius: '8px', border: 'none', background: 'transparent', color: '#ef4444', cursor: 'pointer', transition: 'background 0.2s' }}
+                                            style={{ padding: '0.5rem', borderRadius: '8px', border: 'none', background: 'transparent', color: 'var(--danger)', cursor: 'pointer', transition: 'background 0.2s' }}
                                             onMouseEnter={e => e.currentTarget.style.background = '#fef2f2'}
                                             onMouseLeave={e => e.currentTarget.style.background = 'transparent'}
                                         >
@@ -1232,10 +1232,10 @@ function DocumentsSection({ token, toast, requestData, setRequestData }) {
 function VideoVerificationSection({ requestData, currentTime, toast, token, meetingLink, meetingDateTime }) {
     if (!requestData || requestData.status === 'new') {
         return (
-            <div style={{ padding: '3rem', textAlign: 'center', background: 'white', borderRadius: '24px', border: '1px solid #e2e8f0' }}>
+            <div style={{ padding: '3rem', textAlign: 'center', background: 'var(--bg-panel)', borderRadius: '24px', border: '1px solid var(--border-subtle)' }}>
                 <Video size={48} color="#94a3b8" style={{ marginBottom: '1.5rem', opacity: 0.5 }} />
                 <h3 style={{ fontSize: '1.25rem', marginBottom: '0.75rem' }}>Start Your Application First</h3>
-                <p style={{ color: '#64748b', maxWidth: '400px', margin: '0 auto' }}>You need to complete and save your Profile before we can schedule a video verification meeting.</p>
+                <p style={{ color: 'var(--text-muted)', maxWidth: '400px', margin: '0 auto' }}>You need to complete and save your Profile before we can schedule a video verification meeting.</p>
             </div>
         );
     }
@@ -1280,10 +1280,10 @@ function VideoVerificationSection({ requestData, currentTime, toast, token, meet
         <div style={{ animation: 'slideUp 0.4s ease-out' }}>
             <div style={{ marginBottom: '2rem' }}>
                 <h2 style={{ fontSize: '1.5rem', marginBottom: '0.5rem' }}>Video Verification</h2>
-                <p style={{ color: '#64748b', fontSize: '0.95rem' }}>We verify every expert through a brief video call to ensure the highest quality for our candidates.</p>
+                <p style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>We verify every expert through a brief video call to ensure the highest quality for our candidates.</p>
             </div>
 
-            <div style={{ background: 'white', borderRadius: '24px', padding: '2.5rem', border: '1px solid #e2e8f0', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)' }}>
+            <div style={{ background: 'var(--bg-panel)', borderRadius: '24px', padding: '2.5rem', border: '1px solid var(--border-subtle)', boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.05)' }}>
                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '2rem', flexWrap: 'wrap', gap: '1.5rem' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
                         <div style={{ 
@@ -1294,8 +1294,8 @@ function VideoVerificationSection({ requestData, currentTime, toast, token, meet
                             <Video size={28} color={isCompleted ? '#16a34a' : isScheduled ? '#3b82f6' : '#94a3b8'} />
                         </div>
                         <div>
-                            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Meeting Status</div>
-                            <div style={{ fontSize: '1.25rem', fontWeight: 800, color: '#1e293b', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                            <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-light)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>Meeting Status</div>
+                            <div style={{ fontSize: '1.25rem', fontWeight: 800, color: 'var(--text-main)', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                                 {isCompleted ? 'Completed' : isScheduled ? 'Scheduled' : 'Not Yet Scheduled'}
                                 {isCompleted && <CheckCircle size={20} color="#16a34a" />}
                                 {isScheduled && <Clock size={20} color="#3b82f6" />}
@@ -1304,18 +1304,18 @@ function VideoVerificationSection({ requestData, currentTime, toast, token, meet
                     </div>
 
                     {isScheduled && dateObj && (
-                        <div style={{ background: '#f8fafc', padding: '0.75rem 1.25rem', borderRadius: '14px', border: '1px solid #e2e8f0', textAlign: 'right' }}>
-                            <div style={{ fontSize: '0.8rem', color: '#64748b', marginBottom: '0.2rem' }}>Scheduled For</div>
-                            <div style={{ fontWeight: 700, color: '#1e293b' }}>{dateObj.toLocaleDateString()} at {dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
+                        <div style={{ background: 'var(--bg-app)', padding: '0.75rem 1.25rem', borderRadius: '14px', border: '1px solid var(--border-subtle)', textAlign: 'right' }}>
+                            <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '0.2rem' }}>Scheduled For</div>
+                            <div style={{ fontWeight: 700, color: 'var(--text-main)' }}>{dateObj.toLocaleDateString()} at {dateObj.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</div>
                         </div>
                     )}
                 </div>
 
-                <div style={{ padding: '1.5rem', background: '#f1f5f9', borderRadius: '16px', marginBottom: '2rem' }}>
+                <div style={{ padding: '1.5rem', background: 'var(--neutral-soft)', borderRadius: '16px', marginBottom: '2rem' }}>
                     <div style={{ display: 'flex', gap: '1rem' }}>
                         <Info size={20} color="#475569" style={{ flexShrink: 0, marginTop: '2px' }} />
                         <div>
-                            <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#1e293b', marginBottom: '0.25rem' }}>How it works</div>
+                            <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-main)', marginBottom: '0.25rem' }}>How it works</div>
                             <p style={{ margin: 0, fontSize: '0.9rem', color: '#475569', lineHeight: 1.5 }}>
                                 Our administrator will review your profile and documents. If everything looks good, they will schedule a 10-15 minute video call to discuss your expertise and interview style. 
                                 <strong> Admin will verify your profile through this call.</strong>
@@ -1326,7 +1326,7 @@ function VideoVerificationSection({ requestData, currentTime, toast, token, meet
 
                 {!isScheduled && !isCompleted && (
                     <div style={{ textAlign: 'center', padding: '2rem' }}>
-                        <div style={{ color: '#64748b', fontSize: '0.95rem' }}>
+                        <div style={{ color: 'var(--text-muted)', fontSize: '0.95rem' }}>
                             Your application is currently being reviewed. We'll notify you here once a meeting is scheduled.
                         </div>
                     </div>
@@ -1354,16 +1354,16 @@ function VideoVerificationSection({ requestData, currentTime, toast, token, meet
                                 <Video size={20} /> Join Google Meet
                             </button>
                         ) : joinStatus === 'soon' ? (
-                            <div style={{ padding: '0.75rem 1.5rem', background: '#fffbeb', color: '#f59e0b', borderRadius: '12px', border: '1px solid #fef3c7', fontWeight: 600, fontSize: '0.9rem' }}>
+                            <div style={{ padding: '0.75rem 1.5rem', background: 'var(--warning-soft)', color: 'var(--warning)', borderRadius: '12px', border: '1px solid #fef3c7', fontWeight: 600, fontSize: '0.9rem' }}>
                                 <Clock size={16} style={{ verticalAlign: 'middle', marginRight: '0.5rem' }} /> Meeting not started yet
                             </div>
                         ) : (
-                            <div style={{ padding: '0.75rem 1.5rem', background: '#fef2f2', color: '#ef4444', borderRadius: '12px', border: '1px solid #fecaca', fontWeight: 600, fontSize: '0.9rem' }}>
+                            <div style={{ padding: '0.75rem 1.5rem', background: '#fef2f2', color: 'var(--danger)', borderRadius: '12px', border: '1px solid #fecaca', fontWeight: 600, fontSize: '0.9rem' }}>
                                 <AlertCircle size={16} style={{ verticalAlign: 'middle', marginRight: '0.5rem' }} /> Meeting expired
                             </div>
                         )}
                         
-                        <p style={{ color: '#94a3b8', fontSize: '0.8rem', textAlign: 'center', maxWidth: '300px' }}>
+                        <p style={{ color: 'var(--text-light)', fontSize: '0.8rem', textAlign: 'center', maxWidth: '300px' }}>
                             {joinStatus === 'available' ? 'Meeting is live! Click above to join the Google Meet session.' : 
                              joinStatus === 'soon' ? 'The join button will appear automatically at the scheduled meeting time.' : 
                              'This meeting link is no longer active.'}
@@ -1373,7 +1373,7 @@ function VideoVerificationSection({ requestData, currentTime, toast, token, meet
 
                 {isCompleted && (
                     <div style={{ textAlign: 'center', padding: '2rem', border: '2px dashed #bbf7d0', borderRadius: '20px', background: '#f0fdf4' }}>
-                        <p style={{ color: '#166534', fontWeight: 600, fontSize: '1rem', margin: 0 }}>
+                        <p style={{ color: 'var(--success)', fontWeight: 600, fontSize: '1rem', margin: 0 }}>
                             Meeting completed! Our team is now making a final decision. You'll see an update on your dashboard soon.
                         </p>
                     </div>
@@ -1483,8 +1483,8 @@ export function ExpertDashboard({ user }) {
         }}>
             {/* Top Header */}
             <div style={{
-                background: 'white',
-                borderBottom: '1px solid #e2e8f0',
+                background: 'var(--bg-panel)',
+                borderBottom: '1px solid var(--border-subtle)',
                 padding: '1.25rem 2rem',
                 display: 'flex',
                 alignItems: 'center',
@@ -1495,10 +1495,10 @@ export function ExpertDashboard({ user }) {
                 boxShadow: '0 1px 8px -2px rgba(0,0,0,0.08)',
             }}>
                 <div>
-                    <h1 style={{ fontSize: '1.4rem', fontWeight: 700, color: '#1e293b', margin: 0 }}>
+                    <h1 style={{ fontSize: '1.4rem', fontWeight: 700, color: 'var(--text-main)', margin: 0 }}>
                         Expert Dashboard
                     </h1>
-                    <p style={{ color: '#94a3b8', fontSize: '0.82rem', margin: 0, marginTop: '1px' }}>
+                    <p style={{ color: 'var(--text-light)', fontSize: '0.82rem', margin: 0, marginTop: '1px' }}>
                         Welcome back, <strong style={{ color: '#4f46e5' }}>{firstName}</strong> 👋
                     </p>
                 </div>
@@ -1519,8 +1519,8 @@ export function ExpertDashboard({ user }) {
 
             {/* Tab Navigation */}
             <div style={{
-                background: 'white',
-                borderBottom: '1px solid #e2e8f0',
+                background: 'var(--bg-panel)',
+                borderBottom: '1px solid var(--border-subtle)',
                 padding: '0 2rem',
                 display: 'flex',
                 gap: '0',
@@ -1570,10 +1570,10 @@ export function ExpertDashboard({ user }) {
                              requestData.status === 'accepted' ? <CheckCircle size={20} color="#10b981" /> :
                              <Clock size={20} color="#3b82f6" />}
                             <div>
-                                <div style={{ fontWeight: 700, fontSize: '0.95rem', color: '#1e293b' }}>
+                                <div style={{ fontWeight: 700, fontSize: '0.95rem', color: 'var(--text-main)' }}>
                                     Status: {requestData.status === 'under_review' ? 'Under Review' : requestData.status.charAt(0).toUpperCase() + requestData.status.slice(1)}
                                 </div>
-                                <div style={{ fontSize: '0.85rem', color: '#64748b' }}>
+                                <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                                     {requestData.status === 'pending' && 'Your application is waiting for initial review.'}
                                     {requestData.status === 'under_review' && 'An administrator is currently evaluating your profile.'}
                                     {requestData.status === 'rejected' && `Reason: ${requestData.rejectionReason || 'No reason provided.'}`}

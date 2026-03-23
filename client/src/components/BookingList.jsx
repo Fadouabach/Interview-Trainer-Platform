@@ -98,7 +98,7 @@ export function BookingList({ role }) {
                     <div key={booking._id} className="card" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                             <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
-                                <div style={{ padding: '10px', background: '#f1f5f9', borderRadius: '12px', color: 'var(--primary)' }}>
+                                <div style={{ padding: '10px', background: 'var(--neutral-soft)', borderRadius: '12px', color: 'var(--primary)' }}>
                                     {booking.status === 'completed' ? <CheckCircle size={24} /> : <Clock size={24} />}
                                 </div>
                                 <div>
@@ -118,7 +118,7 @@ export function BookingList({ role }) {
                             </div>
                         </div>
 
-                        <div style={{ background: '#f8fafc', padding: '1rem', borderRadius: '8px' }}>
+                        <div style={{ background: 'var(--bg-app)', padding: '1rem', borderRadius: '8px' }}>
                             <p style={{ fontSize: '0.9rem', color: 'var(--text-main)' }}><strong>Goal:</strong> {booking.goal}</p>
                         </div>
 

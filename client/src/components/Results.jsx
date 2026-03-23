@@ -55,7 +55,7 @@ export function Results({ results, onReset }) {
             {/* 2. Key Insights (Strengths & Weaknesses) */}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '2rem', marginBottom: '2rem' }}>
                 <div className="card" style={{ padding: '2rem', borderTop: '6px solid #10b981' }}>
-                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', color: '#10b981' }}>
+                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', color: 'var(--success)' }}>
                         <CheckCircle size={22} /> Key Strengths
                     </h3>
                     <ul style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: 0 }}>
@@ -65,12 +65,12 @@ export function Results({ results, onReset }) {
                                 {s}
                             </li>
                         ))}
-                        {(!strengths || strengths.length === 0) && <p style={{ color: '#64748b' }}>No specific strengths highlighted yet.</p>}
+                        {(!strengths || strengths.length === 0) && <p style={{ color: 'var(--text-muted)' }}>No specific strengths highlighted yet.</p>}
                     </ul>
                 </div>
 
                 <div className="card" style={{ padding: '2rem', borderTop: '6px solid #ef4444' }}>
-                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', color: '#ef4444' }}>
+                    <h3 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '1.5rem', color: 'var(--danger)' }}>
                         <XCircle size={22} /> Critical Weaknesses
                     </h3>
                     <ul style={{ display: 'flex', flexDirection: 'column', gap: '1rem', padding: 0 }}>
@@ -80,7 +80,7 @@ export function Results({ results, onReset }) {
                                 {w}
                             </li>
                         ))}
-                        {(!weaknesses || weaknesses.length === 0) && <p style={{ color: '#64748b' }}>No critical weaknesses found. Great work!</p>}
+                        {(!weaknesses || weaknesses.length === 0) && <p style={{ color: 'var(--text-muted)' }}>No critical weaknesses found. Great work!</p>}
                     </ul>
                 </div>
             </div>
@@ -97,13 +97,13 @@ export function Results({ results, onReset }) {
                     <CommStat label="Language" value={communication?.language} />
                 </div>
                 <div style={{
-                    marginTop: '2rem', padding: '1.5rem', background: '#f8fafc',
-                    borderRadius: '16px', border: '1px solid #e2e8f0'
+                    marginTop: '2rem', padding: '1.5rem', background: 'var(--bg-app)',
+                    borderRadius: '16px', border: '1px solid var(--border-subtle)'
                 }}>
-                    <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', color: '#334155' }}>
+                    <h4 style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.5rem', color: 'var(--text-main)' }}>
                         <Zap size={18} /> Pace & Hesitation Analysis
                     </h4>
-                    <p style={{ color: '#64748b', fontSize: '1rem', lineHeight: '1.6' }}>{communication?.paceAnalysis}</p>
+                    <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: '1.6' }}>{communication?.paceAnalysis}</p>
                 </div>
             </div>
 
@@ -114,7 +114,7 @@ export function Results({ results, onReset }) {
                     {questionReview?.map((qReview, idx) => (
                         <div key={idx} className="card" style={{ padding: '2rem' }}>
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '1.5rem', gap: '2rem' }}>
-                                <h4 style={{ fontSize: '1.25rem', fontWeight: '700', color: '#0f172a' }}>{qReview.question}</h4>
+                                <h4 style={{ fontSize: '1.25rem', fontWeight: '700', color: 'var(--text-main)' }}>{qReview.question}</h4>
                                 <div style={{
                                     minWidth: '60px', height: '60px', borderRadius: '16px',
                                     background: qReview.score >= 7 ? '#dcfce7' : qReview.score >= 4 ? '#fffbeb' : '#fee2e2',
@@ -165,7 +165,7 @@ export function Results({ results, onReset }) {
                         </h4>
                         <ul style={{ padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                             {improvementPlan?.mustStudy?.map((item, i) => (
-                                <li key={i} style={{ background: 'white', padding: '0.8rem 1.25rem', borderRadius: '12px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>{item}</li>
+                                <li key={i} style={{ background: 'var(--bg-panel)', padding: '0.8rem 1.25rem', borderRadius: '12px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>{item}</li>
                             ))}
                         </ul>
                     </div>
@@ -175,7 +175,7 @@ export function Results({ results, onReset }) {
                         </h4>
                         <ul style={{ padding: 0, listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
                             {improvementPlan?.suggestedExercises?.map((item, i) => (
-                                <li key={i} style={{ background: 'white', padding: '0.8rem 1.25rem', borderRadius: '12px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>{item}</li>
+                                <li key={i} style={{ background: 'var(--bg-panel)', padding: '0.8rem 1.25rem', borderRadius: '12px', boxShadow: '0 2px 4px rgba(0,0,0,0.05)' }}>{item}</li>
                             ))}
                         </ul>
                     </div>
@@ -205,9 +205,9 @@ export function Results({ results, onReset }) {
 
 function CommStat({ label, value }) {
     return (
-        <div style={{ padding: '1.25rem', background: '#f8fafc', borderRadius: '16px', border: '1px solid #f1f5f9' }}>
-            <div style={{ color: '#64748b', fontSize: '0.85rem', fontWeight: '600', textTransform: 'uppercase', marginBottom: '0.5rem' }}>{label}</div>
-            <div style={{ fontSize: '1.1rem', fontWeight: '700', color: '#0f172a' }}>{value || 'Assessing...'}</div>
+        <div style={{ padding: '1.25rem', background: 'var(--bg-app)', borderRadius: '16px', border: '1px solid var(--border-subtle)' }}>
+            <div style={{ color: 'var(--text-muted)', fontSize: '0.85rem', fontWeight: '600', textTransform: 'uppercase', marginBottom: '0.5rem' }}>{label}</div>
+            <div style={{ fontSize: '1.1rem', fontWeight: '700', color: 'var(--text-main)' }}>{value || 'Assessing...'}</div>
         </div>
     );
 }
@@ -218,7 +218,7 @@ function ReviewSnippet({ icon, title, content }) {
             <h5 style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', color: '#475569', fontSize: '0.95rem', fontWeight: '700', marginBottom: '0.75rem' }}>
                 {icon} {title.toUpperCase()}
             </h5>
-            <p style={{ color: '#64748b', fontSize: '1rem', lineHeight: '1.5' }}>{content || "No specific comments."}</p>
+            <p style={{ color: 'var(--text-muted)', fontSize: '1rem', lineHeight: '1.5' }}>{content || "No specific comments."}</p>
         </div>
     );
 }
